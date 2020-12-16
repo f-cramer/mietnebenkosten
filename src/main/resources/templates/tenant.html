@@ -1,0 +1,78 @@
+<html lang="de" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="template.html :: head">
+    <title></title>
+</head>
+<body>
+<div class="container" th:with="tenant = ${id != null} ? ${@tenantService.getTenant(id)} : null, saveError = ${param.error != null && param.error.contains('save')}, deletionError = ${param.error != null && param.error.contains('delete')}">
+    <nav th:replace="template.html :: navbar ('tenants')"></nav>
+
+    <form id="saveForm" action="/tenants/edit/1" method="post" th:action="${tenant != null} ? '/tenants/edit/' + ${tenant.id} : '/tenants/create'"></form>
+    <form id="deleteForm" action="/tenants/delete/1" method="post" th:action="${tenant != null} ? '/tenants/delete/' + ${tenant.id} : ''"></form>
+
+    <div class="alert alert-danger" role="alert" th:if="${saveError}">
+        Beim Speichern des Mieters ist ein Fehler aufgetreten.
+    </div>
+    <div class="alert alert-danger" role="alert" th:if="${deletionError}">
+        Beim Löschen des Mieters ist ein Fehler aufgetreten. Der Mieter wird bereits an anderer Stelle genutzt (beispielsweise in einem Mietvertrag)
+    </div>
+
+    <table class="table table-striped align-middle">
+        <tbody>
+        <tr>
+            <td>Vorname</td>
+            <td>
+                <input class="form-control" type="text" name="firstName" id="firstName" placeholder="Vorname" aria-label="Vorname" form="saveForm" required value="Uta" th:value="${tenant != null ? tenant.firstName : ''}">
+            </td>
+        </tr>
+        <tr>
+            <td>Nachname</td>
+            <td>
+                <input class="form-control" type="text" name="lastName" id="lastName" placeholder="Nachname" aria-label="Nachname" form="saveForm" required value="Krüger" th:value="${tenant != null ? tenant.lastName : ''}">
+            </td>
+        </tr>
+        <tr>
+            <td>Straße</td>
+            <td>
+                <input class="form-control" type="text" name="street" id="street" placeholder="Straße" aria-label="Straße" form="saveForm" required value="Bayreuther Straße" th:value="${tenant != null ? tenant.address.street : ''}">
+            </td>
+        </tr>
+        <tr>
+            <td>Hausnummer</td>
+            <td>
+                <input class="form-control" type="number" min="1" name="houseNumber" id="houseNumber" placeholder="Hausnummer" aria-label="Hausnummer" form="saveForm" required value="76" th:value="${tenant != null ? tenant.address.houseNumber : ''}">
+            </td>
+        </tr>
+        <tr>
+            <td>Postleitzahl</td>
+            <td>
+                <input class="form-control" type="text" name="zipCode" id="zipCode" placeholder="Postleitzahl" aria-label="Postleitzahl" form="saveForm" required value="67659" th:value="${tenant != null ? tenant.address.zipCode : ''}">
+            </td>
+        </tr>
+        <tr>
+            <td>Stadt / Gemeinde</td>
+            <td>
+                <input class="form-control" type="text" name="city" id="city" placeholder="Stadt / Gemeinde" aria-label="Stadt / Gemeinde" form="saveForm" required value="Kaiserslautern" th:value="${tenant != null ? tenant.address.city : ''}">
+            </td>
+        </tr>
+        <tr>
+            <td>Land</td>
+            <td>
+                <input class="form-control" type="text" name="country" id="country" placeholder="Land" aria-label="Land" form="saveForm" value="" th:value="${tenant != null ? tenant.address.country : ''}">
+            </td>
+        </tr>
+        <tr>
+            <td>Ausgeblendet</td>
+            <td>
+                <input class="form-check" type="checkbox" name="hidden" id="hidden" aria-label="Ausgeblendet" form="saveForm" th:checked="${tenant != null ? tenant.hidden : 'false'}">
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="d-flex flex-row-reverse" style="gap: 0.5rem">
+        <button class="btn btn-outline-success my-2 my-sm-0 col-md-2" form="saveForm" type="submit">Speichern</button>
+        <button class="btn btn-outline-danger my-2 my-sm-0 col-md-2" form="deleteForm" type="submit" th:if="${tenant != null}">Löschen</button>
+    </div>
+</div>
+</body>
+</html>

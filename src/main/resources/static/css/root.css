@@ -1,0 +1,7 @@
+table td {
+    vertical-align: middle !important;
+}
+
+.list-group.list-group-striped :nth-child(odd):not(.list-group-item-success) {
+    background: var(--light)
+}

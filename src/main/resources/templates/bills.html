@@ -1,0 +1,29 @@
+<html lang="de" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="template.html :: head">
+    <title></title>
+</head>
+<body>
+<div class="container">
+    <nav th:replace="template.html :: navbar ('bills')"></nav>
+    <div class="row form-check mb-2">
+        <form id="includeClosed-form">
+            <input id="includeClosed" name="includeClosed" class="form-check-input" type="checkbox" onclick="document.getElementById('includeClosed-form').submit()" th:checked="${includeClosed}">
+            <label class="form-check-label" for="includeClosed">Abgeschlossene anzeigen</label>
+        </form>
+    </div>
+    <div class="row list-group list-group-striped">
+        <a class="list-group-item list-group-item-action"
+           href="#"
+           th:each="bill: ${@billService.getBills()}"
+           th:text="${bill.description} + ' (' + ${bill.period.format(@messageSource, #locale)} + ')'"
+           th:href="'bills/show/' + ${bill.id}">
+            Test-Mieter
+        </a>
+        <a class="list-group-item list-group-item-action list-group-item-success" href="/bills/create">
+            <i class="material-icons align-text-bottom bg-transparent">add_circle</i>
+            <span class="ml-1">Mieter hinzufügen</span>
+        </a>
+    </div>
+</div>
+</body>
+</html>

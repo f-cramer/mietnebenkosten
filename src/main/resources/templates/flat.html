@@ -1,0 +1,53 @@
+<html lang="de" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="template.html :: head">
+    <title></title>
+</head>
+<body>
+<!--/*@thymesVar id="flat" type="de.cramer.nebenkosten.entities.Flat"*/-->
+<div class="container" th:with="flat = ${name != null} ? ${@flatService.getFlat(name)} : null, saveError = ${param.error != null && param.error.contains('save')}, deletionError = ${param.error != null && param.error.contains('delete')}" >
+    <nav th:replace="template.html :: navbar ('flats')"></nav>
+
+    <form id="saveForm" action="/flats/edit/Wohnzimmer" method="post" th:action="${flat != null} ? '/flats/edit/' + ${flat.name} : '/flats/create'"></form>
+    <form id="deleteForm" action="/flats/delete/Wohnzimmer" method="post" th:action="${flat != null} ? '/flats/delete/' + ${flat.name} : ''"></form>
+
+    <div class="alert alert-danger" role="alert" th:if="${saveError}">
+        Beim Speichern der Wohnung ist ein Fehler aufgetreten.
+    </div>
+    <div class="alert alert-danger" role="alert" th:if="${deletionError}">
+        Beim Löschen der Wohnung ist ein Fehler aufgetreten. Die Wohnung wird bereits an anderer Stelle genutzt (beispielsweise in einem Mietvertrag)
+    </div>
+
+    <table class="table table-striped align-middle">
+        <tbody>
+        <tr>
+            <td>Name</td>
+            <td>
+                <input class="form-control" type="text" name="name" id="name" placeholder="Name" aria-label="Name" form="saveForm" required value="Wohnzimmer" th:value="${flat != null ? flat.name : ''}">
+            </td>
+        </tr>
+        <tr>
+            <td>Größe</td>
+            <td>
+                <div class="input-group">
+                    <input class="form-control" type="number" min="1" name="area" id="area" placeholder="Größe" aria-label="Größe" form="saveForm" required value="110" th:value="${flat != null ? flat.area : 0}">
+                    <div class="input-group-append"><span class="input-group-text">m²</span></div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>Priorität</td>
+            <td>
+                <input class="form-control" type="number" name="order" id="order" placeholder="Priorität" aria-label="Priorität" form="saveForm" required value="0" th:value="${flat != null ? flat.order : 0}">
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="d-flex flex-row-reverse" style="gap: 0.5rem">
+        <button class="btn btn-outline-success my-2 my-sm-0 col-md-2" form="saveForm" type="submit">Speichern</button>
+        <button class="btn btn-outline-danger my-2 my-sm-0 col-md-2" form="deleteForm" type="submit" th:if="${flat != null}">Löschen</button>
+        <a class="btn btn-outline-danger my-2 my-sm-0 col-md-2" href="/flats" th:if="${flat == null}">Abbrechen</a>
+    </div>
+</div>
+</body>
+</html>

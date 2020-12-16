@@ -1,0 +1,89 @@
+<html lang="de" th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="template.html :: head">
+    <title></title>
+</head>
+<body>
+<!--/*@thymesVar id="rental" type="de.cramer.nebenkosten.entities.Rental"*/-->
+<div class="container" th:with="rental = ${id != null} ? ${@rentalService.getRental(id)} : null, saveError = ${param.error != null && param.error.contains('save')}, deletionError = ${param.error != null && param.error.contains('delete')}">
+    <nav th:replace="template.html :: navbar ('rentals')"></nav>
+
+    <form id="saveForm" action="/rentals/edit/1" method="post" th:action="${rental != null} ? '/rentals/edit/' + ${rental.id} : '/rentals/create'"></form>
+    <form id="deleteForm" action="/rentals/delete/1" method="post" th:action="${rental != null} ? '/rentals/delete/' + ${rental.id} : ''"></form>
+
+    <div class="alert alert-danger" role="alert" th:if="${saveError}">
+        Beim Speichern des Mietvertrags ist ein Fehler aufgetreten.
+    </div>
+    <div class="alert alert-danger" role="alert" th:if="${deletionError}">
+        Beim Löschen des Mietvertrags ist ein Fehler aufgetreten.
+    </div>
+
+    <table class="table table-striped align-middle">
+        <tbody>
+        <tr>
+            <td>Wohnung</td>
+            <td>
+                <select class="form-control" name="flat" id="flat" aria-label="Wohnung" form="saveForm" required>
+                    <option th:each="flat: ${@flatService.getFlats()}" th:selected="${rental != null && flat == rental.flat}" th:value="${flat.name}" th:text="${flat.name}">Erdgeschoss</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Mieter</td>
+            <td>
+                <select class="form-control" name="tenant" id="tenant" aria-label="Mieter" form="saveForm" required th:with="tenants = ${@tenantService.getTenants(false)}">
+                    <option th:each="tenant: ${tenants}" th:selected="${rental != null && tenant == rental.tenant}" th:value="${tenant.id}" th:text="${tenant.name}">Uta Krüger</option>
+                    <option th:unless="${rental == null || tenants.contains(rental.tenant)}" selected th:value="${rental.tenant.id}" th:text="${rental.tenant.name}">Max Probst</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Anzahl Personen</td>
+            <td>
+                <input class="form-control" type="number" name="persons" id="persons" placeholder="Anzahl Personen" aria-label="Anzahl Personen" form="saveForm" required min="1" value="1" th:value="${rental != null ? rental.persons : null}">
+            </td>
+        </tr>
+        <tr>
+            <td>Start</td>
+            <td>
+                <input class="form-control" type="date" name="start" id="start" placeholder="Startdatum" aria-label="Startdatum" form="saveForm" required value="2020-12-14" onchange="checkDates()" th:value="${rental != null ? rental.period.start : T(java.time.LocalDate).now()}">
+            </td>
+        </tr>
+        <tr>
+            <td>Ende</td>
+            <td class="form-inline">
+                <input class="form-control" type="date" name="end" id="end" placeholder="Enddatum" aria-label="Enddatum" form="saveForm" value="2020-12-14" style="flex-grow: 1;" onchange="checkDates()" th:value="${rental != null ? rental.period.end : null}">
+                <button class="btn btn-outline-danger ml-2" type="button" onclick="clearEnd();checkDates()">Leeren</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="d-flex flex-row-reverse" style="gap: 0.5rem">
+        <button class="btn btn-outline-success my-2 my-sm-0 col-md-2" form="saveForm" type="submit">Speichern</button>
+        <button class="btn btn-outline-danger my-2 my-sm-0 col-md-2" form="deleteForm" type="submit" th:if="${rental != null}">Löschen</button>
+        <a class="btn btn-outline-danger my-2 my-sm-0 col-md-2" href="/rentals" th:if="${rental == null}">Abbrechen</a>
+    </div>
+
+    <script>
+        function checkDates() {
+            const start = document.getElementById("start");
+            const end = document.getElementById("end");
+
+            const startValue = start.value;
+            const endValue = end.value;
+
+            if (endValue && startValue > endValue) {
+                end.setCustomValidity("Ende kann nicht vor Start liegen")
+            } else {
+                end.setCustomValidity('')
+            }
+        }
+
+        function clearEnd() {
+            const end = document.getElementById("end");
+            end.value = null
+        }
+    </script>
+</div>
+</body>
+</html>
