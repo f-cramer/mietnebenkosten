@@ -1,81 +1,104 @@
 package de.cramer.nebenkosten.entities
 
-import de.cramer.nebenkosten.utils.LocalDatePeriodUtils.getLengthInMonths
-import kotlin.math.roundToLong
+import com.fasterxml.jackson.annotation.JsonSubTypes
+import com.fasterxml.jackson.annotation.JsonSubTypes.Type
+import com.fasterxml.jackson.annotation.JsonTypeInfo
+import de.cramer.nebenkosten.utils.getLengthInMonths
+import de.cramer.nebenkosten.utils.toInternalBigDecimal
+import java.math.BigDecimal
 
-sealed class SplitAlgorithm {
+@JsonTypeInfo(use = JsonTypeInfo.Id.MINIMAL_CLASS, include = JsonTypeInfo.As.PROPERTY)
+@JsonSubTypes(Type(ByAreaSplitAlgorithm::class), Type(ByPersonsSplitAlgorithm::class), Type(LinearSplitAlgorithm::class))
+sealed class SplitAlgorithm(
+    val type: SplitAlgorithmType,
+    val unit: String
+) {
 
-    abstract fun split(bill: Bill, billings: Collection<Billing>): List<BillSplit>
+    abstract fun split(invoice: Invoice, billingPeriods: Collection<BillingPeriod>): List<InvoiceSplit>
 }
 
-abstract class ByTimeSplitAlgorithm : SplitAlgorithm() {
+abstract class ByTimeSplitAlgorithm(type: SplitAlgorithmType, unit: String) : SplitAlgorithm(type, unit) {
 
-    override fun split(bill: Bill, billings: Collection<Billing>): List<BillSplit> {
-        val totalLength = bill.period.getLengthInMonths()
-        val total = getTotal(bill, billings)
-        return billings
-            .map { BillSplit(bill, it, getNewPrice(bill, totalLength, it, total)) }
+    override fun split(invoice: Invoice, billingPeriods: Collection<BillingPeriod>): List<InvoiceSplit> {
+        val totalLength = invoice.period.getLengthInMonths().toInternalBigDecimal()
+        val total = getTotal(invoice, billingPeriods)
+        return billingPeriods
+            .map {
+                val (splittedValue, splittedPrice) = getNewPrice(invoice, totalLength, it, total)
+                InvoiceSplit(invoice, it, total, splittedValue, splittedPrice)
+            }
     }
 
-    protected abstract fun getPart(bill: Bill, billing: Billing): Double
+    protected abstract fun getPart(invoice: Invoice, billingPeriod: BillingPeriod): BigDecimal
 
-    protected abstract fun getTotal(bill: Bill, billings: Collection<Billing>): Double
+    protected abstract fun getTotal(invoice: Invoice, billingPeriods: Collection<BillingPeriod>): BigDecimal
 
-    protected open fun getNewPrice(bill: Bill, totalLength: Double, billing: Billing, total: Double): MonetaryAmount = if (billing.period.isOverlapping(bill.period)) {
-        val billingLength = billing.period.intersect(bill.period).getLengthInMonths()
-        val part = getPart(bill, billing)
-        val factor = billingLength / totalLength * part / total
-        MonetaryAmount((bill.price.amount * factor).roundToLong())
-    } else {
-        MonetaryAmount(0)
-    }
+    protected open fun getNewPrice(invoice: Invoice, totalLength: BigDecimal, billingPeriod: BillingPeriod, total: BigDecimal): Pair<BigDecimal, MonetaryAmount> =
+        if (billingPeriod.period.isOverlapping(invoice.period)) {
+            val billingPeriodLength = billingPeriod.period.intersect(invoice.period).getLengthInMonths().toInternalBigDecimal()
+            val part = getPart(invoice, billingPeriod)
+            val factor = billingPeriodLength / totalLength * part / total
+            Pair(part, invoice.price * factor)
+        } else {
+            Pair(BigDecimal.ZERO, MonetaryAmount())
+        }
 }
 
-object ByAreaSplitAlgorithm : ByTimeSplitAlgorithm() {
+object ByAreaSplitAlgorithm : ByTimeSplitAlgorithm(SplitAlgorithmType.ByArea, "m²") {
 
-    override fun getPart(bill: Bill, billing: Billing): Double = billing.rental.flat.area.toDouble()
+    override fun getPart(invoice: Invoice, billingPeriod: BillingPeriod): BigDecimal = billingPeriod.rental.flat.area.toInternalBigDecimal()
 
-    override fun getTotal(bill: Bill, billings: Collection<Billing>): Double = billings.asSequence()
+    override fun getTotal(invoice: Invoice, billingPeriods: Collection<BillingPeriod>): BigDecimal = billingPeriods.asSequence()
         .map { it.rental.flat }
         .distinct()
         .sumOf { it.area }
-        .toDouble()
+        .toInternalBigDecimal()
 }
 
 data class ByPersonsSplitAlgorithm(
     private val personFallback: PersonFallback
-) : SplitAlgorithm() {
+) : SplitAlgorithm(SplitAlgorithmType.ByPersons, "PM") {
 
-    override fun split(bill: Bill, billings: Collection<Billing>): List<BillSplit> {
-        val totalPersonMonths = getTotal(bill, billings)
-        return billings
-            .map { BillSplit(bill, it, getNewPrice(bill, it, totalPersonMonths)) }
+    override fun split(invoice: Invoice, billingPeriods: Collection<BillingPeriod>): List<InvoiceSplit> {
+        val totalPersonMonths = getTotal(invoice, billingPeriods)
+        return billingPeriods
+            .map {
+                val (splittedValue, splittedPrice) = getNewPrice(invoice, it, totalPersonMonths)
+                InvoiceSplit(invoice, it, totalPersonMonths, splittedValue, splittedPrice)
+            }
     }
 
-    private fun getNewPrice(bill: Bill, billing: Billing, total: Double): MonetaryAmount = if (billing.period.isOverlapping(bill.period)) {
-        val factor = getPart(bill, billing) / total
-        bill.price * factor
-        MonetaryAmount((bill.price.amount * factor).roundToLong())
-    } else {
-        MonetaryAmount(0)
-    }
+    private fun getNewPrice(invoice: Invoice, billingPeriod: BillingPeriod, total: BigDecimal): Pair<BigDecimal, MonetaryAmount> =
+        if (billingPeriod.period.isOverlapping(invoice.period)) {
+            val part = getPart(invoice, billingPeriod)
+            Pair(part, invoice.price * part / total)
+        } else {
+            Pair(BigDecimal.ZERO, MonetaryAmount())
+        }
 
-    private fun getPart(bill: Bill, billing: Billing): Double = billing.rental.persons.toLong() * billing.period.intersect(bill.period).getLengthInMonths()
+    private fun getPart(invoice: Invoice, billingPeriod: BillingPeriod): BigDecimal =
+        (billingPeriod.rental.persons * billingPeriod.period.intersect(invoice.period).getLengthInMonths()).toInternalBigDecimal()
 
-    private fun getTotal(bill: Bill, billings: Collection<Billing>): Double {
-        val simpleTotal = billings.sumOf { getPart(bill, it) }
-        val additional = personFallback.getTotalFallbackTime(bill, billings)
+    private fun getTotal(invoice: Invoice, billingPeriods: Collection<BillingPeriod>): BigDecimal {
+        val simpleTotal = billingPeriods.sumOf { getPart(invoice, it) }
+        val additional = personFallback.getTotalFallbackTime(invoice, billingPeriods)
         return simpleTotal + additional
     }
 }
 
-object LinearSplitAlgorithm : ByTimeSplitAlgorithm() {
+object LinearSplitAlgorithm : ByTimeSplitAlgorithm(SplitAlgorithmType.Linear, "") {
 
-    override fun getPart(bill: Bill, billing: Billing): Double = 1.toDouble()
+    override fun getPart(invoice: Invoice, billingPeriod: BillingPeriod): BigDecimal = BigDecimal.ONE
 
-    override fun getTotal(bill: Bill, billings: Collection<Billing>): Double = billings.asSequence()
-        .map { it.rental.flat }
-        .distinct()
-        .count()
-        .toDouble()
+    override fun getTotal(invoice: Invoice, billingPeriods: Collection<BillingPeriod>): BigDecimal =
+        billingPeriods.asSequence()
+            .map { it.rental.flat }
+            .distinct()
+            .count()
+            .toInternalBigDecimal()
+}
+
+enum class SplitAlgorithmType {
+
+    ByArea, ByPersons, Linear
 }

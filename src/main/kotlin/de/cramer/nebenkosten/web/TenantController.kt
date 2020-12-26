@@ -6,6 +6,7 @@ import org.slf4j.Logger
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
+import org.springframework.ui.set
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.mvc.support.RedirectAttributes
 
@@ -17,7 +18,12 @@ class TenantController(
 ) {
 
     @GetMapping("")
-    fun getTenants(): String {
+    fun getTenants(
+        @RequestParam("includeHidden", defaultValue = "false") includeHidden: Boolean,
+        model: Model
+    ): String {
+        model["includeHidden"] = includeHidden
+        model["tenants"] = tenantService.getTenants(includeHidden)
         return "tenants"
     }
 
@@ -48,7 +54,7 @@ class TenantController(
         @PathVariable("id") id: Long,
         model: Model
     ): String {
-        model.addAttribute("id", id)
+        model["tenants"] = tenantService.getTenant(id)
         return "tenant"
     }
 
@@ -84,8 +90,8 @@ class TenantController(
         } else {
             log.error(e.message, e)
         }
-        redirectAttributes.addAttribute("error", "delete")
-        redirectAttributes.addAttribute("errorMessage", e.message)
+        redirectAttributes["error"] ="delete"
+        redirectAttributes["errorMessage"] = e.message ?: ""
         "redirect:/tenants/show/$id"
     }
 }

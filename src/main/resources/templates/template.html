@@ -27,14 +27,17 @@
                 <li class="nav-item" th:classappend="${activeNav == 'rentals'} ? active : ''">
                     <a class="nav-link" href="#" th:href="'/rentals'" th:text="#{template.rentals}">Mietverträge</a>
                 </li>
-                <li class="nav-item" th:classappend="${activeNav == 'bills'} ? active : ''">
-                    <a class="nav-link" href="#" th:href="'/bills'" th:text="#{template.bills}">Rechnungen</a>
+                <li class="nav-item" th:classappend="${activeNav == 'invoices'} ? active : ''">
+                    <a class="nav-link" href="#" th:href="'/invoices'" th:text="#{template.invoices}">Rechnungen</a>
+                </li>
+                <li class="nav-item" th:classappend="${activeNav == 'billings'} ? active : ''">
+                    <a class="nav-link" href="#" th:href="'/billings'" th:text="#{template.billings}">Abrechnungen</a>
                 </li>
             </ul>
-<!--            <form class="form-inline my-2 my-lg-0">-->
-<!--                <input class="form-control mr-sm-2" type="search" th:placeholder="#{template.search}" placeholder="Suchen" th:aria-label="#{template.search}" aria-label="Suche">-->
-<!--                <button class="btn btn-outline-success my-2 my-sm-0" type="submit" th:text="#{template.search}">Suchen</button>-->
-<!--            </form>-->
+            <form class="form-inline my-2 my-lg-0" th:action="${#httpServletRequest.requestURI}">
+                <input class="form-control mr-sm-2" type="number" id="year" name="year" th:placeholder="#{template.year}" placeholder="Jahr" th:value="${year}" th:aria-label="#{template.search}" aria-label="Jahr">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit" th:text="#{template.changeYear}">Jahr ändern</button>
+            </form>
         </div>
     </nav>
 </div>

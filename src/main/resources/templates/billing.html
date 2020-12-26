@@ -1,0 +1,25 @@
+<html lang="de" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="template.html :: head">
+    <title></title>
+</head>
+<body>
+<div class="container">
+    <nav th:replace="template.html :: navbar ('billings')"></nav>
+
+    <div class="card mb-2" th:each="billing: ${billings}">
+        <div class="card-body">
+            <h4 class="card-title">
+                <span th:text="${billing.tenant}">Uta Krüger</span>
+                (<a th:href="@{/billings/show(tenant=${billing.tenant.id})}">Anzeigen</a>
+                /
+                <a th:href="@{/billings/export(tenant=${billing.tenant.id})}">Download</a>)
+            </h4>
+            <div class="list-group list-group-striped">
+                <span class="list-group-item list-group-item-action" th:each="billingEntry: ${billing.entries}" th:text="${billingEntry.invoice.description} + ' - ' + ${billingEntry.proportionalPrice.amount} + '€'">Test-Eintrag</span>
+                <span class="list-group-item list-group-item-info list-group-item-action" th:text="#{sum} + ' - ' + ${billing.total.amount} + '€'">Test-Eintrag</span>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -12,11 +12,9 @@ import org.springframework.stereotype.Service
 class TenantService(
     private val repository: TenantRepository
 ) {
-    fun getTenants(includeHidden: Boolean = false): List<Tenant> = if (includeHidden) {
-        repository.findAll()
-    } else {
-        repository.findByHiddenFalse()
-    }
+    fun getTenants(includeHidden: Boolean = false): List<Tenant> =
+        (if (includeHidden) repository.findAll() else repository.findByHiddenFalse())
+            .sorted()
 
     fun getTenant(id: Long): Tenant = repository.findById(id)
         .orElseThrow { NotFoundException() }

@@ -1,6 +1,5 @@
 package de.cramer.nebenkosten.entities
 
-import java.util.*
 import javax.persistence.*
 
 @Entity
@@ -33,9 +32,9 @@ data class Rental(
 
     companion object {
 
-        private val COMPARATOR = Comparator.comparing<Rental, Flat> { it.flat }
-            .thenComparing<LocalDatePeriod> { it.period }
-            .thenComparing<Tenant> { it.tenant }
-            .thenComparingInt { it.persons }
+        private val COMPARATOR = compareBy<Rental> { it.flat }
+            .thenBy { it.period }
+            .thenBy { it.tenant }
+            .thenBy { it.persons }
     }
 }

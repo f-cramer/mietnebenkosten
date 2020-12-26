@@ -4,7 +4,7 @@
 </head>
 <body>
 <!--/*@thymesVar id="rental" type="de.cramer.nebenkosten.entities.Rental"*/-->
-<div class="container" th:with="rental = ${id != null} ? ${@rentalService.getRental(id)} : null, saveError = ${param.error != null && param.error.contains('save')}, deletionError = ${param.error != null && param.error.contains('delete')}">
+<div class="container">
     <nav th:replace="template.html :: navbar ('rentals')"></nav>
 
     <form id="saveForm" action="/rentals/edit/1" method="post" th:action="${rental != null} ? '/rentals/edit/' + ${rental.id} : '/rentals/create'"></form>
@@ -23,14 +23,14 @@
             <td>Wohnung</td>
             <td>
                 <select class="form-control" name="flat" id="flat" aria-label="Wohnung" form="saveForm" required>
-                    <option th:each="flat: ${@flatService.getFlats()}" th:selected="${rental != null && flat == rental.flat}" th:value="${flat.name}" th:text="${flat.name}">Erdgeschoss</option>
+                    <option th:each="flat: ${flats}" th:selected="${rental != null && flat == rental.flat}" th:value="${flat.name}" th:text="${flat.name}">Erdgeschoss</option>
                 </select>
             </td>
         </tr>
         <tr>
             <td>Mieter</td>
             <td>
-                <select class="form-control" name="tenant" id="tenant" aria-label="Mieter" form="saveForm" required th:with="tenants = ${@tenantService.getTenants(false)}">
+                <select class="form-control" name="tenant" id="tenant" aria-label="Mieter" form="saveForm" required>
                     <option th:each="tenant: ${tenants}" th:selected="${rental != null && tenant == rental.tenant}" th:value="${tenant.id}" th:text="${tenant.name}">Uta Krüger</option>
                     <option th:unless="${rental == null || tenants.contains(rental.tenant)}" selected th:value="${rental.tenant.id}" th:text="${rental.tenant.name}">Max Probst</option>
                 </select>

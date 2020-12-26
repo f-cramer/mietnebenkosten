@@ -3,7 +3,7 @@
     <title></title>
 </head>
 <body>
-<div class="container" th:with="includeHidden = ${param.includeHidden != null && param.includeHidden}">
+<div class="container">
     <nav th:replace="template.html :: navbar ('tenants')"></nav>
     <div class="row form-check mb-2">
         <form id="includeHidden-form">
@@ -12,7 +12,7 @@
         </form>
     </div>
     <div class="row list-group list-group-striped">
-        <a class="list-group-item list-group-item-action" href="#" th:each="tenant: ${@tenantService.getTenants(includeHidden)}" th:text="${tenant}" th:href="'tenants/show/' + ${tenant.id}">Test-Mieter</a>
+        <a class="list-group-item list-group-item-action" href="#" th:each="tenant: ${tenants}" th:text="${tenant}" th:href="'tenants/show/' + ${tenant.id}">Test-Mieter</a>
         <a class="list-group-item list-group-item-action list-group-item-success" href="/tenants/create">
             <i class="material-icons align-text-bottom bg-transparent">add_circle</i><span class="ml-1">Mieter hinzufügen</span>
         </a>

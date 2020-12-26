@@ -6,7 +6,7 @@
 <div class="container">
     <nav th:replace="template.html :: navbar ('flats')"></nav>
     <div class="row list-group list-group-striped">
-        <a class="list-group-item list-group-item-action" href="#" th:each="flat: ${@flatService.getFlats()}" th:text="${flat}" th:href="'flats/show/' + ${flat.name}">Test-Wohnung</a>
+        <a class="list-group-item list-group-item-action" href="#" th:each="flat: ${flats}" th:text="${flat}" th:href="'flats/show/' + ${flat.name}">Test-Wohnung</a>
         <a class="list-group-item list-group-item-action list-group-item-success" href="/flats/create">
             <i class="material-icons align-text-bottom bg-transparent">add_circle</i><span class="ml-1">Wohnung hinzufügen</span>
         </a>

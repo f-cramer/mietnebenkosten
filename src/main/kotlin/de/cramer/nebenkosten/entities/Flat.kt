@@ -22,8 +22,8 @@ data class Flat(
 
     companion object {
 
-        private val COMPARATOR = Comparator.comparingInt<Flat> { it.order }
-            .thenComparing<String> { it.name }
-            .thenComparingLong { it.area }
+        private val COMPARATOR = compareBy<Flat> { it.order }
+            .thenBy { it.name }
+            .thenBy { it.area }
     }
 }

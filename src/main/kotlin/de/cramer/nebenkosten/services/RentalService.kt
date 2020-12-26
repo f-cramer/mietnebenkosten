@@ -16,11 +16,9 @@ class RentalService(
     private val flatService: FlatService,
     private val tenantService: TenantService
 ) {
-    fun getRentals(includeClosed: Boolean = false): List<Rental> = if (includeClosed) {
-        repository.findAll()
-    } else {
-        repository.findByPeriodEndIsNullOrPeriodEndGreaterThanEqual(LocalDate.now())
-    }
+    fun getRentals(includeClosed: Boolean = false): List<Rental> =
+        (if (includeClosed) repository.findAll() else repository.findByPeriodEndIsNullOrPeriodEndGreaterThanEqual(LocalDate.now()))
+            .sorted()
 
     fun getRental(id: Long): Rental = repository.findById(id)
         .orElseThrow { NotFoundException() }
@@ -34,14 +32,23 @@ class RentalService(
 
     fun createRental(form: RentalForm): Rental {
         val rental = form.toRental()
-        if (repository.findByFlatAndTimePeriod(rental.flat, rental.period.start, rental.period.end).isEmpty()) {
+
+        if (getRentalsByFlatAndPeriod(rental.flat, rental.period).isEmpty()) {
             return repository.save(rental)
         } else {
             throw ConflictException("error.rental.flatAlreadyInUse")
         }
     }
 
-    fun getRentalsByFlatAndPeriod(flat: Flat, period: LocalDatePeriod): List<Rental> =
+    fun getRentalsByPeriod(period: LocalDatePeriod): List<Rental> = if (period.end == null)
+        repository.findByOpenTimePeriod(period.start)
+    else
+        repository.findByTimePeriod(period.start, period.end)
+
+
+    fun getRentalsByFlatAndPeriod(flat: Flat, period: LocalDatePeriod): List<Rental> = if (period.end == null)
+        repository.findByFlatAndOpenTimePeriod(flat, period.start)
+    else
         repository.findByFlatAndTimePeriod(flat, period.start, period.end)
 
     fun deleteRental(id: Long) {

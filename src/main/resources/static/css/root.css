@@ -2,6 +2,10 @@ table td {
     vertical-align: middle !important;
 }
 
-.list-group.list-group-striped :nth-child(odd):not(.list-group-item-success) {
-    background: var(--light)
+.list-group.list-group-striped :nth-child(odd):not(.list-group-item-primary):not(.list-group-item-secondary):not(.list-group-item-success):not(.list-group-item-danger):not(.list-group-item-warning):not(.list-group-item-info):not(.list-group-item-light):not(.list-group-item-dark) {
+    background: var(--light);
+}
+
+.list-group.list-group-striped :nth-child(odd):not(.list-group-item-primary):not(.list-group-item-secondary):not(.list-group-item-success):not(.list-group-item-danger):not(.list-group-item-warning):not(.list-group-item-info):not(.list-group-item-light):not(.list-group-item-dark):hover {
+    background: #f1f3f5;
 }

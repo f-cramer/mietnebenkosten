@@ -5,16 +5,10 @@
 <body>
 <div class="container">
     <nav th:replace="template.html :: navbar ('rentals')"></nav>
-    <div class="row form-check mb-2">
-        <form id="includeClosed-form">
-            <input id="includeClosed" name="includeClosed" class="form-check-input" type="checkbox" onclick="document.getElementById('includeClosed-form').submit()" th:checked="${includeClosed}">
-            <label class="form-check-label" for="includeClosed">Abgeschlossene anzeigen</label>
-        </form>
-    </div>
     <div class="row list-group list-group-striped">
         <a class="list-group-item list-group-item-action"
            href="#"
-           th:each="rental: ${@rentalService.getRentals(includeClosed)}"
+           th:each="rental: ${rentals}"
            th:text="${rental.flat} + ' - ' + ${rental.tenant} + ' (' + ${rental.period.format(@messageSource, #locale)} + ')'"
            th:href="'rentals/show/' + ${rental.id}">
             Test-Mieter

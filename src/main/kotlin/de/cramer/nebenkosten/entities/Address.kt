@@ -24,10 +24,10 @@ data class Address(
 
     companion object {
 
-        private val COMPARATOR = Comparator.comparing<Address, String>({ it.country }, Comparator.nullsFirst(String.CASE_INSENSITIVE_ORDER))
-            .thenComparing<String> { it.zipCode }
-            .thenComparing<String> { it.city }
-            .thenComparing<String> { it.street }
-            .thenComparingInt { it.houseNumber }
+        private val COMPARATOR = compareBy<Address, String?>(nullsFirst(String.CASE_INSENSITIVE_ORDER)) { it.country }
+            .thenBy { it.zipCode }
+            .thenBy { it.city }
+            .thenBy { it.street }
+            .thenBy { it.houseNumber }
     }
 }

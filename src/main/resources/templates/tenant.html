@@ -3,7 +3,7 @@
     <title></title>
 </head>
 <body>
-<div class="container" th:with="tenant = ${id != null} ? ${@tenantService.getTenant(id)} : null, saveError = ${param.error != null && param.error.contains('save')}, deletionError = ${param.error != null && param.error.contains('delete')}">
+<div class="container">
     <nav th:replace="template.html :: navbar ('tenants')"></nav>
 
     <form id="saveForm" action="/tenants/edit/1" method="post" th:action="${tenant != null} ? '/tenants/edit/' + ${tenant.id} : '/tenants/create'"></form>

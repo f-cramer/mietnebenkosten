@@ -5,6 +5,7 @@ import de.cramer.nebenkosten.services.FlatService
 import org.slf4j.Logger
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
+import org.springframework.ui.set
 import org.springframework.web.bind.annotation.*
 
 @Controller
@@ -15,7 +16,10 @@ class FlatController(
 ) {
 
     @GetMapping("")
-    fun getFlats(): String {
+    fun getFlats(
+        model: Model
+    ): String {
+        model["flats"] = flatService.getFlats()
         return "flats"
     }
 
@@ -42,7 +46,7 @@ class FlatController(
         @PathVariable("name") name: String,
         model: Model
     ): String {
-        model.addAttribute("name", name)
+        model["flat"] = flatService.getFlat(name)
         return "flat"
     }
 

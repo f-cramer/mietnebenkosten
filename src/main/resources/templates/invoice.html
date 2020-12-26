@@ -1,0 +1,134 @@
+<html lang="de" th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="template.html :: head">
+    <title></title>
+</head>
+<body>
+<!--/*@thymesVar id="invoice" type="de.cramer.nebenkosten.entities.Invoice"*/-->
+<div class="container">
+    <nav th:replace="template.html :: navbar ('invoices')"></nav>
+
+    <form id="saveForm" action="/invoices/edit/1" method="post" th:action="${invoice != null} ? '/invoices/edit/' + ${invoice.id} : '/invoices/create'"></form>
+    <form id="deleteForm" action="/invoices/delete/1" method="post" th:action="${invoice != null} ? '/invoices/delete/' + ${invoice.id} : ''"></form>
+
+    <div class="alert alert-danger" role="alert" th:if="${saveError}">
+        Beim Speichern der Rechnung ist ein Fehler aufgetreten.
+    </div>
+    <div class="alert alert-danger" role="alert" th:if="${deletionError}">
+        Beim Löschen der Rechnung ist ein Fehler aufgetreten.
+    </div>
+
+    <table class="table table-striped align-middle">
+        <tbody>
+        <tr>
+            <td>Name</td>
+            <td>
+                <input class="form-control" type="text" name="description" id="description" placeholder="Name" aria-label="Name" form="saveForm" required value="Abwasser" th:value="${invoice != null ? invoice.description : null}">
+            </td>
+        </tr>
+        <tr>
+            <td>Preis</td>
+            <td>
+                <div class="input-group">
+                    <input class="form-control text-right" style="max-width: 8em;" type="number" name="priceEuro" id="priceEuro" placeholder="Preis" aria-label="Preis Euro" form="saveForm" required value="1" th:value="${invoice != null ? invoice.price.roundUp(2).integerPart() : 0}" onchange="updatePrice()">
+                    <div class="input-group-append"><span class="input-group-text">,</span></div>
+                    <input class="form-control text-left" style="max-width: 4em;" type="number" name="priceCent" id="priceCent" placeholder="Preis" aria-label="Preis Cent" form="saveForm" required min="0" max="99" value="1" th:value="${invoice != null ? invoice.price.roundUp(2).fractionPart() : 0}" onchange="updatePrice()">
+                    <div class="input-group-append"><span class="input-group-text">€</span></div>
+                </div>
+                <input type="hidden" name="price" id="price" form="saveForm" required value="101">
+            </td>
+        </tr>
+        <tr>
+            <td>Typ</td>
+            <td>
+                <select class="form-control" name="type" id="type" aria-label="Typ" form="saveForm" required onchange="onTypeChanged()">
+                    <option th:each="type: ${invoiceTypes}" th:selected="${invoice != null && invoice.type == invoice.type}" th:value="${type.name()}" th:text="#{'invoiceType.' + ${type.name()}}">Erdgeschoss</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Aufteilung</td>
+            <td>
+                <select class="form-control" name="splitAlgorithm" id="splitAlgorithm" aria-label="Aufteilung" form="saveForm" required>
+                    <option th:each="type: ${splitAlgorithmTypes}" th:selected="${type == selectedSplitAlgorithmType}" th:value="${type.name()}" th:text="#{'splitAlgorithmType.' + ${type.name()}}">Erdgeschoss</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Wohnung</td>
+            <td>
+                <select class="form-control" name="rental" id="rental" aria-label="Mietvertrag" form="saveForm" required>
+                    <option th:each="rental: ${rentals}" th:selected="${rental == selectedRental}" th:value="${rental.id}" th:text="${rental.flat} + ' - ' + ${rental.tenant} + ' (' + ${rental.period.format(@messageSource, #locale)} + ')'">Uta Krüger</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Start</td>
+            <td>
+                <input class="form-control" type="date" name="start" id="start" placeholder="Startdatum" aria-label="Startdatum" form="saveForm" required value="2020-12-14" onchange="checkDates()" th:value="${invoice != null ? invoice.period.start : defaultStart}">
+            </td>
+        </tr>
+        <tr>
+            <td>Ende</td>
+            <td class="form-inline">
+                <input class="form-control" type="date" name="end" id="end" placeholder="Enddatum" aria-label="Enddatum" form="saveForm" required value="2020-12-14" style="flex-grow: 1;" onchange="checkDates()" th:value="${invoice != null ? invoice.period.end : defaultEnd}">
+            </td>
+        </tr>
+        <tr>
+            <td>Priorität</td>
+            <td>
+                <input class="form-control" type="number" name="order" id="order" placeholder="Priorität" aria-label="Priorität" form="saveForm" required value="0" th:value="${invoice != null ? invoice.order : 0}">
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="d-flex flex-row-reverse" style="gap: 0.5rem">
+        <button class="btn btn-outline-success my-2 my-sm-0 col-md-2" form="saveForm" type="submit">Speichern</button>
+        <button class="btn btn-outline-danger my-2 my-sm-0 col-md-2" form="deleteForm" type="submit" th:if="${invoice != null}">Löschen</button>
+        <a class="btn btn-outline-danger my-2 my-sm-0 col-md-2" href="/invoices" th:if="${invoice == null}">Abbrechen</a>
+    </div>
+
+    <script>
+        function checkDates() {
+            const start = document.getElementById("start");
+            const end = document.getElementById("end");
+
+            const startValue = start.value;
+            const endValue = end.value;
+
+            if (endValue && startValue > endValue) {
+                end.setCustomValidity("Ende kann nicht vor Start liegen")
+            } else {
+                end.setCustomValidity('')
+            }
+        }
+
+        function onTypeChanged() {
+            const type = document.getElementById("type")
+            const splitAlgorithm = document.getElementById("splitAlgorithm")
+            const rental = document.getElementById("rental")
+
+            splitAlgorithm.disabled = type.value !== 'General'
+            rental.disabled = type.value !== 'Rental'
+        }
+
+        function updatePrice() {
+            const priceEuro = document.getElementById("priceEuro")
+            const priceCent = document.getElementById("priceCent")
+            const price = document.getElementById("price")
+
+            const fullPrice = (parseFloat(priceEuro.value || "0") * 100) + parseFloat(priceCent.value || "0")
+            price.value = fullPrice
+            if (fullPrice <= 0) {
+                price.setCustomValidity("Preis muss größer 0 sein")
+            } else {
+                price.setCustomValidity("")
+            }
+        }
+
+        onTypeChanged()
+        updatePrice()
+    </script>
+</div>
+</body>
+</html>

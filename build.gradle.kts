@@ -6,11 +6,16 @@ plugins {
     kotlin("jvm") version "1.4.21"
     kotlin("plugin.spring") version "1.4.21"
     kotlin("plugin.jpa") version "1.4.21"
+    kotlin("plugin.allopen") version "1.4.21"
 }
 
 group = "de.cramer.nebenkosten"
 version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_1_8
+
+allOpen {
+    annotations("javax.persistence.Entity", "javax.persistence.MappedSuperclass")
+}
 
 configurations {
     compileOnly {
@@ -20,6 +25,7 @@ configurations {
 
 repositories {
     mavenCentral()
+    maven(url = "http://jaspersoft.artifactoryonline.com/jaspersoft/third-party-ce-artifacts")
 }
 
 dependencies {
@@ -31,6 +37,10 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+
+    val jasperReportsVersion = "6.16.0"
+    implementation("net.sf.jasperreports:jasperreports:$jasperReportsVersion")
+    implementation("net.sf.jasperreports:jasperreports-functions:$jasperReportsVersion")
 
     runtimeOnly("com.h2database:h2")
 

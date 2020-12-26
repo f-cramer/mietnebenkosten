@@ -11,7 +11,6 @@ import java.util.*
 import javax.persistence.Basic
 import javax.persistence.Column
 import javax.persistence.Embeddable
-import kotlin.Comparator
 
 @Embeddable
 data class LocalDatePeriod(
@@ -83,8 +82,8 @@ data class LocalDatePeriod(
 
     companion object {
 
-        private val COMPARATOR = Comparator.comparing<LocalDatePeriod, LocalDate> { it.start }
-            .thenComparing<LocalDate>({ it.end }, Comparator.nullsLast(Comparator.naturalOrder()))
+        private val COMPARATOR = compareBy<LocalDatePeriod> { it.start }
+            .thenBy(nullsLast()) { it.end }
 
         fun ofYear(year: Year): LocalDatePeriod {
             val someDay = year.atDay(1)

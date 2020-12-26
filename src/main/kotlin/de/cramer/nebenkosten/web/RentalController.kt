@@ -1,28 +1,35 @@
 package de.cramer.nebenkosten.web
 
+import de.cramer.nebenkosten.entities.LocalDatePeriod
 import de.cramer.nebenkosten.exceptions.BadRequestException
 import de.cramer.nebenkosten.forms.RentalForm
+import de.cramer.nebenkosten.services.FlatService
 import de.cramer.nebenkosten.services.RentalService
+import de.cramer.nebenkosten.services.TenantService
 import org.slf4j.Logger
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
+import org.springframework.ui.set
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.mvc.support.RedirectAttributes
 import java.time.LocalDate
+import java.time.Year
 
 @Controller
 @RequestMapping("rentals")
 class RentalController(
     private val log: Logger,
-    private val rentalService: RentalService
+    private val rentalService: RentalService,
+    private val flatService: FlatService,
+    private val tenantService: TenantService
 ) {
 
     @GetMapping("")
     fun getRentals(
-        @RequestParam(name = "includeClosed", defaultValue = "false") includeClosed: Boolean,
+        year: Year,
         model: Model
     ): String {
-        model.addAttribute("includeClosed", includeClosed)
+        model["rentals"] = rentalService.getRentalsByPeriod(LocalDatePeriod.ofYear(year))
         return "rentals"
     }
 
@@ -47,8 +54,8 @@ class RentalController(
         "redirect:/rentals"
     } catch (e: Exception) {
         log.error(e.message, e)
-        redirectAttributes.addAttribute("error", "create")
-        redirectAttributes.addAttribute("errorMessage", e.message)
+        redirectAttributes["error"] = "create"
+        redirectAttributes["errorMessage"] = e.message ?: ""
         "redirect:/rentals"
     }
 
@@ -57,7 +64,9 @@ class RentalController(
         @PathVariable("id") id: Long,
         model: Model
     ): String {
-        model.addAttribute("id", id)
+        model["rental"] = rentalService.getRental(id)
+        model["flats"] = flatService.getFlats()
+        model["tenants"]= tenantService.getTenants(false)
         return "rental"
     }
 
@@ -78,13 +87,13 @@ class RentalController(
         "redirect:/rentals"
     } catch (e: BadRequestException) {
         log.debug(e.message, e)
-        redirectAttributes.addAttribute("error", "badRequest")
-        redirectAttributes.addFlashAttribute("errorMessage", e.message)
+        redirectAttributes["error"] = "badRequest"
+        redirectAttributes["errorMessage"] = e.message ?: ""
         "redirect:/rentals/show/$id"
     } catch (e: Exception) {
         log.error(e.message, e)
-        redirectAttributes.addAttribute("error", "edit")
-        redirectAttributes.addFlashAttribute("errorMessage", e.message)
+        redirectAttributes["error"] = "edit"
+        redirectAttributes["errorMessage"] = e.message ?: ""
         "redirect:/rentals/show/$id"
     }
 
@@ -97,8 +106,8 @@ class RentalController(
         "redirect:/rentals"
     } catch (e: Exception) {
         log.error(e.message, e)
-        redirectAttributes.addAttribute("error", "delete")
-        redirectAttributes.addFlashAttribute("errorMessage", e.message)
+        redirectAttributes["error"] = "delete"
+        redirectAttributes["errorMessage"] = e.message ?: ""
         "redirect:/rentals/show/$id"
     }
 }

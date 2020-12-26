@@ -12,10 +12,44 @@ interface RentalRepository : JpaRepository<Rental, Long> {
         """
                 FROM Rental r JOIN r.period period
                 WHERE
+                    (period.end IS NULL) OR
+                    (period.end > :start)
+            """
+    )
+    fun findByOpenTimePeriod(start: LocalDate): List<Rental>
+
+    @Query(
+        """
+                FROM Rental r JOIN r.period period
+                WHERE
+                    (period.end IS NULL AND :end > period.start) OR
+                    (period.start <= :start AND :start < period.end) OR 
+                    (:start <= period.start AND period.start < :end) OR 
+                    (period.start < :end AND :end <= period.end) OR
+                    (:start < period.end AND period.end <= :end)
+            """
+    )
+    fun findByTimePeriod(start: LocalDate, end: LocalDate): List<Rental>
+
+    @Query(
+        """
+                FROM Rental r JOIN r.period period
+                WHERE
                     r.flat = :flat AND
                     (
-                    (:end IS NULL AND period.end IS NULL) OR
-                    (:end IS NULL AND period.end > :start) OR
+                    (period.end IS NULL) OR
+                    (period.end > :start)
+                    )
+            """
+    )
+    fun findByFlatAndOpenTimePeriod(flat: Flat, start: LocalDate): List<Rental>
+
+    @Query(
+        """
+                FROM Rental r JOIN r.period period
+                WHERE
+                    r.flat = :flat AND
+                    (
                     (period.end IS NULL AND :end > period.start) OR
                     (period.start <= :start AND :start < period.end) OR 
                     (:start <= period.start AND period.start < :end) OR 
@@ -24,7 +58,7 @@ interface RentalRepository : JpaRepository<Rental, Long> {
                     )
             """
     )
-    fun findByFlatAndTimePeriod(flat: Flat, start: LocalDate, end: LocalDate?): List<Rental>
+    fun findByFlatAndTimePeriod(flat: Flat, start: LocalDate, end: LocalDate): List<Rental>
 
     fun findByPeriodEndIsNullOrPeriodEndGreaterThanEqual(today: LocalDate): List<Rental>
 }

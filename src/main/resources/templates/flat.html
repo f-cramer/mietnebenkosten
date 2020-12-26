@@ -4,7 +4,7 @@
 </head>
 <body>
 <!--/*@thymesVar id="flat" type="de.cramer.nebenkosten.entities.Flat"*/-->
-<div class="container" th:with="flat = ${name != null} ? ${@flatService.getFlat(name)} : null, saveError = ${param.error != null && param.error.contains('save')}, deletionError = ${param.error != null && param.error.contains('delete')}" >
+<div class="container">
     <nav th:replace="template.html :: navbar ('flats')"></nav>
 
     <form id="saveForm" action="/flats/edit/Wohnzimmer" method="post" th:action="${flat != null} ? '/flats/edit/' + ${flat.name} : '/flats/create'"></form>
