@@ -7,6 +7,8 @@ import java.math.BigDecimal
 import java.math.BigInteger
 import java.math.RoundingMode
 import java.math.RoundingMode.*
+import java.text.NumberFormat
+import java.util.*
 import javax.persistence.Column
 import javax.persistence.Embeddable
 import kotlin.math.pow
@@ -59,6 +61,9 @@ data class MonetaryAmount(
 
     fun integerPart(): BigDecimal = round(0, DOWN).amount
     fun fractionPart(): BigDecimal = ((amount - integerPart()).abs() * 10.0.pow(amount.scale()).toInternalBigDecimal()).setScale(0)
+
+    fun format(locale: Locale): String =
+        NumberFormat.getCurrencyInstance(locale).format(amount)
 
     override fun compareTo(other: MonetaryAmount): Int = COMPARATOR.compare(this, other)
 

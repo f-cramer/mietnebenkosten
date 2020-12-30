@@ -4,6 +4,7 @@ import de.cramer.nebenkosten.entities.*
 import org.springframework.stereotype.Service
 import java.math.BigDecimal
 import java.math.RoundingMode
+import java.time.LocalDate
 import java.time.Year
 
 @Service
@@ -46,26 +47,45 @@ class BillingService(
 
     private fun InvoiceSplit.toBillingEntry(): BillingEntry = BillingEntry(invoice, totalValue, splittedValue, splittedAmount)
 
-    private fun LocalDatePeriod.merge(other: LocalDatePeriod) = LocalDatePeriod(
-        start = minOf(this.start, other.start),
-        end = if (this.end == null || other.end == null) null else maxOf(this.end, other.end)
-    )
+    private fun Sequence<LocalDatePeriod>.merge(): LocalDatePeriod {
+        var start: LocalDate? = null
+        var end: LocalDate? = null
+        for (period in this) {
+            end = if (start == null) {
+                period.end
+            } else if (end == null || period.end == null) {
+                null
+            } else {
+                maxOf(end, period.end)
+            }
+            start = if (start == null) {
+                period.start
+            } else {
+                minOf(start, period.start)
+            }
+        }
+
+        if (start == null) {
+            throw IllegalArgumentException("merge() can only be called on non empty instances of Iterable")
+        }
+        return LocalDatePeriod(start, end)
+    }
 
     private fun List<RentalBilling>.toBilling(rounded: Boolean): Billing = Billing(
         tenant = this[0].rental.tenant,
         period = asSequence()
             .map { it.period }
-            .reduce { acc, period -> acc.merge(period) },
+            .merge(),
         entries = asSequence()
             .flatMap { it.entries }
             .groupBy { it.invoice }
             .asSequence()
-            .map { it.value.merge(rounded) }
+            .map { it.value.mergeSameInvoice(rounded) }
             .sorted()
             .toList()
     )
 
-    private fun List<BillingEntry>.merge(rounded: Boolean): BillingEntry = BillingEntry(
+    private fun List<BillingEntry>.mergeSameInvoice(rounded: Boolean): BillingEntry = BillingEntry(
         this[0].invoice,
         this[0].totalValue,
         if (this[0].totalValue == null) null else sumOf { it.proportionalValue ?: BigDecimal.ZERO }.takeUnless { it == BigDecimal.ZERO },
@@ -79,7 +99,7 @@ class BillingService(
         fun Tenant.getPeriod() = billingPeriods.asSequence()
             .filter { this == it.rental.tenant }
             .map { it.period }
-            .reduce { acc, period -> acc.merge(period) }
+            .merge()
 
         val tenants = billingPeriods.asSequence()
             .map { it.rental.tenant }

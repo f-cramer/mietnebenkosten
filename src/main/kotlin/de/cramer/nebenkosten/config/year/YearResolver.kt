@@ -18,7 +18,7 @@ class YearResolver: HandlerMethodArgumentResolver {
         parameter.parameterType == Year::class.java
 
     override fun resolveArgument(parameter: MethodParameter, mavContainer: ModelAndViewContainer?, webRequest: NativeWebRequest, binderFactory: WebDataBinderFactory?): Year =
-        WebUtils.getSessionAttribute(webRequest.nativeRequest as HttpServletRequest, ATTRIBUTE_NAME) as? Year ?: Year.now()
+        WebUtils.getSessionAttribute(webRequest.nativeRequest as HttpServletRequest, ATTRIBUTE_NAME) as? Year ?: Year.now().minusYears(1)
 
     companion object {
         val ATTRIBUTE_NAME: String = "${YearResolver::class.jvmName}.year"

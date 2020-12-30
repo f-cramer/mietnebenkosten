@@ -54,7 +54,7 @@ class TenantController(
         @PathVariable("id") id: Long,
         model: Model
     ): String {
-        model["tenants"] = tenantService.getTenant(id)
+        model["tenant"] = tenantService.getTenant(id)
         return "tenant"
     }
 

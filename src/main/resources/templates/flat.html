@@ -46,7 +46,7 @@
     <div class="d-flex flex-row-reverse" style="gap: 0.5rem">
         <button class="btn btn-outline-success my-2 my-sm-0 col-md-2" form="saveForm" type="submit">Speichern</button>
         <button class="btn btn-outline-danger my-2 my-sm-0 col-md-2" form="deleteForm" type="submit" th:if="${flat != null}">Löschen</button>
-        <a class="btn btn-outline-danger my-2 my-sm-0 col-md-2" href="/flats" th:if="${flat == null}">Abbrechen</a>
+        <a class="btn btn-outline-danger my-2 my-sm-0 col-md-2" th:href="'/flats'" th:if="${flat == null}">Abbrechen</a>
     </div>
 </div>
 </body>

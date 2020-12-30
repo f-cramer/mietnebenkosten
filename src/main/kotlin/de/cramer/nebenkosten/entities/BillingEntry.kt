@@ -8,6 +8,7 @@ data class BillingEntry(
     val proportionalValue: BigDecimal?,
     val proportionalPrice: MonetaryAmount
 ) : Comparable<BillingEntry> {
+
     override fun compareTo(other: BillingEntry): Int =
         COMPARATOR.compare(this, other)
 

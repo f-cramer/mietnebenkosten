@@ -14,10 +14,36 @@
                 /
                 <a th:href="@{/billings/export(tenant=${billing.tenant.id})}">Download</a>)
             </h4>
-            <div class="list-group list-group-striped">
-                <span class="list-group-item list-group-item-action" th:each="billingEntry: ${billing.entries}" th:text="${billingEntry.invoice.description} + ' - ' + ${billingEntry.proportionalPrice.amount} + '€'">Test-Eintrag</span>
-                <span class="list-group-item list-group-item-info list-group-item-action" th:text="#{sum} + ' - ' + ${billing.total.amount} + '€'">Test-Eintrag</span>
-            </div>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <td></td>
+                    <td colspan="2" class="text-center">Gesamt</td>
+                    <td colspan="2" class="text-center">Anteil</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="billingEntry: ${billing.entries}" th:with="unit = ${billingEntry.invoice.type == T(de.cramer.nebenkosten.entities.InvoiceType).General ? billingEntry.invoice.splitAlgorithm.unit : ''}">
+                    <td th:text="${billingEntry.invoice.description}">Abwasser</td>
+                    <th:block th:with="total = ${billingEntry.totalValue}">
+                        <th:block th:if="${total}">
+                            <td th:text="${total.stripTrailingZeros().toPlainString() + ' ' + unit}">49 PM</td>
+                            <td th:text="${billingEntry.invoice.price.format(#locale)}">135,34€</td>
+                        </th:block>
+                        <td th:unless="${total}" th:value="#{individual}" class="text-center" colspan="2">Individuell</td>
+                    </th:block>
+                    <td th:with="value = ${billingEntry.proportionalValue}" th:text="${value == null ? '' : value.stripTrailingZeros().toPlainString() + ' ' + unit}">11 PM</td>
+                    <td th:text="${billingEntry.proportionalPrice.format(#locale)}">135,34€</td>
+                </tr>
+                <tr class="table-info">
+                    <td th:text="#{sum}">Summe</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td th:text="${billing.total.format(#locale)}">135,34€</td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

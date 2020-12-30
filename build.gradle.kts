@@ -25,7 +25,7 @@ configurations {
 
 repositories {
     mavenCentral()
-    maven(url = "http://jaspersoft.artifactoryonline.com/jaspersoft/third-party-ce-artifacts")
+    maven(url = "https://jaspersoft.jfrog.io/artifactory/third-party-ce-artifacts")
 }
 
 dependencies {
