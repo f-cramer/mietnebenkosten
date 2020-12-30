@@ -7,6 +7,7 @@ import de.cramer.nebenkosten.forms.*
 import de.cramer.nebenkosten.services.*
 import org.springframework.boot.CommandLineRunner
 import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Profile
 import org.springframework.stereotype.Component
 import java.math.BigInteger
 import java.time.LocalDate
@@ -16,6 +17,7 @@ import java.time.YearMonth
 import kotlin.math.roundToLong
 
 @Component
+@Profile("development")
 class Initializer {
 
     @Bean
