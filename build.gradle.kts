@@ -43,6 +43,7 @@ dependencies {
     implementation("net.sf.jasperreports:jasperreports-functions:$jasperReportsVersion")
 
     runtimeOnly("com.h2database:h2")
+    runtimeOnly("org.postgresql:postgresql")
 
     developmentOnly("org.springframework.boot:spring-boot-devtools")
 
