@@ -3,7 +3,7 @@ package de.cramer.nebenkosten.entities
 import javax.persistence.*
 
 @Entity
-@Table(name = "rental")
+@Table(name = "rentals")
 data class Rental(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -11,11 +11,11 @@ data class Rental(
     val id: Long,
 
     @ManyToOne
-    @JoinColumn(name = "flat")
+    @JoinColumn(name = "flat", foreignKey = ForeignKey(name = "fk_rentals_flat"))
     val flat: Flat,
 
     @ManyToOne
-    @JoinColumn(name = "tenant")
+    @JoinColumn(name = "tenant", foreignKey = ForeignKey(name = "fk_rentals_tenant"))
     val tenant: Tenant,
 
     @Column(name = "persons")
