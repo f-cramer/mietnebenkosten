@@ -34,7 +34,11 @@ class RentalController(
     }
 
     @GetMapping("create")
-    fun createRental(): String {
+    fun createRental(
+        model: Model
+    ): String {
+        model["flats"] = flatService.getFlats()
+        model["tenants"] = tenantService.getTenants(false)
         return "rental"
     }
 
@@ -66,7 +70,7 @@ class RentalController(
     ): String {
         model["rental"] = rentalService.getRental(id)
         model["flats"] = flatService.getFlats()
-        model["tenants"]= tenantService.getTenants(false)
+        model["tenants"] = tenantService.getTenants(false)
         return "rental"
     }
 

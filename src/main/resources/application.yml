@@ -18,3 +18,6 @@ spring:
     visibility.getter: none
     visibility.setter: none
     visibility.is-getter: none
+
+server:
+  forward-headers-strategy: framework

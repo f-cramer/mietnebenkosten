@@ -11,11 +11,11 @@ data class Rental(
     val id: Long,
 
     @ManyToOne
-    @JoinColumn(name = "flat", foreignKey = ForeignKey(name = "fk_rentals_flat"))
+    @JoinColumn(name = "flat_name")
     val flat: Flat,
 
     @ManyToOne
-    @JoinColumn(name = "tenant", foreignKey = ForeignKey(name = "fk_rentals_tenant"))
+    @JoinColumn(name = "tenant_id")
     val tenant: Tenant,
 
     @Column(name = "persons")

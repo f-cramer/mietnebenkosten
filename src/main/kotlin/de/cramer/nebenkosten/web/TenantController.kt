@@ -41,7 +41,7 @@ class TenantController(
         @RequestParam("zipCode") zipCode: String,
         @RequestParam("city") city: String,
         @RequestParam("country", required = false) country: String?,
-        @RequestParam("hidden") hidden: Boolean
+        @RequestParam("hidden", defaultValue = "false") hidden: Boolean
     ): String = try {
         tenantService.createTenant(TenantForm(firstName, lastName, street, houseNumber, zipCode, city, country, hidden))
         "redirect:/tenants"
@@ -90,7 +90,7 @@ class TenantController(
         } else {
             log.error(e.message, e)
         }
-        redirectAttributes["error"] ="delete"
+        redirectAttributes["error"] = "delete"
         redirectAttributes["errorMessage"] = e.message ?: ""
         "redirect:/tenants/show/$id"
     }

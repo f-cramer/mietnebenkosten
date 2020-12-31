@@ -33,12 +33,19 @@ class InvoiceService(
         repository.findById(id)
             .orElseThrow { NotFoundException() }
 
-    fun editInvoice(id: Long, form: InvoiceForm): Invoice =
-        if (repository.existsById(id)) {
-            repository.save(form.toInvoice(id))
+    fun editInvoice(id: Long, form: InvoiceForm): Invoice {
+        val current = repository.findById(id)
+        return if (current.isPresent) {
+            val existing = current.get()
+            val new = form.toInvoice(id)
+            if (existing.javaClass != new.javaClass) {
+                repository.delete(existing)
+            }
+            repository.save(new)
         } else {
             throw ConflictException()
         }
+    }
 
     fun createInvoice(form: InvoiceForm): Invoice =
         repository.save(form.toInvoice(0))

@@ -12,8 +12,8 @@
         </form>
     </div>
     <div class="row list-group list-group-striped">
-        <a class="list-group-item list-group-item-action" href="#" th:each="tenant: ${tenants}" th:text="${tenant}" th:href="'tenants/show/' + ${tenant.id}">Test-Mieter</a>
-        <a class="list-group-item list-group-item-action list-group-item-success" th:href="'/tenants/create'">
+        <a class="list-group-item list-group-item-action" th:each="tenant: ${tenants}" th:text="${tenant}" th:href="@{/tenants/show/{tenantId}(tenantId=${tenant.id})}">Test-Mieter</a>
+        <a class="list-group-item list-group-item-action list-group-item-success" th:href="@{/tenants/create}">
             <i class="material-icons align-text-bottom bg-transparent">add_circle</i><span class="ml-1">Mieter hinzufügen</span>
         </a>
     </div>

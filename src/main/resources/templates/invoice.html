@@ -7,8 +7,8 @@
 <div class="container">
     <nav th:replace="template.html :: navbar ('invoices')"></nav>
 
-    <form id="saveForm" action="/invoices/edit/1" method="post" th:action="${invoice != null} ? '/invoices/edit/' + ${invoice.id} : '/invoices/create'"></form>
-    <form id="deleteForm" action="/invoices/delete/1" method="post" th:action="${invoice != null} ? '/invoices/delete/' + ${invoice.id} : ''"></form>
+    <form id="saveForm" method="post" th:action="${invoice != null} ? @{/invoices/edit/{invoiceId}(invoiceId=${invoice.id})} : @{/invoices/create}"></form>
+    <form id="deleteForm" method="post" th:action="${invoice != null} ? @{/invoices/delete/{invoiceId}(invoiceId=${invoice.id})} : ''"></form>
 
     <div class="alert alert-danger" role="alert" th:if="${saveError}">
         Beim Speichern der Rechnung ist ein Fehler aufgetreten.
@@ -41,7 +41,7 @@
             <td>Typ</td>
             <td>
                 <select class="form-control" name="type" id="type" aria-label="Typ" form="saveForm" required onchange="onTypeChanged()">
-                    <option th:each="type: ${invoiceTypes}" th:selected="${invoice != null && invoice.type == invoice.type}" th:value="${type.name()}" th:text="#{'invoiceType.' + ${type.name()}}">Erdgeschoss</option>
+                    <option th:each="type: ${invoiceTypes}" th:selected="${invoice != null && type == invoice.type}" th:value="${type.name()}" th:text="#{'invoiceType.' + ${type.name()}}">Erdgeschoss</option>
                 </select>
             </td>
         </tr>
@@ -85,7 +85,7 @@
     <div class="d-flex flex-row-reverse" style="gap: 0.5rem">
         <button class="btn btn-outline-success my-2 my-sm-0 col-md-2" form="saveForm" type="submit">Speichern</button>
         <button class="btn btn-outline-danger my-2 my-sm-0 col-md-2" form="deleteForm" type="submit" th:if="${invoice != null}">Löschen</button>
-        <a class="btn btn-outline-danger my-2 my-sm-0 col-md-2" th:href="'/invoices'" th:if="${invoice == null}">Abbrechen</a>
+        <a class="btn btn-outline-danger my-2 my-sm-0 col-md-2" th:href="@{/invoices}" th:if="${invoice == null}">Abbrechen</a>
     </div>
 
     <script>

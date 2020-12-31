@@ -105,7 +105,7 @@ class RentalInvoice(
     order: Int,
 
     @ManyToOne
-    @JoinColumn(name = "rental_id", foreignKey = ForeignKey(name = "fk_invoices_rental"))
+    @JoinColumn(name = "rental_id")
     val rental: Rental
 ) : Invoice(id, description, period, price, order) {
 

@@ -7,8 +7,8 @@
 <div class="container">
     <nav th:replace="template.html :: navbar ('rentals')"></nav>
 
-    <form id="saveForm" action="/rentals/edit/1" method="post" th:action="${rental != null} ? '/rentals/edit/' + ${rental.id} : '/rentals/create'"></form>
-    <form id="deleteForm" action="/rentals/delete/1" method="post" th:action="${rental != null} ? '/rentals/delete/' + ${rental.id} : ''"></form>
+    <form id="saveForm" method="post" th:action="${rental != null} ? @{/rentals/edit/{rentalId}(rentalId=${rental.id})} : @{/rentals/create}"></form>
+    <form id="deleteForm" method="post" th:action="${rental != null} ? @{/rentals/delete/{rentalId}(rentalId=${rental.id})} : ''"></form>
 
     <div class="alert alert-danger" role="alert" th:if="${saveError}">
         Beim Speichern des Mietvertrags ist ein Fehler aufgetreten.
@@ -61,7 +61,7 @@
     <div class="d-flex flex-row-reverse" style="gap: 0.5rem">
         <button class="btn btn-outline-success my-2 my-sm-0 col-md-2" form="saveForm" type="submit">Speichern</button>
         <button class="btn btn-outline-danger my-2 my-sm-0 col-md-2" form="deleteForm" type="submit" th:if="${rental != null}">Löschen</button>
-        <a class="btn btn-outline-danger my-2 my-sm-0 col-md-2" th:href="'/rentals'" th:if="${rental == null}">Abbrechen</a>
+        <a class="btn btn-outline-danger my-2 my-sm-0 col-md-2" th:href="@{/rentals}" th:if="${rental == null}">Abbrechen</a>
     </div>
 
     <script>

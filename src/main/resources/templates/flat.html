@@ -7,8 +7,8 @@
 <div class="container">
     <nav th:replace="template.html :: navbar ('flats')"></nav>
 
-    <form id="saveForm" action="/flats/edit/Wohnzimmer" method="post" th:action="${flat != null} ? '/flats/edit/' + ${flat.name} : '/flats/create'"></form>
-    <form id="deleteForm" action="/flats/delete/Wohnzimmer" method="post" th:action="${flat != null} ? '/flats/delete/' + ${flat.name} : ''"></form>
+    <form id="saveForm" method="post" th:action="${flat != null} ? @{/flats/edit/{flatName}(flatName=${flat.name})} : @{/flats/create}"></form>
+    <form id="deleteForm" method="post" th:action="${flat != null} ? @{/flats/delete/{flatName}(flatName=${flat.name})} : ''"></form>
 
     <div class="alert alert-danger" role="alert" th:if="${saveError}">
         Beim Speichern der Wohnung ist ein Fehler aufgetreten.
@@ -46,7 +46,7 @@
     <div class="d-flex flex-row-reverse" style="gap: 0.5rem">
         <button class="btn btn-outline-success my-2 my-sm-0 col-md-2" form="saveForm" type="submit">Speichern</button>
         <button class="btn btn-outline-danger my-2 my-sm-0 col-md-2" form="deleteForm" type="submit" th:if="${flat != null}">Löschen</button>
-        <a class="btn btn-outline-danger my-2 my-sm-0 col-md-2" th:href="'/flats'" th:if="${flat == null}">Abbrechen</a>
+        <a class="btn btn-outline-danger my-2 my-sm-0 col-md-2" th:href="@{/flats}" th:if="${flat == null}">Abbrechen</a>
     </div>
 </div>
 </body>

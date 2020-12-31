@@ -8,7 +8,7 @@ data class Address(
     @Column(name = "street")
     val street: String,
 
-    @Column(name = "house_numer")
+    @Column(name = "house_number")
     val houseNumber: Int,
 
     @Column(name = "zip_code")
