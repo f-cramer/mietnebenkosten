@@ -50,22 +50,3 @@ CREATE TABLE "invoices" (
 		ON UPDATE CASCADE ON DELETE NO ACTION
 );
 
-
-INSERT INTO flats ("name", "area", "order") VALUES
-	('Erdgeschoss', 110, 0),
-	('1. Obergeschoss', 110, 1),
-	('Dachgeschoss', 80, 2);
-
-INSERT INTO "tenants" ("first_name", "last_name", "street", "house_number", "zip_code", "city", "country", "hidden") VALUES
-	('Uta', 'Krüger', 'Bayreuther Straße', 76, '67659', 'Kaiserslautern', null, false),
-	('Max', 'Propst', 'Neuer Jungfernstieg', 96, '84126', 'Dingolfing', null, false),
-	('Sara', 'Weiss', 'Fugger Straße', 22, '14403', 'Potsdam', null, false);
-
-INSERT INTO "rentals" ("start", "end", "persons", "flat_name", "tenant_id") VALUES
-	('2017-01-01', null, 2, 'Erdgeschoss', 1),
-	('2019-12-01', null, 1, '1. Obergeschoss', 2),
-	('2018-11-01', null, 1, 'Dachgeschoss', 3);
-
-INSERT INTO "invoices" ("type", "description", "order", "start", "end", "monetary_amount", "split_algorithm", "rental_id") VALUES
-	('general', 'Wasser', 0, '2020-01-01', '2020-12-31', 0.00, '{"@c":".ByAreaSplitAlgorithm"}', null),
-	('general', 'Abwasser', 0, '2020-01-01', '2020-12-31', 0.00, '{"@c":".ByAreaSplitAlgorithm"}', null);
