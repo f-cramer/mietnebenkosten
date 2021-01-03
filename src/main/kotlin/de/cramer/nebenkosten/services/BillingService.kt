@@ -1,6 +1,7 @@
 package de.cramer.nebenkosten.services
 
 import de.cramer.nebenkosten.entities.*
+import de.cramer.nebenkosten.utils.ONE
 import org.springframework.stereotype.Service
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -85,15 +86,23 @@ class BillingService(
             .toList()
     )
 
-    private fun List<BillingEntry>.mergeSameInvoice(rounded: Boolean): BillingEntry = BillingEntry(
-        this[0].invoice,
-        this[0].totalValue,
-        if (this[0].totalValue == null) null else sumOf { it.proportionalValue ?: BigDecimal.ZERO }.takeUnless { it == BigDecimal.ZERO },
-        asSequence()
-            .map { it.proportionalPrice }
-            .reduce { acc, price -> acc + price }
-            .let { if (rounded) it.round(2, RoundingMode.UP) else it }
-    )
+    private fun List<BillingEntry>.mergeSameInvoice(rounded: Boolean): BillingEntry = first().let { first ->
+        val invoice = first.invoice
+        BillingEntry(
+            invoice,
+            first.totalValue,
+            if (first.totalValue == null) null else invoice.mergeValues(this),
+            asSequence()
+                .map { it.proportionalPrice }
+                .reduce { acc, price -> acc + price }
+                .let { if (rounded) it.round(2, RoundingMode.UP) else it }
+        )
+    }
+
+    private fun Invoice.mergeValues(billingEntries: List<BillingEntry>): BigDecimal? = when(this) {
+        is GeneralInvoice -> splitAlgorithm.mergeValues(billingEntries.mapNotNull { it.proportionalValue })
+        is RentalInvoice -> null
+    }
 
     private fun List<Billing>.addMissingTennants(billingPeriods: List<BillingPeriod>, rounded: Boolean): List<Billing> {
         fun Tenant.getPeriod() = billingPeriods.asSequence()

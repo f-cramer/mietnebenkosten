@@ -15,6 +15,8 @@ sealed class SplitAlgorithm(
 ) {
 
     abstract fun split(invoice: Invoice, billingPeriods: Collection<BillingPeriod>): List<InvoiceSplit>
+
+    abstract fun mergeValues(values: Collection<BigDecimal>): BigDecimal?
 }
 
 abstract class ByTimeSplitAlgorithm(type: SplitAlgorithmType, unit: String) : SplitAlgorithm(type, unit) {
@@ -53,6 +55,9 @@ object ByAreaSplitAlgorithm : ByTimeSplitAlgorithm(SplitAlgorithmType.ByArea, "m
         .distinct()
         .sumOf { it.area }
         .toInternalBigDecimal()
+
+    override fun mergeValues(values: Collection<BigDecimal>): BigDecimal? =
+        values.firstOrNull()
 }
 
 data class ByPersonsSplitAlgorithm(
@@ -67,6 +72,9 @@ data class ByPersonsSplitAlgorithm(
                 InvoiceSplit(invoice, it, totalPersonMonths, splittedValue, splittedPrice)
             }
     }
+
+    override fun mergeValues(values: Collection<BigDecimal>): BigDecimal? =
+        if (values.isEmpty()) null else values.sumOf { it }
 
     private fun getNewPrice(invoice: Invoice, billingPeriod: BillingPeriod, total: BigDecimal): Pair<BigDecimal, MonetaryAmount> =
         if (billingPeriod.period.isOverlapping(invoice.period)) {
@@ -96,6 +104,9 @@ object LinearSplitAlgorithm : ByTimeSplitAlgorithm(SplitAlgorithmType.Linear, ""
             .distinct()
             .count()
             .toInternalBigDecimal()
+
+    override fun mergeValues(values: Collection<BigDecimal>): BigDecimal? =
+        values.firstOrNull()
 }
 
 enum class SplitAlgorithmType {
