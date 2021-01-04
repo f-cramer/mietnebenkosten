@@ -23,7 +23,7 @@
             <td>Wohnung</td>
             <td>
                 <select class="form-control" name="flat" id="flat" aria-label="Wohnung" form="saveForm" required>
-                    <option th:each="flat: ${flats}" th:selected="${rental != null && flat == rental.flat}" th:value="${flat.name}" th:text="${flat.name}">Erdgeschoss</option>
+                    <option th:each="flat: ${flats}" th:selected="${rental != null && flat == rental.flat || flat == selectedFlat}" th:value="${flat.name}" th:text="${flat.name}">Erdgeschoss</option>
                 </select>
             </td>
         </tr>

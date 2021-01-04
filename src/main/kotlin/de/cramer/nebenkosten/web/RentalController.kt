@@ -1,6 +1,8 @@
 package de.cramer.nebenkosten.web
 
+import de.cramer.nebenkosten.entities.Flat
 import de.cramer.nebenkosten.entities.LocalDatePeriod
+import de.cramer.nebenkosten.entities.Rental
 import de.cramer.nebenkosten.exceptions.BadRequestException
 import de.cramer.nebenkosten.forms.RentalForm
 import de.cramer.nebenkosten.services.FlatService
@@ -29,15 +31,33 @@ class RentalController(
         year: Year,
         model: Model
     ): String {
-        model["rentals"] = rentalService.getRentalsByPeriod(LocalDatePeriod.ofYear(year))
+        val flats = flatService.getFlats().toMutableList()
+        val rentalsByFlat = rentalService.getRentalsByPeriod(LocalDatePeriod.ofYear(year))
+            .groupBy { it.flat }
+            .asSequence()
+            .map { RentalsByFlat(it.key, it.value) }
+            .onEach { flats -= it.flat }
+            .toList().asSequence() // evaluate onEach eagerly
+            .plus(
+                flats.map { RentalsByFlat(it, emptyList()) }
+            )
+            .sorted()
+            .toList()
+        model["rentalsByFlat"] = rentalsByFlat
         return "rentals"
     }
 
     @GetMapping("create")
     fun createRental(
+        @RequestParam(name = "flat", required = false) flatName: String?,
         model: Model
     ): String {
-        model["flats"] = flatService.getFlats()
+        val flats = flatService.getFlats()
+        val flat = if (flatName != null) flats.firstOrNull { it.name == flatName } else null
+        if (flat != null) {
+            model["selectedFlat"] = flat
+        }
+        model["flats"] = flats
         model["tenants"] = tenantService.getTenants(false)
         return "rental"
     }
@@ -113,5 +133,19 @@ class RentalController(
         redirectAttributes["error"] = "delete"
         redirectAttributes["errorMessage"] = e.message ?: ""
         "redirect:/rentals/show/$id"
+    }
+
+    private data class RentalsByFlat(
+        val flat: Flat,
+        val rentals: List<Rental>
+    ): Comparable<RentalsByFlat> {
+
+        override fun compareTo(other: RentalsByFlat) =
+            COMPARATOR.compare(this, other)
+
+        companion object {
+
+            private val COMPARATOR = compareBy<RentalsByFlat> { it.flat }
+        }
     }
 }

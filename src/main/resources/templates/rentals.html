@@ -5,14 +5,15 @@
 <body>
 <div class="container">
     <nav th:replace="template.html :: navbar ('rentals')"></nav>
-    <div class="row list-group list-group-striped">
+    <div class="row list-group list-group-striped mb-3" th:each="flatWithRentals : ${rentalsByFlat}">
+        <span class="list-group-item list-group-item-action list-group-item-primary" th:text="${flatWithRentals.flat}">Test-Wohnung</span>
         <a class="list-group-item list-group-item-action"
-           th:each="rental: ${rentals}"
-           th:text="${rental.flat} + ' - ' + ${rental.tenant} + ' (' + ${rental.period.format(@messageSource, #locale)} + ')'"
+           th:each="rental: ${flatWithRentals.rentals}"
+           th:text="${rental.tenant} + ' (' + ${rental.period.format(@messageSource, #locale)} + ')'"
            th:href="@{/rentals/show/{rentalId}(rentalId=${rental.id})}">
             Test-Mieter
         </a>
-        <a class="list-group-item list-group-item-action list-group-item-success" th:href="@{/rentals/create}">
+        <a class="list-group-item list-group-item-action list-group-item-success" th:href="@{/rentals/create(flat=${flatWithRentals.flat.name})}">
             <i class="material-icons align-text-bottom bg-transparent">add_circle</i>
             <span class="ml-1">Mietvertrag hinzufügen</span>
         </a>
