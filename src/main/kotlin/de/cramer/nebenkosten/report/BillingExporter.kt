@@ -6,6 +6,7 @@ import de.cramer.nebenkosten.entities.BillingEntry
 import de.cramer.nebenkosten.entities.GeneralInvoice
 import de.cramer.nebenkosten.entities.RentalInvoice
 import net.sf.jasperreports.engine.JRParameter.REPORT_LOCALE
+import net.sf.jasperreports.engine.JRParameter.REPORT_RESOURCE_BUNDLE
 import net.sf.jasperreports.engine.JasperCompileManager
 import net.sf.jasperreports.engine.JasperFillManager
 import net.sf.jasperreports.engine.JasperPrint
@@ -15,20 +16,20 @@ import net.sf.jasperreports.engine.export.JRPdfExporter
 import net.sf.jasperreports.engine.query.JsonQueryExecuterFactory.*
 import net.sf.jasperreports.export.SimpleExporterInput
 import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput
+import org.springframework.context.MessageSource
 import org.springframework.core.io.ResourceLoader
 import org.springframework.stereotype.Service
 import java.io.ByteArrayOutputStream
-import java.io.InputStream
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import java.util.*
 import javax.annotation.PostConstruct
 
-
 @Service
 class BillingExporter(
     private val objectMapper: ObjectMapper,
-    private val resourceLoader: ResourceLoader
+    private val resourceLoader: ResourceLoader,
+    private val messageSource: MessageSource
 ) {
 
     private val report: JasperReport by lazy {
@@ -75,6 +76,7 @@ class BillingExporter(
         parameters.putIfAbsent(REPORT_LOCALE, locale)
         parameters.putIfAbsent(JSON_LOCALE, Locale.US)
         parameters.putIfAbsent(JSON_DATE_PATTERN, "yyyy-MM-dd HH:mm:ss") //$NON-NLS-1$
+        parameters.putIfAbsent(REPORT_RESOURCE_BUNDLE, SpringResourceBundle(locale))
     }
 
     private fun Billing.toReport(): BillingReport = BillingReport(
@@ -106,7 +108,7 @@ class BillingExporter(
     private fun Billing.getNote(): String = """
         Hallo ${tenant.firstName},
         hiermit erhälst du deine Mietnebenkostenabrechnung für den Rechnungszeitraum ${getPeriodFormatted()}.
-        Ich bitte um Überweisung der Nachzahlung an IBAN: DE84 7402 0100 6161 4961 81.
+        Ich bitte um Überweisung einer etwaigen Nachzahlung an IBAN: DE84 7402 0100 6161 4961 81.
     """.trimIndent()
 
     private fun Billing.getPeriodFormatted(): String = if (period.end != null) {
@@ -131,5 +133,14 @@ class BillingExporter(
             partValue = proportionalValue,
             partPrice = proportionalPrice.amount
         )
+    }
+
+    private inner class SpringResourceBundle(
+        private val currentLocale: Locale
+    ): ResourceBundle() {
+
+        override fun handleGetObject(key: String): String = messageSource.getMessage(key, null, currentLocale)
+
+        override fun getKeys(): Enumeration<String> = Collections.emptyEnumeration()
     }
 }
