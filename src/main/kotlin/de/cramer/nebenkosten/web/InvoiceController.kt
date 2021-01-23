@@ -43,11 +43,12 @@ class InvoiceController(
         year: Year,
         model: Model
     ): String {
+        val firstDayOfYear = year.atDay(1)
         model["invoiceTypes"] = de.cramer.nebenkosten.entities.InvoiceType.values()
         model["splitAlgorithmTypes"] = SplitAlgorithmType.values()
         model["rentals"] = rentalService.getRentalsByPeriod(LocalDatePeriod.ofYear(year))
-        model["defaultStart"] = LocalDate.now().withDayOfYear(1)
-        model["defaultEnd"] = LocalDate.now().with(TemporalAdjusters.lastDayOfYear())
+        model["defaultStart"] = firstDayOfYear
+        model["defaultEnd"] = firstDayOfYear.with(TemporalAdjusters.lastDayOfYear())
         return "invoice"
     }
 
