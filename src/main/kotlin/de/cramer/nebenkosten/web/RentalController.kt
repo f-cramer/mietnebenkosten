@@ -1,5 +1,7 @@
 package de.cramer.nebenkosten.web
 
+import java.time.LocalDate
+import java.time.Year
 import de.cramer.nebenkosten.entities.Flat
 import de.cramer.nebenkosten.entities.LocalDatePeriod
 import de.cramer.nebenkosten.entities.Rental
@@ -12,10 +14,12 @@ import org.slf4j.Logger
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.ui.set
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.servlet.mvc.support.RedirectAttributes
-import java.time.LocalDate
-import java.time.Year
 
 @Controller
 @RequestMapping("rentals")
@@ -23,13 +27,13 @@ class RentalController(
     private val log: Logger,
     private val rentalService: RentalService,
     private val flatService: FlatService,
-    private val tenantService: TenantService
+    private val tenantService: TenantService,
 ) {
 
     @GetMapping("")
     fun getRentals(
         year: Year,
-        model: Model
+        model: Model,
     ): String {
         val flats = flatService.getFlats().toMutableList()
         val rentalsByFlat = rentalService.getRentalsByPeriod(LocalDatePeriod.ofYear(year))
@@ -50,7 +54,7 @@ class RentalController(
     @GetMapping("create")
     fun createRental(
         @RequestParam(name = "flat", required = false) flatName: String?,
-        model: Model
+        model: Model,
     ): String {
         val flats = flatService.getFlats()
         val flat = if (flatName != null) flats.firstOrNull { it.name == flatName } else null
@@ -69,7 +73,7 @@ class RentalController(
         @RequestParam("persons") persons: Int,
         @RequestParam("start") start: LocalDate,
         @RequestParam("end", required = false) end: LocalDate?,
-        redirectAttributes: RedirectAttributes
+        redirectAttributes: RedirectAttributes,
     ): String = try {
         RentalForm(flatName, tenantId, persons, start, end).apply {
             validate()
@@ -86,7 +90,7 @@ class RentalController(
     @GetMapping("show/{id}")
     fun getRental(
         @PathVariable("id") id: Long,
-        model: Model
+        model: Model,
     ): String {
         model["rental"] = rentalService.getRental(id)
         model["flats"] = flatService.getFlats()
@@ -102,7 +106,7 @@ class RentalController(
         @RequestParam("persons") persons: Int,
         @RequestParam("start") start: LocalDate,
         @RequestParam("end", required = false) end: LocalDate?,
-        redirectAttributes: RedirectAttributes
+        redirectAttributes: RedirectAttributes,
     ): String = try {
         RentalForm(flatName, tenantId, persons, start, end).apply {
             validate()
@@ -124,7 +128,7 @@ class RentalController(
     @PostMapping("delete/{id}")
     fun alterRental(
         @PathVariable("id") id: Long,
-        redirectAttributes: RedirectAttributes
+        redirectAttributes: RedirectAttributes,
     ): String = try {
         rentalService.deleteRental(id)
         "redirect:/rentals"
@@ -137,8 +141,8 @@ class RentalController(
 
     private data class RentalsByFlat(
         val flat: Flat,
-        val rentals: List<Rental>
-    ): Comparable<RentalsByFlat> {
+        val rentals: List<Rental>,
+    ) : Comparable<RentalsByFlat> {
 
         override fun compareTo(other: RentalsByFlat) =
             COMPARATOR.compare(this, other)

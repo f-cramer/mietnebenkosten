@@ -1,10 +1,10 @@
 package de.cramer.nebenkosten.repositories
 
+import java.time.LocalDate
 import de.cramer.nebenkosten.entities.Flat
 import de.cramer.nebenkosten.entities.Rental
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
-import java.time.LocalDate
 
 interface RentalRepository : JpaRepository<Rental, Long> {
 

@@ -6,7 +6,7 @@ data class Billing(
     val tenant: Tenant,
     val period: LocalDatePeriod,
     val entries: List<BillingEntry>,
-    val scale: Int? = null
+    val scale: Int? = null,
 ) : Comparable<Billing> {
     override fun compareTo(other: Billing): Int = COMPARATOR.compare(this, other)
 

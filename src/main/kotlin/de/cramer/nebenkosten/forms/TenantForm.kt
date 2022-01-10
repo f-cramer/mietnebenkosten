@@ -13,5 +13,5 @@ data class TenantForm(
     val country: String? = null,
     val gender: Gender,
     val formOfAddress: FormOfAddress,
-    val hidden: Boolean
+    val hidden: Boolean,
 )

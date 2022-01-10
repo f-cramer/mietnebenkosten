@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class FlatService(
-    private val repository: FlatRepository
+    private val repository: FlatRepository,
 ) {
     fun getFlats(): List<Flat> = repository.findAll().sorted()
 

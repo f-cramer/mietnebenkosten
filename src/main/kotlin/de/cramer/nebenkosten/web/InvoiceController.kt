@@ -1,5 +1,8 @@
 package de.cramer.nebenkosten.web
 
+import java.time.LocalDate
+import java.time.Year
+import java.time.temporal.TemporalAdjusters
 import de.cramer.nebenkosten.entities.GeneralInvoice
 import de.cramer.nebenkosten.entities.LocalDatePeriod
 import de.cramer.nebenkosten.entities.RentalInvoice
@@ -13,25 +16,27 @@ import org.slf4j.Logger
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.ui.set
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.SessionAttribute
 import org.springframework.web.servlet.mvc.support.RedirectAttributes
-import java.time.LocalDate
-import java.time.Year
-import java.time.temporal.TemporalAdjusters
 
 @Controller
 @RequestMapping("invoices")
 class InvoiceController(
     private val log: Logger,
     private val invoiceService: InvoiceService,
-    private val rentalService: RentalService
+    private val rentalService: RentalService,
 ) {
 
     @GetMapping("")
     fun getInvoices(
         @RequestParam(name = "includeClosed", defaultValue = "false") includeClosed: Boolean,
         year: Year,
-        model: Model
+        model: Model,
     ): String {
         model["includeClosed"] = includeClosed
         model["invoices"] = invoiceService.getInvoicesByTimePeriod(LocalDatePeriod.ofYear(year))
@@ -41,7 +46,7 @@ class InvoiceController(
     @GetMapping("create")
     fun createInvoice(
         year: Year,
-        model: Model
+        model: Model,
     ): String {
         val firstDayOfYear = year.atDay(1)
         model["invoiceTypes"] = de.cramer.nebenkosten.entities.InvoiceType.values()
@@ -63,7 +68,7 @@ class InvoiceController(
         @RequestParam("order") order: Int,
         @RequestParam("start") start: LocalDate,
         @RequestParam("end", required = false) end: LocalDate?,
-        redirectAttributes: RedirectAttributes
+        redirectAttributes: RedirectAttributes,
     ): String = try {
         InvoiceForm(description, price, type, splitAlgorithmType, rental, order, start, end).apply {
             validate()
@@ -82,7 +87,7 @@ class InvoiceController(
         @PathVariable("id") id: Long,
         @RequestParam("error", defaultValue = "[]") error: List<String>,
         year: Year,
-        model: Model
+        model: Model,
     ): String {
         val invoice = invoiceService.getInvoice(id)
         model["invoice"] = invoice
@@ -105,7 +110,7 @@ class InvoiceController(
         @RequestParam("order") order: Int,
         @RequestParam("start") start: LocalDate,
         @RequestParam("end", required = false) end: LocalDate?,
-        redirectAttributes: RedirectAttributes
+        redirectAttributes: RedirectAttributes,
     ): String = try {
         InvoiceForm(description, price, type, splitAlgorithmType, rental, order, start, end).apply {
             validate()
@@ -127,7 +132,7 @@ class InvoiceController(
     @PostMapping("delete/{id}")
     fun alterInvoice(
         @PathVariable("id") id: Long,
-        redirectAttributes: RedirectAttributes
+        redirectAttributes: RedirectAttributes,
     ): String = try {
         invoiceService.deleteInvoice(id)
         "redirect:/invoices"

@@ -7,7 +7,7 @@ data class BillingReport(
     val receiver: ReportAddress,
     val note: ReportNote,
     val billings: List<ReportBilling>,
-    val billingSum: ReportBillingSum
+    val billingSum: ReportBillingSum,
 )
 
 data class ReportAddress(
@@ -15,12 +15,12 @@ data class ReportAddress(
     val street1: String,
     val street2: String,
     val city: String,
-    val country: String
+    val country: String,
 )
 
 data class ReportNote(
     val title: String,
-    val text: String
+    val text: String,
 )
 
 data class ReportBilling(
@@ -29,9 +29,9 @@ data class ReportBilling(
     val totalValue: BigDecimal?,
     val totalPrice: BigDecimal?,
     val partValue: BigDecimal?,
-    val partPrice: BigDecimal
+    val partPrice: BigDecimal,
 )
 
 data class ReportBillingSum(
-    val totalPrice: BigDecimal
+    val totalPrice: BigDecimal,
 )

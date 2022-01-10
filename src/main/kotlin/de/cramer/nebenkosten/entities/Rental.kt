@@ -1,6 +1,14 @@
 package de.cramer.nebenkosten.entities
 
-import javax.persistence.*
+import javax.persistence.Column
+import javax.persistence.Embedded
+import javax.persistence.Entity
+import javax.persistence.GeneratedValue
+import javax.persistence.GenerationType
+import javax.persistence.Id
+import javax.persistence.JoinColumn
+import javax.persistence.ManyToOne
+import javax.persistence.Table
 
 @Entity
 @Table(name = "rentals")
@@ -22,7 +30,7 @@ data class Rental(
     val persons: Int,
 
     @Embedded
-    val period: LocalDatePeriod
+    val period: LocalDatePeriod,
 ) : Comparable<Rental> {
     constructor(flat: Flat, tenant: Tenant, persons: Int, period: LocalDatePeriod) : this(0, flat, tenant, persons, period)
 

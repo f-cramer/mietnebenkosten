@@ -14,7 +14,7 @@ data class Flat(
     @Column(name = "area")
     val area: Long,
     @Column(name = "order")
-    val order: Int = 0
+    val order: Int = 0,
 ) : Comparable<Flat> {
     override fun compareTo(other: Flat): Int = COMPARATOR.compare(this, other)
 

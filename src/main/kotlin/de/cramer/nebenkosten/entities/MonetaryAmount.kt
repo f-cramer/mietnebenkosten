@@ -1,22 +1,22 @@
 package de.cramer.nebenkosten.entities
 
-import de.cramer.nebenkosten.utils.ONE
-import de.cramer.nebenkosten.utils.ZERO
-import de.cramer.nebenkosten.utils.toInternalBigDecimal
 import java.math.BigDecimal
 import java.math.BigInteger
 import java.math.RoundingMode
 import java.math.RoundingMode.*
 import java.text.NumberFormat
-import java.util.*
+import java.util.Locale
 import javax.persistence.Column
 import javax.persistence.Embeddable
 import kotlin.math.pow
+import de.cramer.nebenkosten.utils.ONE
+import de.cramer.nebenkosten.utils.ZERO
+import de.cramer.nebenkosten.utils.toInternalBigDecimal
 
 @Embeddable
 data class MonetaryAmount(
     @Column(name = "monetary_amount")
-    val amount: BigDecimal = ZERO
+    val amount: BigDecimal = ZERO,
 ) : Comparable<MonetaryAmount> {
     constructor(amount: Long) : this(amount.toInternalBigDecimal())
     constructor(amount: Double) : this(amount.toInternalBigDecimal())

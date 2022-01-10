@@ -35,7 +35,7 @@ data class Tenant(
     val formOfAddress: FormOfAddress,
 
     @Column(name = "hidden")
-    val hidden: Boolean
+    val hidden: Boolean,
 ) : Comparable<Tenant> {
     constructor(firstName: String, lastName: String, address: Address, gender: Gender, formOfAddress: FormOfAddress, hidden: Boolean) : this(0, firstName, lastName, address, gender, formOfAddress, hidden)
 

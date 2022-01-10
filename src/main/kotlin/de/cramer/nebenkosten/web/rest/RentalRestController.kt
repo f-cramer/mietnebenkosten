@@ -3,12 +3,19 @@ package de.cramer.nebenkosten.web.rest
 import de.cramer.nebenkosten.entities.Rental
 import de.cramer.nebenkosten.forms.RentalForm
 import de.cramer.nebenkosten.services.RentalService
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("api/rentals")
 class RentalRestController(
-    private val service: RentalService
+    private val service: RentalService,
 ) {
 
     @GetMapping

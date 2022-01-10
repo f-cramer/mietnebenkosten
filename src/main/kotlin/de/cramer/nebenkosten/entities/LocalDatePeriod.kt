@@ -1,16 +1,16 @@
 package de.cramer.nebenkosten.entities
 
-import org.springframework.context.MessageSource
 import java.time.LocalDate
 import java.time.Year
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import java.time.temporal.TemporalAdjusters.*
-import java.util.*
+import java.util.Locale
 import javax.persistence.Basic
 import javax.persistence.Column
 import javax.persistence.Embeddable
+import org.springframework.context.MessageSource
 
 @Embeddable
 data class LocalDatePeriod(
@@ -18,7 +18,7 @@ data class LocalDatePeriod(
     val start: LocalDate,
     @Basic(optional = true)
     @Column(name = "end", nullable = true)
-    val end: LocalDate? = null
+    val end: LocalDate? = null,
 ) : Comparable<LocalDatePeriod> {
     init {
         require(end == null || !start.isAfter(end)) { "start cannot be after end ($start > $end)" }
@@ -63,7 +63,7 @@ data class LocalDatePeriod(
 
     override fun compareTo(other: LocalDatePeriod): Int = COMPARATOR.compare(this, other)
 
-    override fun toString(): String = if(end == null) {
+    override fun toString(): String = if (end == null) {
         "$start - open"
     } else {
         "$start - $end"

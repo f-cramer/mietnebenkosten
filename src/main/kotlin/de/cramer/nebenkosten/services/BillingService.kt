@@ -1,18 +1,26 @@
 package de.cramer.nebenkosten.services
 
-import de.cramer.nebenkosten.entities.*
-import de.cramer.nebenkosten.utils.ONE
-import org.springframework.stereotype.Service
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.time.LocalDate
 import java.time.Year
+import de.cramer.nebenkosten.entities.Billing
+import de.cramer.nebenkosten.entities.BillingEntry
+import de.cramer.nebenkosten.entities.BillingPeriod
+import de.cramer.nebenkosten.entities.GeneralInvoice
+import de.cramer.nebenkosten.entities.Invoice
+import de.cramer.nebenkosten.entities.InvoiceSplit
+import de.cramer.nebenkosten.entities.LocalDatePeriod
+import de.cramer.nebenkosten.entities.Rental
+import de.cramer.nebenkosten.entities.RentalInvoice
+import de.cramer.nebenkosten.entities.Tenant
+import org.springframework.stereotype.Service
 
 @Service
 class BillingService(
     private val flatService: FlatService,
     private val rentalService: RentalService,
-    private val invoiceService: InvoiceService
+    private val invoiceService: InvoiceService,
 ) {
     fun createBillings(year: Year, rounded: Boolean = false): List<Billing> = createBillings(LocalDatePeriod.ofYear(year), rounded)
 
@@ -99,7 +107,7 @@ class BillingService(
         )
     }
 
-    private fun Invoice.mergeValues(billingEntries: List<BillingEntry>): BigDecimal? = when(this) {
+    private fun Invoice.mergeValues(billingEntries: List<BillingEntry>): BigDecimal? = when (this) {
         is GeneralInvoice -> splitAlgorithm.mergeValues(billingEntries.mapNotNull { it.proportionalValue })
         is RentalInvoice -> null
     }
@@ -119,7 +127,7 @@ class BillingService(
             .filterNot { tenant -> any { it.tenant == tenant } }
             .forEach {
                 allBillings += Billing(it, it.getPeriod(), emptyList())
-                    .let { billing ->  if (rounded) billing.round(2, RoundingMode.UP) else billing }
+                    .let { billing -> if (rounded) billing.round(2, RoundingMode.UP) else billing }
             }
 
         return allBillings.sorted()
@@ -128,6 +136,6 @@ class BillingService(
     private data class RentalBilling(
         val rental: Rental,
         val period: LocalDatePeriod,
-        val entries: List<BillingEntry>
+        val entries: List<BillingEntry>,
     )
 }

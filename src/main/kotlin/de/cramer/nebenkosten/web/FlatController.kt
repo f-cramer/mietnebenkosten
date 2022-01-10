@@ -6,18 +6,22 @@ import org.slf4j.Logger
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.ui.set
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 
 @Controller
 @RequestMapping("flats")
 class FlatController(
     private val log: Logger,
-    private val flatService: FlatService
+    private val flatService: FlatService,
 ) {
 
     @GetMapping("")
     fun getFlats(
-        model: Model
+        model: Model,
     ): String {
         model["flats"] = flatService.getFlats()
         return "flats"
@@ -32,7 +36,7 @@ class FlatController(
     fun createFlat(
         @RequestParam("name") name: String,
         @RequestParam("area") area: Long,
-        @RequestParam("order") order: Int
+        @RequestParam("order") order: Int,
     ): String = try {
         flatService.createFlat(FlatForm(name, area, order))
         "redirect:/flats?success=create"
@@ -44,7 +48,7 @@ class FlatController(
     @GetMapping("show/{name}")
     fun getFlat(
         @PathVariable("name") name: String,
-        model: Model
+        model: Model,
     ): String {
         model["flat"] = flatService.getFlat(name)
         return "flat"
@@ -55,7 +59,7 @@ class FlatController(
         @PathVariable("name") originalName: String,
         @RequestParam("name") name: String,
         @RequestParam("area") area: Long,
-        @RequestParam("order") order: Int
+        @RequestParam("order") order: Int,
     ): String = try {
         flatService.editFlat(originalName, FlatForm(name, area, order))
         "redirect:/flats?success=edit"
@@ -66,7 +70,7 @@ class FlatController(
 
     @PostMapping("delete/{name}")
     fun alterFlat(
-        @PathVariable("name") name: String
+        @PathVariable("name") name: String,
     ): String = try {
         flatService.deleteFlat(name)
         "redirect:/flats?success=delete"

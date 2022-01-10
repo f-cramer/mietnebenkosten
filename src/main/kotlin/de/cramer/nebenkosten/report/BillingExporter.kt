@@ -33,7 +33,7 @@ import org.springframework.stereotype.Service
 class BillingExporter(
     private val objectMapper: ObjectMapper,
     private val resourceLoader: ResourceLoader,
-    private val messageSource: MessageSource
+    private val messageSource: MessageSource,
 ) {
 
     private val report: JasperReport by lazy {
@@ -49,7 +49,7 @@ class BillingExporter(
 
     fun export(
         billing: Billing,
-        locale: Locale
+        locale: Locale,
     ): ByteArray {
         val report = billing.toReport()
         val json = objectMapper.writeValueAsString(report)
@@ -135,10 +135,10 @@ class BillingExporter(
     private fun Billing.getEndFormatted(): String = period.end?.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)) ?: ""
 
     private val Gender.address: String
-    get() = when (this) {
-        Gender.FEMALE -> "Frau"
-        Gender.MALE -> "Herr"
-    }
+        get() = when (this) {
+            Gender.FEMALE -> "Frau"
+            Gender.MALE -> "Herr"
+        }
 
     private fun BillingEntry.toReportBilling(): ReportBilling {
         return ReportBilling(
@@ -155,8 +155,8 @@ class BillingExporter(
     }
 
     private inner class SpringResourceBundle(
-        private val currentLocale: Locale
-    ): ResourceBundle() {
+        private val currentLocale: Locale,
+    ) : ResourceBundle() {
 
         override fun handleGetObject(key: String): String = messageSource.getMessage(key, null, currentLocale)
 

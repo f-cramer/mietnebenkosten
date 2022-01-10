@@ -12,7 +12,7 @@ import de.cramer.nebenkosten.utils.toInternalBigDecimal
 @JsonSubTypes(Type(ByAreaSplitAlgorithm::class), Type(ByPersonsSplitAlgorithm::class), Type(LinearSplitAlgorithm::class))
 sealed class SplitAlgorithm(
     @JsonIgnore val type: SplitAlgorithmType,
-    @JsonIgnore val unit: String
+    @JsonIgnore val unit: String,
 ) {
 
     abstract fun split(invoice: Invoice, billingPeriods: Collection<BillingPeriod>): List<InvoiceSplit>
@@ -62,7 +62,7 @@ object ByAreaSplitAlgorithm : ByTimeSplitAlgorithm(SplitAlgorithmType.ByArea, "m
 }
 
 data class ByPersonsSplitAlgorithm(
-    private val personFallback: PersonFallback
+    private val personFallback: PersonFallback,
 ) : SplitAlgorithm(SplitAlgorithmType.ByPersons, "PM") {
 
     override fun split(invoice: Invoice, billingPeriods: Collection<BillingPeriod>): List<InvoiceSplit> {

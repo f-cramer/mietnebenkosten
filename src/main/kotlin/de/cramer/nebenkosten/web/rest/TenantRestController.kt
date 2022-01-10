@@ -3,17 +3,25 @@ package de.cramer.nebenkosten.web.rest
 import de.cramer.nebenkosten.entities.Tenant
 import de.cramer.nebenkosten.forms.TenantForm
 import de.cramer.nebenkosten.services.TenantService
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("api/tenants")
 class TenantRestController(
-    private val service: TenantService
+    private val service: TenantService,
 ) {
 
     @GetMapping
     fun getAllTenants(
-        @RequestParam("includeHidden", defaultValue = "false") includeHidden: Boolean
+        @RequestParam("includeHidden", defaultValue = "false") includeHidden: Boolean,
     ): List<Tenant> = service.getTenants(includeHidden)
 
     @PutMapping

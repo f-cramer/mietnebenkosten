@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class TenantService(
-    private val repository: TenantRepository
+    private val repository: TenantRepository,
 ) {
     fun getTenants(includeHidden: Boolean = false): List<Tenant> =
         (if (includeHidden) repository.findAll() else repository.findByHiddenFalse())

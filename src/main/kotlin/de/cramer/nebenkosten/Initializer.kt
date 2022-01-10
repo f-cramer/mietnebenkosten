@@ -36,7 +36,7 @@ class Initializer {
         tenantService: TenantService,
         rentalService: RentalService,
         invoiceService: InvoiceService,
-        billingService: BillingService
+        billingService: BillingService,
     ) = CommandLineRunner {
         val erdgeschoss = flatService.createFlat(FlatForm("Erdgeschoss", 75))
         val og1 = flatService.createFlat(FlatForm("1. Obergeschoss", 75, 1))

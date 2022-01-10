@@ -1,5 +1,7 @@
 package de.cramer.nebenkosten.web
 
+import java.time.Year
+import java.util.Locale
 import de.cramer.nebenkosten.entities.Billing
 import de.cramer.nebenkosten.report.BillingExporter
 import de.cramer.nebenkosten.services.BillingService
@@ -15,20 +17,18 @@ import org.springframework.ui.set
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
-import java.time.Year
-import java.util.*
 
 @Controller
 @RequestMapping("billings")
 class BillingController(
     private val billingService: BillingService,
-    private val billingExporter: BillingExporter
+    private val billingExporter: BillingExporter,
 ) {
 
     @GetMapping("")
     fun getBilling(
         year: Year,
-        model: Model
+        model: Model,
     ): String {
         val billings = billingService.createBillings(year, true)
         model["billings"] = billings
@@ -39,7 +39,7 @@ class BillingController(
     fun downloadPdf(
         @RequestParam(name = "tenant") tenantId: Long,
         year: Year,
-        locale: Locale
+        locale: Locale,
     ): ResponseEntity<Resource> {
         val (billing, resource) = getResource(year, tenantId, locale)
 
@@ -56,7 +56,7 @@ class BillingController(
     fun showPdf(
         @RequestParam(name = "tenant") tenantId: Long,
         year: Year,
-        locale: Locale
+        locale: Locale,
     ): ResponseEntity<Resource> {
         val (_, resource) = getResource(year, tenantId, locale)
 

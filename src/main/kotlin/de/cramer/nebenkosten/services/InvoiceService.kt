@@ -1,22 +1,31 @@
 package de.cramer.nebenkosten.services
 
-import de.cramer.nebenkosten.entities.*
+import de.cramer.nebenkosten.entities.Rental as RentalEntity
+import java.time.LocalDate
+import de.cramer.nebenkosten.entities.ByAreaSplitAlgorithm
+import de.cramer.nebenkosten.entities.ByPersonsSplitAlgorithm
+import de.cramer.nebenkosten.entities.GeneralInvoice
+import de.cramer.nebenkosten.entities.Invoice
+import de.cramer.nebenkosten.entities.LinearSplitAlgorithm
+import de.cramer.nebenkosten.entities.LocalDatePeriod
+import de.cramer.nebenkosten.entities.MonetaryAmount
+import de.cramer.nebenkosten.entities.RentalInvoice
+import de.cramer.nebenkosten.entities.SimplePersonFallback
+import de.cramer.nebenkosten.entities.SplitAlgorithm
 import de.cramer.nebenkosten.entities.SplitAlgorithmType.*
 import de.cramer.nebenkosten.exceptions.BadRequestException
 import de.cramer.nebenkosten.exceptions.ConflictException
 import de.cramer.nebenkosten.exceptions.NotFoundException
 import de.cramer.nebenkosten.forms.InvoiceForm
-import de.cramer.nebenkosten.forms.InvoiceType.General
+import de.cramer.nebenkosten.forms.InvoiceType.*
 import de.cramer.nebenkosten.forms.InvoiceType.Rental
 import de.cramer.nebenkosten.repositories.InvoiceRepository
 import org.springframework.stereotype.Service
-import java.time.LocalDate
-import de.cramer.nebenkosten.entities.Rental as RentalEntity
 
 @Service
 class InvoiceService(
     private val repository: InvoiceRepository,
-    private val rentalService: RentalService
+    private val rentalService: RentalService,
 ) {
     fun getInvoices(includeClosed: Boolean = false): List<Invoice> =
         (if (includeClosed) repository.findAll() else repository.findByPeriodEndIsNullOrPeriodEndGreaterThanEqual(LocalDate.now()))

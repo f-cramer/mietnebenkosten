@@ -9,20 +9,24 @@ import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.ui.set
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.servlet.mvc.support.RedirectAttributes
 
 @Controller
 @RequestMapping("tenants")
 class TenantController(
     private val log: Logger,
-    private val tenantService: TenantService
+    private val tenantService: TenantService,
 ) {
 
     @GetMapping("")
     fun getTenants(
         @RequestParam("includeHidden", defaultValue = "false") includeHidden: Boolean,
-        model: Model
+        model: Model,
     ): String {
         model["includeHidden"] = includeHidden
         model["tenants"] = tenantService.getTenants(includeHidden)
@@ -45,7 +49,7 @@ class TenantController(
         @RequestParam("country", required = false) country: String?,
         @RequestParam("gender") gender: Gender,
         @RequestParam("formOfAddress") formOfAddress: FormOfAddress,
-        @RequestParam("hidden", defaultValue = "false") hidden: Boolean
+        @RequestParam("hidden", defaultValue = "false") hidden: Boolean,
     ): String = try {
         tenantService.createTenant(TenantForm(firstName, lastName, street, houseNumber, zipCode, city, country, gender, formOfAddress, hidden))
         "redirect:/tenants"
@@ -56,7 +60,7 @@ class TenantController(
     @GetMapping("show/{id}")
     fun getTenant(
         @PathVariable("id") id: Long,
-        model: Model
+        model: Model,
     ): String {
         model["tenant"] = tenantService.getTenant(id)
         return "tenant"
@@ -74,7 +78,7 @@ class TenantController(
         @RequestParam("country", required = false) country: String?,
         @RequestParam("gender") gender: Gender,
         @RequestParam("formOfAddress") formOfAddress: FormOfAddress,
-        @RequestParam("hidden", defaultValue = "false") hidden: Boolean
+        @RequestParam("hidden", defaultValue = "false") hidden: Boolean,
     ): String = try {
         tenantService.editTenant(id, TenantForm(firstName, lastName, street, houseNumber, zipCode, city, country, gender, formOfAddress, hidden))
         "redirect:/tenants"
@@ -86,7 +90,7 @@ class TenantController(
     @PostMapping("delete/{id}")
     fun deleteTenant(
         @PathVariable("id") id: Long,
-        redirectAttributes: RedirectAttributes
+        redirectAttributes: RedirectAttributes,
     ): String = try {
         tenantService.deleteTenant(id)
         "redirect:/tenants"

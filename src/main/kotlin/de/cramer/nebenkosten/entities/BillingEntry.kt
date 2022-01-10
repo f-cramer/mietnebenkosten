@@ -6,7 +6,7 @@ data class BillingEntry(
     val invoice: Invoice,
     val totalValue: BigDecimal?,
     val proportionalValue: BigDecimal?,
-    val proportionalPrice: MonetaryAmount
+    val proportionalPrice: MonetaryAmount,
 ) : Comparable<BillingEntry> {
 
     override fun compareTo(other: BillingEntry): Int =

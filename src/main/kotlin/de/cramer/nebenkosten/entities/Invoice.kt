@@ -1,6 +1,18 @@
 package de.cramer.nebenkosten.entities
 
-import javax.persistence.*
+import javax.persistence.Column
+import javax.persistence.DiscriminatorColumn
+import javax.persistence.DiscriminatorValue
+import javax.persistence.Embedded
+import javax.persistence.Entity
+import javax.persistence.GeneratedValue
+import javax.persistence.GenerationType
+import javax.persistence.Id
+import javax.persistence.Inheritance
+import javax.persistence.InheritanceType
+import javax.persistence.JoinColumn
+import javax.persistence.ManyToOne
+import javax.persistence.Table
 
 @Entity
 @Table(name = "invoices")
@@ -22,7 +34,7 @@ sealed class Invoice(
     val price: MonetaryAmount,
 
     @Column(name = "order")
-    val order: Int
+    val order: Int,
 ) : Comparable<Invoice> {
 
     abstract val type: InvoiceType
@@ -70,7 +82,7 @@ class GeneralInvoice(
 
     @Suppress("JpaAttributeTypeInspection")
     @Column(name = "split_algorithm")
-    val splitAlgorithm: SplitAlgorithm
+    val splitAlgorithm: SplitAlgorithm,
 ) : Invoice(id, description, period, price, order) {
 
     override val type: InvoiceType
@@ -106,7 +118,7 @@ class RentalInvoice(
 
     @ManyToOne
     @JoinColumn(name = "rental_id")
-    val rental: Rental
+    val rental: Rental,
 ) : Invoice(id, description, period, price, order) {
 
     override val type: InvoiceType

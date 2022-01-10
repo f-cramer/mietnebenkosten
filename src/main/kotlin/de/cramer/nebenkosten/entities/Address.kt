@@ -18,7 +18,7 @@ data class Address(
     val city: String,
 
     @Column(name = "country")
-    val country: String? = null
+    val country: String? = null,
 ) : Comparable<Address> {
     override fun compareTo(other: Address): Int = COMPARATOR.compare(this, other)
 

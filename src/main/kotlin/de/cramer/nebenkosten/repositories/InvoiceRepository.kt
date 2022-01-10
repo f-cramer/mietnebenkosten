@@ -1,9 +1,9 @@
 package de.cramer.nebenkosten.repositories
 
+import java.time.LocalDate
 import de.cramer.nebenkosten.entities.Invoice
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
-import java.time.LocalDate
 
 interface InvoiceRepository : JpaRepository<Invoice, Long> {
 

@@ -3,12 +3,19 @@ package de.cramer.nebenkosten.web.rest
 import de.cramer.nebenkosten.entities.Flat
 import de.cramer.nebenkosten.forms.FlatForm
 import de.cramer.nebenkosten.services.FlatService
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("api/flats")
 class FlatRestController(
-    private val service: FlatService
+    private val service: FlatService,
 ) {
 
     @GetMapping

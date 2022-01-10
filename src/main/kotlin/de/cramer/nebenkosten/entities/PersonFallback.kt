@@ -1,10 +1,10 @@
 package de.cramer.nebenkosten.entities
 
+import java.math.BigDecimal
 import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.fasterxml.jackson.annotation.JsonTypeInfo
 import de.cramer.nebenkosten.utils.getLengthInMonths
 import de.cramer.nebenkosten.utils.toInternalBigDecimal
-import java.math.BigDecimal
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.MINIMAL_CLASS, include = JsonTypeInfo.As.PROPERTY)
 @JsonSubTypes(JsonSubTypes.Type(SimplePersonFallback::class))
@@ -14,7 +14,7 @@ sealed class PersonFallback {
 }
 
 data class SimplePersonFallback(
-    private val persons: Int = 1
+    private val persons: Int = 1,
 ) : PersonFallback() {
 
     override fun getTotalFallbackTime(invoice: Invoice, billingPeriods: Collection<BillingPeriod>): BigDecimal {

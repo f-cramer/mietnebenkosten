@@ -1,5 +1,6 @@
 package de.cramer.nebenkosten.services
 
+import java.time.LocalDate
 import de.cramer.nebenkosten.entities.Flat
 import de.cramer.nebenkosten.entities.LocalDatePeriod
 import de.cramer.nebenkosten.entities.Rental
@@ -8,13 +9,12 @@ import de.cramer.nebenkosten.exceptions.NotFoundException
 import de.cramer.nebenkosten.forms.RentalForm
 import de.cramer.nebenkosten.repositories.RentalRepository
 import org.springframework.stereotype.Service
-import java.time.LocalDate
 
 @Service
 class RentalService(
     private val repository: RentalRepository,
     private val flatService: FlatService,
-    private val tenantService: TenantService
+    private val tenantService: TenantService,
 ) {
     fun getRentals(includeClosed: Boolean = false): List<Rental> =
         (if (includeClosed) repository.findAll() else repository.findByPeriodEndIsNullOrPeriodEndGreaterThanEqual(LocalDate.now()))

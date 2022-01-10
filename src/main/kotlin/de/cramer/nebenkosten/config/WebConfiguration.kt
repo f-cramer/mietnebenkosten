@@ -10,8 +10,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 @Configuration
 class WebConfiguration(
     private val yearResolver: YearResolver,
-    private val yearChangeInterceptor: YearChangeInterceptor
-): WebMvcConfigurer {
+    private val yearChangeInterceptor: YearChangeInterceptor,
+) : WebMvcConfigurer {
 
     override fun addArgumentResolvers(resolvers: MutableList<HandlerMethodArgumentResolver>) {
         resolvers += yearResolver
