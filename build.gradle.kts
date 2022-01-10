@@ -1,12 +1,12 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("org.springframework.boot") version "2.4.2"
-    id("io.spring.dependency-management") version "1.0.10.RELEASE"
-    kotlin("jvm") version "1.4.21"
-    kotlin("plugin.spring") version "1.4.21"
-    kotlin("plugin.jpa") version "1.4.21"
-    kotlin("plugin.allopen") version "1.4.21"
+    id("org.springframework.boot") version "2.6.2"
+    id("io.spring.dependency-management") version "1.0.11.RELEASE"
+    kotlin("jvm") version "1.6.10"
+    kotlin("plugin.spring") version "1.6.10"
+    kotlin("plugin.jpa") version "1.6.10"
+    kotlin("plugin.allopen") version "1.6.10"
 }
 
 group = "de.cramer.nebenkosten"
@@ -25,7 +25,9 @@ configurations {
 
 repositories {
     mavenCentral()
-    maven(url = "https://jaspersoft.jfrog.io/artifactory/third-party-ce-artifacts")
+    maven(url = "http://jaspersoft.jfrog.io/artifactory/third-party-ce-artifacts/") {
+        isAllowInsecureProtocol = true
+    }
 }
 
 dependencies {
@@ -51,9 +53,7 @@ dependencies {
 
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 
-    testImplementation("org.springframework.boot:spring-boot-starter-test") {
-        exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
-    }
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
 tasks.withType<Test> {
@@ -65,4 +65,8 @@ tasks.withType<KotlinCompile> {
         freeCompilerArgs = listOf("-Xjsr305=strict")
         jvmTarget = "1.8"
     }
+}
+
+tasks.withType<Wrapper> {
+    gradleVersion = "7.3.2"
 }
