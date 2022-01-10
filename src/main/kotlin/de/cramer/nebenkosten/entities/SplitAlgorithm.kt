@@ -1,17 +1,18 @@
 package de.cramer.nebenkosten.entities
 
+import java.math.BigDecimal
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonSubTypes
-import com.fasterxml.jackson.annotation.JsonSubTypes.Type
+import com.fasterxml.jackson.annotation.JsonSubTypes.*
 import com.fasterxml.jackson.annotation.JsonTypeInfo
 import de.cramer.nebenkosten.utils.getLengthInMonths
 import de.cramer.nebenkosten.utils.toInternalBigDecimal
-import java.math.BigDecimal
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.MINIMAL_CLASS, include = JsonTypeInfo.As.PROPERTY)
 @JsonSubTypes(Type(ByAreaSplitAlgorithm::class), Type(ByPersonsSplitAlgorithm::class), Type(LinearSplitAlgorithm::class))
 sealed class SplitAlgorithm(
-    val type: SplitAlgorithmType,
-    val unit: String
+    @JsonIgnore val type: SplitAlgorithmType,
+    @JsonIgnore val unit: String
 ) {
 
     abstract fun split(invoice: Invoice, billingPeriods: Collection<BillingPeriod>): List<InvoiceSplit>
