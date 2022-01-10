@@ -60,6 +60,24 @@
                 <input class="form-control" type="text" name="country" id="country" placeholder="Land" aria-label="Land" form="saveForm" value="" th:value="${tenant != null ? tenant.address.country : ''}">
             </td>
         </tr>
+		<tr>
+			<td>Geschlecht</td>
+			<td>
+				<select class="form-control" name="gender" id="gender" aria-label="Geschlecht" form="saveForm">
+					<option value="MALE" th:selected="${tenant != null ? tenant.gender == T(de.cramer.nebenkosten.entities.Gender).MALE : true}">Männlich</option>
+					<option value="FEMALE" th:selected="${tenant != null ? tenant.gender == T(de.cramer.nebenkosten.entities.Gender).FEMALE : false}">Weiblich</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td>Anredeform</td>
+			<td>
+				<select class="form-control" name="formOfAddress" id="formOfAddress" aria-label="Anredeform" form="saveForm">
+					<option value="FORMAL" th:selected="${tenant != null ? tenant.formOfAddress == T(de.cramer.nebenkosten.entities.FormOfAddress).FORMAL : true}">Förmlich</option>
+					<option value="INFORMAL" th:selected="${tenant != null ? tenant.formOfAddress == T(de.cramer.nebenkosten.entities.FormOfAddress).INFORMAL : false}">Formlos</option>
+				</select>
+			</td>
+		</tr>
         <tr>
             <td>Ausgeblendet</td>
             <td>

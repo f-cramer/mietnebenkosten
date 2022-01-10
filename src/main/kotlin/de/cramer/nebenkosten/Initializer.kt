@@ -1,20 +1,30 @@
 package de.cramer.nebenkosten
 
-import de.cramer.nebenkosten.entities.LocalDatePeriod
-import de.cramer.nebenkosten.entities.Rental
-import de.cramer.nebenkosten.entities.SplitAlgorithmType
-import de.cramer.nebenkosten.forms.*
-import de.cramer.nebenkosten.services.*
-import org.springframework.boot.CommandLineRunner
-import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.Profile
-import org.springframework.stereotype.Component
 import java.math.BigInteger
 import java.time.LocalDate
 import java.time.Month
 import java.time.Year
 import java.time.YearMonth
 import kotlin.math.roundToLong
+import de.cramer.nebenkosten.entities.FormOfAddress
+import de.cramer.nebenkosten.entities.Gender
+import de.cramer.nebenkosten.entities.LocalDatePeriod
+import de.cramer.nebenkosten.entities.Rental
+import de.cramer.nebenkosten.entities.SplitAlgorithmType
+import de.cramer.nebenkosten.forms.FlatForm
+import de.cramer.nebenkosten.forms.InvoiceForm
+import de.cramer.nebenkosten.forms.InvoiceType
+import de.cramer.nebenkosten.forms.RentalForm
+import de.cramer.nebenkosten.forms.TenantForm
+import de.cramer.nebenkosten.services.BillingService
+import de.cramer.nebenkosten.services.FlatService
+import de.cramer.nebenkosten.services.InvoiceService
+import de.cramer.nebenkosten.services.RentalService
+import de.cramer.nebenkosten.services.TenantService
+import org.springframework.boot.CommandLineRunner
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Profile
+import org.springframework.stereotype.Component
 
 @Component
 @Profile("development")
@@ -32,10 +42,10 @@ class Initializer {
         val og1 = flatService.createFlat(FlatForm("1. Obergeschoss", 75, 1))
         val dachgeschoss = flatService.createFlat(FlatForm("Dachgeschoss", 60, 2))
 
-        val tenant1 = tenantService.createTenant(TenantForm("Uta", "Krüger", "Bayreuther Straße", 76, "67659", "Kaiserslautern", hidden = false))
-        val tenant2 = tenantService.createTenant(TenantForm("Max", "Propst", "Neuer Jungfernstieg", 96, "84126", "Dingolfing", hidden = true))
-        val tenant3 = tenantService.createTenant(TenantForm("Sara", "Weiss", "Fugger Straße", 22, "14403", "Potsdam", hidden = false))
-        val tenant4 = tenantService.createTenant(TenantForm("Phillipp", "Wurfel", "Waßmannsdorfer Chaussee", 1, "21035", "Hamburg", hidden = false))
+        val tenant1 = tenantService.createTenant(TenantForm("Uta", "Krüger", "Bayreuther Straße", 76, "67659", "Kaiserslautern", gender = Gender.MALE, formOfAddress = FormOfAddress.INFORMAL, hidden = false))
+        val tenant2 = tenantService.createTenant(TenantForm("Max", "Propst", "Neuer Jungfernstieg", 96, "84126", "Dingolfing", gender = Gender.MALE, formOfAddress = FormOfAddress.FORMAL, hidden = true))
+        val tenant3 = tenantService.createTenant(TenantForm("Sara", "Weiss", "Fugger Straße", 22, "14403", "Potsdam", gender = Gender.MALE, formOfAddress = FormOfAddress.INFORMAL, hidden = false))
+        val tenant4 = tenantService.createTenant(TenantForm("Phillipp", "Wurfel", "Waßmannsdorfer Chaussee", 1, "21035", "Hamburg", gender = Gender.FEMALE, formOfAddress = FormOfAddress.INFORMAL, hidden = false))
 
         val tenant1Erdgeschoss = rentalService.createRental(RentalForm(erdgeschoss.name, tenant1.id, 2, LocalDate.of(2018, Month.FEBRUARY, 1)))
         val tenant2Og1 = rentalService.createRental(RentalForm(og1.name, tenant2.id, 2, LocalDate.of(2010, Month.JANUARY, 1), YearMonth.of(2019, Month.MAY).atEndOfMonth()))

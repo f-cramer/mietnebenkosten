@@ -1,12 +1,21 @@
 package de.cramer.nebenkosten.report
 
+import java.io.ByteArrayOutputStream
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
+import java.util.Collections
+import java.util.Enumeration
+import java.util.Locale
+import java.util.ResourceBundle
+import javax.annotation.PostConstruct
 import com.fasterxml.jackson.databind.ObjectMapper
 import de.cramer.nebenkosten.entities.Billing
 import de.cramer.nebenkosten.entities.BillingEntry
+import de.cramer.nebenkosten.entities.FormOfAddress
+import de.cramer.nebenkosten.entities.Gender
 import de.cramer.nebenkosten.entities.GeneralInvoice
 import de.cramer.nebenkosten.entities.RentalInvoice
-import net.sf.jasperreports.engine.JRParameter.REPORT_LOCALE
-import net.sf.jasperreports.engine.JRParameter.REPORT_RESOURCE_BUNDLE
+import net.sf.jasperreports.engine.JRParameter.*
 import net.sf.jasperreports.engine.JasperCompileManager
 import net.sf.jasperreports.engine.JasperFillManager
 import net.sf.jasperreports.engine.JasperPrint
@@ -19,11 +28,6 @@ import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput
 import org.springframework.context.MessageSource
 import org.springframework.core.io.ResourceLoader
 import org.springframework.stereotype.Service
-import java.io.ByteArrayOutputStream
-import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
-import java.util.*
-import javax.annotation.PostConstruct
 
 @Service
 class BillingExporter(
@@ -105,11 +109,20 @@ class BillingExporter(
             .map { it.toReportBilling() }
     )
 
-    private fun Billing.getNote(): String = """
-        Hallo ${tenant.firstName},
-        hiermit erhälst du deine Mietnebenkostenabrechnung für den Rechnungszeitraum ${getPeriodFormatted()}.
-        Ich bitte um Überweisung einer etwaigen Nachzahlung an IBAN: DE84 7402 0100 6161 4961 81.
-    """.trimIndent()
+    private fun Billing.getNote(): String = when (tenant.formOfAddress) {
+        FormOfAddress.INFORMAL ->
+            """
+                Hallo ${tenant.firstName},
+                hiermit erhälst du deine Mietnebenkostenabrechnung für den Rechnungszeitraum ${getPeriodFormatted()}.
+                Ich bitte um Überweisung einer etwaigen Nachzahlung an IBAN: DE84 7402 0100 6161 4961 81.
+            """
+        FormOfAddress.FORMAL ->
+            """
+                Guten Tag ${tenant.gender.address} ${tenant.lastName},
+                hiermit erhälten Sie Ihre Mietnebenkostenabrechnung für den Rechnungszeitraum ${getPeriodFormatted()}.
+                Ich bitte um Überweisung einer etwaigen Nachzahlung an IBAN: DE84 7402 0100 6161 4961 81.
+            """
+    }.trimIndent()
 
     private fun Billing.getPeriodFormatted(): String = if (period.end != null) {
         "vom ${getStartFormatted()} bis zum ${getEndFormatted()}"
@@ -120,6 +133,12 @@ class BillingExporter(
     private fun Billing.getStartFormatted(): String = period.start.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM))
 
     private fun Billing.getEndFormatted(): String = period.end?.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)) ?: ""
+
+    private val Gender.address: String
+    get() = when (this) {
+        Gender.FEMALE -> "Frau"
+        Gender.MALE -> "Herr"
+    }
 
     private fun BillingEntry.toReportBilling(): ReportBilling {
         return ReportBilling(

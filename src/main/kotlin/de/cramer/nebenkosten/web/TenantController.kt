@@ -1,5 +1,7 @@
 package de.cramer.nebenkosten.web
 
+import de.cramer.nebenkosten.entities.FormOfAddress
+import de.cramer.nebenkosten.entities.Gender
 import de.cramer.nebenkosten.forms.TenantForm
 import de.cramer.nebenkosten.services.TenantService
 import org.slf4j.Logger
@@ -41,9 +43,11 @@ class TenantController(
         @RequestParam("zipCode") zipCode: String,
         @RequestParam("city") city: String,
         @RequestParam("country", required = false) country: String?,
+        @RequestParam("gender") gender: Gender,
+        @RequestParam("formOfAddress") formOfAddress: FormOfAddress,
         @RequestParam("hidden", defaultValue = "false") hidden: Boolean
     ): String = try {
-        tenantService.createTenant(TenantForm(firstName, lastName, street, houseNumber, zipCode, city, country, hidden))
+        tenantService.createTenant(TenantForm(firstName, lastName, street, houseNumber, zipCode, city, country, gender, formOfAddress, hidden))
         "redirect:/tenants"
     } catch (e: Exception) {
         "redirect:/tenants?error=create"
@@ -68,9 +72,11 @@ class TenantController(
         @RequestParam("zipCode") zipCode: String,
         @RequestParam("city") city: String,
         @RequestParam("country", required = false) country: String?,
+        @RequestParam("gender") gender: Gender,
+        @RequestParam("formOfAddress") formOfAddress: FormOfAddress,
         @RequestParam("hidden", defaultValue = "false") hidden: Boolean
     ): String = try {
-        tenantService.editTenant(id, TenantForm(firstName, lastName, street, houseNumber, zipCode, city, country, hidden))
+        tenantService.editTenant(id, TenantForm(firstName, lastName, street, houseNumber, zipCode, city, country, gender, formOfAddress, hidden))
         "redirect:/tenants"
     } catch (e: Exception) {
         log.error(e.message, e)

@@ -39,6 +39,8 @@ class TenantService(
             city = city.trim(),
             country = if (country == null || country.isEmpty()) null else country.trim()
         ),
+        gender = gender,
+        formOfAddress = formOfAddress,
         hidden = hidden
     )
 
