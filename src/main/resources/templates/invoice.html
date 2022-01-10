@@ -99,7 +99,7 @@
             if (endValue && startValue > endValue) {
                 end.setCustomValidity("Ende kann nicht vor Start liegen")
             } else {
-                end.setCustomValidity('')
+                end.setCustomValidity("")
             }
         }
 
@@ -117,12 +117,13 @@
             const priceCent = document.getElementById("priceCent")
             const price = document.getElementById("price")
 
-            const fullPrice = (parseFloat(priceEuro.value || "0") * 100) + parseFloat(priceCent.value || "0")
+			let rawPriceEuro = parseFloat(priceEuro.value || "0");
+			const fullPrice = Math.sign(rawPriceEuro) * (Math.abs(rawPriceEuro * 100) + parseFloat(priceCent.value || "0"))
             price.value = fullPrice
-            if (fullPrice <= 0) {
-                price.setCustomValidity("Preis muss größer 0 sein")
+            if (fullPrice === 0) {
+                priceEuro.setCustomValidity("Preis muss ungleich 0 sein")
             } else {
-                price.setCustomValidity("")
+                priceEuro.setCustomValidity("")
             }
         }
 
