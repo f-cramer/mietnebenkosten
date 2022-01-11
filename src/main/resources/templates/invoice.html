@@ -22,16 +22,16 @@
         <tr>
             <td>Name</td>
             <td>
-                <input class="form-control" type="text" name="description" id="description" placeholder="Name" aria-label="Name" form="saveForm" required value="Abwasser" th:value="${invoice != null ? invoice.description : null}">
+                <input class="form-control" type="text" name="description" id="description" placeholder="Name" aria-label="Name" form="saveForm" required value="Abwasser" th:value="${invoice != null ? invoice.description : defaultDescription}">
             </td>
         </tr>
         <tr>
             <td>Preis</td>
             <td>
-                <div class="input-group">
-                    <input class="form-control text-right" style="max-width: 8em;" type="number" name="priceEuro" id="priceEuro" placeholder="Preis" aria-label="Preis Euro" form="saveForm" required value="1" th:value="${invoice != null ? invoice.price.roundUp(2).integerPart() : 0}" onchange="updatePrice()">
+                <div class="input-group" th:with="price = ${invoice != null ? invoice.price : defaultPrice}">
+                    <input class="form-control text-right" style="max-width: 8em;" type="number" name="priceEuro" id="priceEuro" placeholder="Preis" aria-label="Preis Euro" form="saveForm" required value="1" th:value="${price.roundUp(2).integerPart()}" onchange="updatePrice()">
                     <div class="input-group-append"><span class="input-group-text">,</span></div>
-                    <input class="form-control text-left" style="max-width: 4em;" type="number" name="priceCent" id="priceCent" placeholder="Preis" aria-label="Preis Cent" form="saveForm" required min="0" max="99" value="1" th:value="${invoice != null ? invoice.price.roundUp(2).fractionPart() : 0}" onchange="updatePrice()">
+                    <input class="form-control text-left" style="max-width: 4em;" type="number" name="priceCent" id="priceCent" placeholder="Preis" aria-label="Preis Cent" form="saveForm" required min="0" max="99" value="1" th:value="${price.roundUp(2).fractionPart()}" onchange="updatePrice()">
                     <div class="input-group-append"><span class="input-group-text">€</span></div>
                 </div>
                 <input type="hidden" name="price" id="price" form="saveForm" required value="101">
@@ -40,8 +40,8 @@
         <tr>
             <td>Typ</td>
             <td>
-                <select class="form-control" name="type" id="type" aria-label="Typ" form="saveForm" required onchange="onTypeChanged()">
-                    <option th:each="type: ${invoiceTypes}" th:selected="${invoice != null && type == invoice.type}" th:value="${type.name()}" th:text="#{'invoiceType.' + ${type.name()}}">Erdgeschoss</option>
+                <select class="form-control" name="type" id="type" aria-label="Typ" form="saveForm" required onchange="onTypeChanged()" th:with="invoiceType = ${invoice != null ? invoice.type : defaultType}">
+                    <option th:each="type: ${invoiceTypes}" th:selected="${type == invoiceType}" th:value="${type.name()}" th:text="#{'invoiceType.' + ${type.name()}}">Erdgeschoss</option>
                 </select>
             </td>
         </tr>
@@ -76,7 +76,7 @@
         <tr>
             <td>Priorität</td>
             <td>
-                <input class="form-control" type="number" name="order" id="order" placeholder="Priorität" aria-label="Priorität" form="saveForm" required value="0" th:value="${invoice != null ? invoice.order : 0}">
+                <input class="form-control" type="number" name="order" id="order" placeholder="Priorität" aria-label="Priorität" form="saveForm" required value="0" th:value="${invoice != null ? invoice.order : (defaultOrder != null ? defaultOrder : 0)}">
             </td>
         </tr>
         </tbody>
@@ -86,6 +86,7 @@
         <button class="btn btn-outline-success my-2 my-sm-0 col-md-2" form="saveForm" type="submit">Speichern</button>
         <button class="btn btn-outline-danger my-2 my-sm-0 col-md-2" form="deleteForm" type="submit" th:if="${invoice != null}">Löschen</button>
         <a class="btn btn-outline-danger my-2 my-sm-0 col-md-2" th:href="@{/invoices}" th:if="${invoice == null}">Abbrechen</a>
+		<a class="btn btn-outline-info my-2 my-sm-0 col-md-2" th:href="@{/invoices/create(templateId=${invoice.id})}" th:if="${invoice != null}">Kopieren</a>
     </div>
 
     <script>

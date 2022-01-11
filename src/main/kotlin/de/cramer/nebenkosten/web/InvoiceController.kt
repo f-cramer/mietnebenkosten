@@ -5,6 +5,7 @@ import java.time.Year
 import java.time.temporal.TemporalAdjusters
 import de.cramer.nebenkosten.entities.GeneralInvoice
 import de.cramer.nebenkosten.entities.LocalDatePeriod
+import de.cramer.nebenkosten.entities.MonetaryAmount
 import de.cramer.nebenkosten.entities.RentalInvoice
 import de.cramer.nebenkosten.entities.SplitAlgorithmType
 import de.cramer.nebenkosten.exceptions.BadRequestException
@@ -45,15 +46,23 @@ class InvoiceController(
 
     @GetMapping("create")
     fun createInvoice(
+        @RequestParam(name = "templateId") templateId: Long?,
         year: Year,
         model: Model,
     ): String {
+        val invoice = templateId?.let { invoiceService.getInvoice(it) }
         val firstDayOfYear = year.atDay(1)
         model["invoiceTypes"] = de.cramer.nebenkosten.entities.InvoiceType.values()
         model["splitAlgorithmTypes"] = SplitAlgorithmType.values()
         model["rentals"] = rentalService.getRentalsByPeriod(LocalDatePeriod.ofYear(year))
         model["defaultStart"] = firstDayOfYear
         model["defaultEnd"] = firstDayOfYear.with(TemporalAdjusters.lastDayOfYear())
+        model["defaultDescription"] = invoice?.description ?: ""
+        model["defaultPrice"] = invoice?.price ?: MonetaryAmount()
+        model["defaultType"] = invoice?.type
+        model["selectedSplitAlgorithmType"] = (invoice as? GeneralInvoice)?.splitAlgorithm?.type ?: ""
+        model["selectedRental"] = (invoice as? RentalInvoice)?.rental ?: ""
+        model["defaultOrder"] = invoice?.order
         return "invoice"
     }
 
