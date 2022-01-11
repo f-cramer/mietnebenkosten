@@ -2,13 +2,13 @@ package de.cramer.nebenkosten.web
 
 import de.cramer.nebenkosten.entities.FormOfAddress
 import de.cramer.nebenkosten.entities.Gender
+import de.cramer.nebenkosten.extensions.set
 import de.cramer.nebenkosten.forms.TenantForm
 import de.cramer.nebenkosten.services.TenantService
 import org.slf4j.Logger
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
-import org.springframework.ui.set
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping

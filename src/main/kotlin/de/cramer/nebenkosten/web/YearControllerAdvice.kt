@@ -1,8 +1,8 @@
 package de.cramer.nebenkosten.web
 
 import java.time.Year
+import de.cramer.nebenkosten.extensions.set
 import org.springframework.ui.Model
-import org.springframework.ui.set
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.RequestParam

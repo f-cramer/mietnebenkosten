@@ -1,11 +1,11 @@
 package de.cramer.nebenkosten.web
 
+import de.cramer.nebenkosten.extensions.set
 import de.cramer.nebenkosten.forms.FlatForm
 import de.cramer.nebenkosten.services.FlatService
 import org.slf4j.Logger
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
-import org.springframework.ui.set
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping

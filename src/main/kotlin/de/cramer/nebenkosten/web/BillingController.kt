@@ -3,6 +3,7 @@ package de.cramer.nebenkosten.web
 import java.time.Year
 import java.util.Locale
 import de.cramer.nebenkosten.entities.Billing
+import de.cramer.nebenkosten.extensions.set
 import de.cramer.nebenkosten.report.BillingExporter
 import de.cramer.nebenkosten.services.BillingService
 import org.springframework.core.io.ByteArrayResource
@@ -13,7 +14,6 @@ import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
-import org.springframework.ui.set
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam

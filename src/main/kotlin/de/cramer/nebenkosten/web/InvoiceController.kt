@@ -8,6 +8,7 @@ import de.cramer.nebenkosten.entities.LocalDatePeriod
 import de.cramer.nebenkosten.entities.RentalInvoice
 import de.cramer.nebenkosten.entities.SplitAlgorithmType
 import de.cramer.nebenkosten.exceptions.BadRequestException
+import de.cramer.nebenkosten.extensions.set
 import de.cramer.nebenkosten.forms.InvoiceForm
 import de.cramer.nebenkosten.forms.InvoiceType
 import de.cramer.nebenkosten.services.InvoiceService
@@ -15,7 +16,6 @@ import de.cramer.nebenkosten.services.RentalService
 import org.slf4j.Logger
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
-import org.springframework.ui.set
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
