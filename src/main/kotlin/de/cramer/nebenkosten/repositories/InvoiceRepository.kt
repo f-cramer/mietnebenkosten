@@ -7,14 +7,12 @@ import org.springframework.data.jpa.repository.Query
 
 interface InvoiceRepository : JpaRepository<Invoice, Long> {
 
-    fun findByPeriodEndIsNullOrPeriodEndGreaterThanEqual(now: LocalDate?): List<Invoice>
-
     @Query(
         """
                 FROM Invoice i JOIN i.period period
                 WHERE
-                    (period.end IS NULL) OR
-                    (period.end > :start)
+                        (period.end IS NULL) OR
+                        (period.end > :start)
             """
     )
     fun findByOpenTimePeriod(start: LocalDate): List<Invoice>

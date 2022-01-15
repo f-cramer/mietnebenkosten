@@ -28,7 +28,7 @@ class InvoiceService(
     private val rentalService: RentalService,
 ) {
     fun getInvoices(includeClosed: Boolean = false): List<Invoice> =
-        (if (includeClosed) repository.findAll() else repository.findByPeriodEndIsNullOrPeriodEndGreaterThanEqual(LocalDate.now()))
+        (if (includeClosed) repository.findAll() else repository.findByOpenTimePeriod(LocalDate.now()))
             .sorted()
 
     fun getInvoicesByTimePeriod(period: LocalDatePeriod): List<Invoice> =
