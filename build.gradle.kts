@@ -42,7 +42,7 @@ dependencies {
 
     implementation("org.flywaydb:flyway-core")
 
-    val jasperReportsVersion = "6.16.0"
+    val jasperReportsVersion = "6.18.1"
     implementation("net.sf.jasperreports:jasperreports:$jasperReportsVersion")
     implementation("net.sf.jasperreports:jasperreports-functions:$jasperReportsVersion")
 
