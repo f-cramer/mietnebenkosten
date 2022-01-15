@@ -9,9 +9,9 @@ import java.util.Locale
 import javax.persistence.Column
 import javax.persistence.Embeddable
 import kotlin.math.pow
-import de.cramer.nebenkosten.utils.ONE
-import de.cramer.nebenkosten.utils.ZERO
-import de.cramer.nebenkosten.utils.toInternalBigDecimal
+import de.cramer.nebenkosten.extensions.ONE
+import de.cramer.nebenkosten.extensions.ZERO
+import de.cramer.nebenkosten.extensions.toInternalBigDecimal
 
 @Embeddable
 data class MonetaryAmount(

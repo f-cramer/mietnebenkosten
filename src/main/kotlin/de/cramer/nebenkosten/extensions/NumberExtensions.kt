@@ -1,4 +1,4 @@
-package de.cramer.nebenkosten.utils
+package de.cramer.nebenkosten.extensions
 
 import java.math.BigDecimal
 import java.math.BigInteger

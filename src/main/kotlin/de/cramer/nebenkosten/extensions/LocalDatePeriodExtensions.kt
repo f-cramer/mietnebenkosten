@@ -1,4 +1,4 @@
-package de.cramer.nebenkosten.utils
+package de.cramer.nebenkosten.extensions
 
 import java.time.LocalDate
 import java.time.YearMonth

@@ -5,8 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.fasterxml.jackson.annotation.JsonSubTypes.*
 import com.fasterxml.jackson.annotation.JsonTypeInfo
-import de.cramer.nebenkosten.utils.getLengthInMonths
-import de.cramer.nebenkosten.utils.toInternalBigDecimal
+import de.cramer.nebenkosten.extensions.getLengthInMonths
+import de.cramer.nebenkosten.extensions.toInternalBigDecimal
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.MINIMAL_CLASS, include = JsonTypeInfo.As.PROPERTY)
 @JsonSubTypes(Type(ByAreaSplitAlgorithm::class), Type(ByPersonsSplitAlgorithm::class), Type(LinearSplitAlgorithm::class))
