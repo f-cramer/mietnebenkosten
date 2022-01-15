@@ -1,4 +1,4 @@
-package de.cramer.nebenkosten
+package de.cramer.nebenkosten.config
 
 import java.math.BigInteger
 import java.time.LocalDate
@@ -28,10 +28,10 @@ import org.springframework.stereotype.Component
 
 @Component
 @Profile("development")
-class Initializer {
+class DevelopmentConfiguration {
 
     @Bean
-    fun runner(
+    fun initializer(
         flatService: FlatService,
         tenantService: TenantService,
         rentalService: RentalService,
