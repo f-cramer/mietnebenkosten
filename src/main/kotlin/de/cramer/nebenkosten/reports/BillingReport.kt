@@ -1,4 +1,4 @@
-package de.cramer.nebenkosten.report
+package de.cramer.nebenkosten.reports
 
 import java.math.BigDecimal
 

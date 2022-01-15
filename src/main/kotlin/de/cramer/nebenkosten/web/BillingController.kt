@@ -4,7 +4,7 @@ import java.time.Year
 import java.util.Locale
 import de.cramer.nebenkosten.entities.Billing
 import de.cramer.nebenkosten.extensions.set
-import de.cramer.nebenkosten.report.BillingExporter
+import de.cramer.nebenkosten.reports.BillingExporter
 import de.cramer.nebenkosten.services.BillingService
 import org.springframework.core.io.ByteArrayResource
 import org.springframework.core.io.Resource

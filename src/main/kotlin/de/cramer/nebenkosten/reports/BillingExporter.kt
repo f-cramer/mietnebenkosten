@@ -1,4 +1,4 @@
-package de.cramer.nebenkosten.report
+package de.cramer.nebenkosten.reports
 
 import java.io.ByteArrayOutputStream
 import java.time.format.DateTimeFormatter
