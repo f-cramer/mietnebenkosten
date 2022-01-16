@@ -22,7 +22,7 @@ class LandlordController(
     private val landlordService: LandlordService,
 ) {
 
-    @GetMapping("")
+    @GetMapping
     fun getLandlords(
         model: Model,
     ): String {

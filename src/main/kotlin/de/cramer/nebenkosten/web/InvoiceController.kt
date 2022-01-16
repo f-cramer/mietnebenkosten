@@ -33,7 +33,7 @@ class InvoiceController(
     private val rentalService: RentalService,
 ) {
 
-    @GetMapping("")
+    @GetMapping
     fun getInvoices(
         @RequestParam(name = "includeClosed", defaultValue = "false") includeClosed: Boolean,
         year: Year,

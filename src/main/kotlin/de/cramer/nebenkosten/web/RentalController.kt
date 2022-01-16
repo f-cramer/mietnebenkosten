@@ -30,7 +30,7 @@ class RentalController(
     private val tenantService: TenantService,
 ) {
 
-    @GetMapping("")
+    @GetMapping
     fun getRentals(
         year: Year,
         model: Model,

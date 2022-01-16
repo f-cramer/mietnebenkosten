@@ -25,7 +25,7 @@ class BillingController(
     private val billingExporter: BillingExporter,
 ) {
 
-    @GetMapping("")
+    @GetMapping
     fun getBilling(
         year: Year,
         model: Model,

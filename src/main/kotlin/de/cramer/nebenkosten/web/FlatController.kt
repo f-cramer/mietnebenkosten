@@ -19,7 +19,7 @@ class FlatController(
     private val flatService: FlatService,
 ) {
 
-    @GetMapping("")
+    @GetMapping
     fun getFlats(
         model: Model,
     ): String {

@@ -23,7 +23,7 @@ class TenantController(
     private val tenantService: TenantService,
 ) {
 
-    @GetMapping("")
+    @GetMapping
     fun getTenants(
         @RequestParam("includeHidden", defaultValue = "false") includeHidden: Boolean,
         model: Model,
