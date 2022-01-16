@@ -21,9 +21,12 @@
                 <li class="nav-item" th:classappend="${activeNav == 'flats'} ? active : ''">
                     <a class="nav-link" th:href="@{/flats}" th:text="#{template.flats}">Wohnungen</a>
                 </li>
-                <li class="nav-item" th:classappend="${activeNav == 'tenants'} ? active : ''">
-                    <a class="nav-link" th:href="@{/tenants}" th:text="#{template.tenants}">Mieter</a>
-                </li>
+				<li class="nav-item" th:classappend="${activeNav == 'tenants'} ? active : ''">
+					<a class="nav-link" th:href="@{/tenants}" th:text="#{template.tenants}">Mieter</a>
+				</li>
+				<li class="nav-item" th:classappend="${activeNav == 'landlords'} ? active : ''">
+					<a class="nav-link" th:href="@{/landlords}" th:text="#{template.landlords}">Vermieter</a>
+				</li>
                 <li class="nav-item" th:classappend="${activeNav == 'rentals'} ? active : ''">
                     <a class="nav-link" th:href="@{/rentals}" th:text="#{template.rentals}">Mietverträge</a>
                 </li>

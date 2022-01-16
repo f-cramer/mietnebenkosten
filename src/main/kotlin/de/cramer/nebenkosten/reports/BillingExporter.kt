@@ -85,11 +85,11 @@ class BillingExporter(
 
     private fun Billing.toReport(): BillingReport = BillingReport(
         sender = ReportAddress(
-            name = "Monika Bader",
-            street1 = "Landsberger Allee 79",
+            name = "${landlord.firstName} ${landlord.lastName}",
+            street1 = "${landlord.address.street} ${landlord.address.houseNumber}",
             street2 = "",
-            city = "80076 München",
-            country = ""
+            city = "${landlord.address.zipCode} ${landlord.address.city}",
+            country = landlord.address.country ?: ""
         ),
         receiver = ReportAddress(
             name = "${tenant.firstName} ${tenant.lastName}",
@@ -114,13 +114,13 @@ class BillingExporter(
             """
                 Hallo ${tenant.firstName},
                 hiermit erhälst du deine Mietnebenkostenabrechnung für den Rechnungszeitraum ${getPeriodFormatted()}.
-                Ich bitte um Überweisung einer etwaigen Nachzahlung an IBAN: DE84 7402 0100 6161 4961 81.
+                Ich bitte um Überweisung einer etwaigen Nachzahlung an IBAN: ${landlord.iban}.
             """
         FormOfAddress.FORMAL ->
             """
                 Guten Tag ${tenant.gender.address} ${tenant.lastName},
                 hiermit erhälten Sie Ihre Mietnebenkostenabrechnung für den Rechnungszeitraum ${getPeriodFormatted()}.
-                Ich bitte um Überweisung einer etwaigen Nachzahlung an IBAN: DE84 7402 0100 6161 4961 81.
+                Ich bitte um Überweisung einer etwaigen Nachzahlung an IBAN: ${landlord.iban}.
             """
     }.trimIndent()
 

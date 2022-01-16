@@ -30,8 +30,13 @@ class BillingController(
         year: Year,
         model: Model,
     ): String {
-        val billings = billingService.createBillings(year, true)
-        model["billings"] = billings
+        try {
+            val billings = billingService.createBillings(year, true)
+            model["billings"] = billings
+        } catch (e: Exception) {
+            model["billings"] = emptyList<Billing>()
+            model["error"] = e.message
+        }
         return "billing"
     }
 

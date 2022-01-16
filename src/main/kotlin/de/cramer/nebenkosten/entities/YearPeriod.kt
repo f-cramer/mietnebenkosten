@@ -1,0 +1,81 @@
+package de.cramer.nebenkosten.entities
+
+import java.time.Year
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
+import java.util.Locale
+import javax.persistence.Basic
+import javax.persistence.Column
+import javax.persistence.Embeddable
+import org.springframework.context.MessageSource
+
+@Embeddable
+data class YearPeriod(
+    @Column(name = "start") val start: Year,
+    @Basic(optional = true) @Column(name = "end", nullable = true) val end: Year? = null,
+) : Comparable<YearPeriod> {
+    init {
+        require(end == null || !start.isAfter(end)) { "start cannot be after end ($start > $end)" }
+    }
+
+    fun isOverlapping(other: YearPeriod): Boolean {
+        val oEnd = other.end
+        if (end == null && oEnd == null) {
+            return true
+        }
+
+        val oStart = other.start
+
+        return when {
+            end == null -> oEnd!! > start
+            oEnd == null -> end > oStart
+            oStart <= start -> start < oEnd
+            start <= oStart -> oStart < end
+            oStart < end -> end <= oEnd
+            start < oEnd -> oEnd <= end
+            else -> false
+        }
+    }
+
+    fun intersect(other: YearPeriod): YearPeriod {
+        if (!isOverlapping(other)) {
+            throw IllegalArgumentException()
+        }
+
+        val start = maxOf(start, other.start)
+        val end = if (end != null && other.end != null) {
+            minOf(end, other.end)
+        } else if (end != null && other.end == null) {
+            end
+        } else if (end == null && other.end != null) {
+            other.end
+        } else {
+            null
+        }
+        return YearPeriod(start, end)
+    }
+
+    override fun compareTo(other: YearPeriod): Int = COMPARATOR.compare(this, other)
+
+    override fun toString(): String = if (end == null) {
+        "$start - open"
+    } else {
+        "$start - $end"
+    }
+
+    fun format(messageSource: MessageSource, locale: Locale): String {
+        val formatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).withLocale(locale)
+        val startString = formatter.format(start)
+        return if (end != null) {
+            val endString = formatter.format(end)
+            messageSource.getMessage("LocalDatePeriod.closed", arrayOf(startString, endString), locale)
+        } else {
+            messageSource.getMessage("LocalDatePeriod.open", arrayOf(startString), locale)
+        }
+    }
+
+    companion object {
+
+        private val COMPARATOR = compareBy<YearPeriod> { it.start }.thenBy(nullsLast()) { it.end }
+    }
+}

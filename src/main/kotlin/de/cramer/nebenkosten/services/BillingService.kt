@@ -10,10 +10,13 @@ import de.cramer.nebenkosten.entities.BillingPeriod
 import de.cramer.nebenkosten.entities.GeneralInvoice
 import de.cramer.nebenkosten.entities.Invoice
 import de.cramer.nebenkosten.entities.InvoiceSplit
+import de.cramer.nebenkosten.entities.Landlord
 import de.cramer.nebenkosten.entities.LocalDatePeriod
 import de.cramer.nebenkosten.entities.Rental
 import de.cramer.nebenkosten.entities.RentalInvoice
 import de.cramer.nebenkosten.entities.Tenant
+import de.cramer.nebenkosten.exceptions.ConflictException
+import de.cramer.nebenkosten.exceptions.NoLandlordFoundException
 import org.springframework.stereotype.Service
 
 @Service
@@ -21,10 +24,14 @@ class BillingService(
     private val flatService: FlatService,
     private val rentalService: RentalService,
     private val invoiceService: InvoiceService,
+    private val landlordService: LandlordService,
 ) {
     fun createBillings(year: Year, rounded: Boolean = false): List<Billing> = createBillings(LocalDatePeriod.ofYear(year), rounded)
 
     fun createBillings(period: LocalDatePeriod, rounded: Boolean = false): List<Billing> {
+        val landlords = landlordService.getLandlordsByTimePeriod(period)
+
+        val landlord = landlords.minOrNull() ?: throw NoLandlordFoundException()
         val invoices = invoiceService.getInvoicesByTimePeriod(period)
         val billingPeriods = getBillingPeriods(period)
 
@@ -34,8 +41,8 @@ class BillingService(
             .asSequence()
             .map { it.toBilling(period.intersect(it.key.period)) }
             .groupBy { it.rental.tenant }
-            .map { it.value.toBilling(rounded) }
-            .addMissingTennants(billingPeriods, rounded)
+            .map { it.value.toBilling(landlord, rounded) }
+            .addMissingTennants(landlord, billingPeriods, rounded)
     }
 
     private fun getBillingPeriods(period: LocalDatePeriod): List<BillingPeriod> = flatService.getFlats().asSequence()
@@ -80,7 +87,8 @@ class BillingService(
         return LocalDatePeriod(start, end)
     }
 
-    private fun List<RentalBilling>.toBilling(rounded: Boolean): Billing = Billing(
+    private fun List<RentalBilling>.toBilling(landlord: Landlord, rounded: Boolean): Billing = Billing(
+        landlord = landlord,
         tenant = this[0].rental.tenant,
         period = asSequence()
             .map { it.period }
@@ -112,7 +120,7 @@ class BillingService(
         is RentalInvoice -> null
     }
 
-    private fun List<Billing>.addMissingTennants(billingPeriods: List<BillingPeriod>, rounded: Boolean): List<Billing> {
+    private fun List<Billing>.addMissingTennants(landlord: Landlord, billingPeriods: List<BillingPeriod>, rounded: Boolean): List<Billing> {
         fun Tenant.getPeriod() = billingPeriods.asSequence()
             .filter { this == it.rental.tenant }
             .map { it.period }
@@ -126,7 +134,7 @@ class BillingService(
         tenants
             .filterNot { tenant -> any { it.tenant == tenant } }
             .forEach {
-                allBillings += Billing(it, it.getPeriod(), emptyList())
+                allBillings += Billing(landlord, it, it.getPeriod(), emptyList())
                     .let { billing -> if (rounded) billing.round(2, RoundingMode.UP) else billing }
             }
 

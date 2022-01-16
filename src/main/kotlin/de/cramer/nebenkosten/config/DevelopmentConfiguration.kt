@@ -14,11 +14,13 @@ import de.cramer.nebenkosten.entities.SplitAlgorithmType
 import de.cramer.nebenkosten.forms.FlatForm
 import de.cramer.nebenkosten.forms.InvoiceForm
 import de.cramer.nebenkosten.forms.InvoiceType
+import de.cramer.nebenkosten.forms.LandlordForm
 import de.cramer.nebenkosten.forms.RentalForm
 import de.cramer.nebenkosten.forms.TenantForm
 import de.cramer.nebenkosten.services.BillingService
 import de.cramer.nebenkosten.services.FlatService
 import de.cramer.nebenkosten.services.InvoiceService
+import de.cramer.nebenkosten.services.LandlordService
 import de.cramer.nebenkosten.services.RentalService
 import de.cramer.nebenkosten.services.TenantService
 import org.springframework.boot.CommandLineRunner
@@ -32,12 +34,16 @@ class DevelopmentConfiguration {
 
     @Bean
     fun initializer(
+        landlordService: LandlordService,
         flatService: FlatService,
         tenantService: TenantService,
         rentalService: RentalService,
         invoiceService: InvoiceService,
         billingService: BillingService,
     ) = CommandLineRunner {
+        landlordService.createLandlord(LandlordForm("Torsten", "Schweitzer", "Hans-Grade-Allee", 86, "24875", "Havetoftloit", null, "DE81 5001 0517 8228 8538 63", Year.of(2014), Year.of(2016)))
+        landlordService.createLandlord(LandlordForm("Monika", "Bader", "Landsberger Allee", 79, "80076", "München", null, "DE84 7402 0100 6161 4961 81", Year.of(2017)))
+
         val erdgeschoss = flatService.createFlat(FlatForm("Erdgeschoss", 75))
         val og1 = flatService.createFlat(FlatForm("1. Obergeschoss", 75, 1))
         val dachgeschoss = flatService.createFlat(FlatForm("Dachgeschoss", 60, 2))

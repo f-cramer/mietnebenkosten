@@ -1,0 +1,112 @@
+<html lang="de" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="template.html :: head">
+    <title></title>
+</head>
+<body>
+<div class="container">
+    <nav th:replace="template.html :: navbar ('landlords')"></nav>
+
+    <form id="saveForm" method="post" th:action="${landlord != null} ? @{/landlords/edit/{landlordId}(landlordId=${landlord.id})} : @{/landlords/create}"></form>
+    <form id="deleteForm" method="post" th:action="${landlord != null} ? @{/landlords/delete/{landlordId}(landlordId=${landlord.id})} : ''"></form>
+
+    <div class="alert alert-danger" role="alert" th:if="${saveError}">
+        Beim Speichern des Vermieters ist ein Fehler aufgetreten.
+    </div>
+    <div class="alert alert-danger" role="alert" th:if="${deletionError}">
+        Beim Löschen des Vermieters ist ein Fehler aufgetreten. Der Vermieter wird bereits an anderer Stelle genutzt (beispielsweise in einem Mietvertrag)
+    </div>
+
+    <table class="table table-striped align-middle">
+        <tbody>
+        <tr>
+            <td>Vorname</td>
+            <td>
+                <input class="form-control" type="text" name="firstName" id="firstName" placeholder="Vorname" aria-label="Vorname" form="saveForm" required value="Monika" th:value="${landlord != null ? landlord.firstName : ''}">
+            </td>
+        </tr>
+        <tr>
+            <td>Nachname</td>
+            <td>
+                <input class="form-control" type="text" name="lastName" id="lastName" placeholder="Nachname" aria-label="Nachname" form="saveForm" required value="Bader" th:value="${landlord != null ? landlord.lastName : ''}">
+            </td>
+        </tr>
+        <tr>
+            <td>Straße</td>
+            <td>
+                <input class="form-control" type="text" name="street" id="street" placeholder="Straße" aria-label="Straße" form="saveForm" required value="Landsberger Allee" th:value="${landlord != null ? landlord.address.street : ''}">
+            </td>
+        </tr>
+        <tr>
+            <td>Hausnummer</td>
+            <td>
+                <input class="form-control" type="number" min="1" name="houseNumber" id="houseNumber" placeholder="Hausnummer" aria-label="Hausnummer" form="saveForm" required value="79" th:value="${landlord != null ? landlord.address.houseNumber : ''}">
+            </td>
+        </tr>
+        <tr>
+            <td>Postleitzahl</td>
+            <td>
+                <input class="form-control" type="text" name="zipCode" id="zipCode" placeholder="Postleitzahl" aria-label="Postleitzahl" form="saveForm" required value="80076" th:value="${landlord != null ? landlord.address.zipCode : ''}">
+            </td>
+        </tr>
+        <tr>
+            <td>Stadt / Gemeinde</td>
+            <td>
+                <input class="form-control" type="text" name="city" id="city" placeholder="Stadt / Gemeinde" aria-label="Stadt / Gemeinde" form="saveForm" required value="München" th:value="${landlord != null ? landlord.address.city : ''}">
+            </td>
+        </tr>
+		<tr>
+			<td>Land</td>
+			<td>
+				<input class="form-control" type="text" name="country" id="country" placeholder="Land" aria-label="Land" form="saveForm" value="" th:value="${landlord != null ? landlord.address.country : ''}">
+			</td>
+		</tr>
+		<tr>
+			<td>IBAN</td>
+			<td>
+				<input class="form-control" type="text" name="iban" id="iban" placeholder="IBAN" aria-label="IBAN" form="saveForm" value="" th:value="${landlord != null ? landlord.iban : ''}">
+			</td>
+		</tr>
+		<tr>
+			<td>Start</td>
+			<td>
+				<input class="form-control" type="number" min="2000" max="3000" name="start" id="start" placeholder="Startjahr" aria-label="Startjahr" form="saveForm" required value="2020" onchange="checkDates()" th:value="${landlord != null ? landlord.period.start : T(java.time.Year).now()}">
+			</td>
+		</tr>
+		<tr>
+			<td>Ende</td>
+			<td class="form-inline">
+				<input class="form-control" type="number" min="2000" max="3000" name="end" id="end" placeholder="Endjahr" aria-label="Endjahr" form="saveForm" value="2020" style="flex-grow: 1;" onchange="checkDates()" th:value="${landlord != null ? landlord.period.end : null}">
+				<button class="btn btn-outline-danger ml-2" type="button" onclick="clearEnd();checkDates()">Leeren</button>
+			</td>
+		</tr>
+        </tbody>
+    </table>
+
+    <div class="d-flex flex-row-reverse" style="gap: 0.5rem">
+        <button class="btn btn-outline-success my-2 my-sm-0 col-md-2" form="saveForm" type="submit">Speichern</button>
+        <button class="btn btn-outline-danger my-2 my-sm-0 col-md-2" form="deleteForm" type="submit" th:if="${landlord != null}">Löschen</button>
+    </div>
+
+	<script>
+		function checkDates() {
+			const start = document.getElementById("start");
+			const end = document.getElementById("end");
+
+			const startValue = start.value;
+			const endValue = end.value;
+
+			if (endValue && startValue > endValue) {
+				end.setCustomValidity("Ende kann nicht vor Start liegen")
+			} else {
+				end.setCustomValidity('')
+			}
+		}
+
+		function clearEnd() {
+			const end = document.getElementById("end");
+			end.value = null
+		}
+	</script>
+</div>
+</body>
+</html>

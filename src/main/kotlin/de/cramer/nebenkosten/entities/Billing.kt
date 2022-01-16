@@ -3,6 +3,7 @@ package de.cramer.nebenkosten.entities
 import java.math.RoundingMode
 
 data class Billing(
+    val landlord: Landlord,
     val tenant: Tenant,
     val period: LocalDatePeriod,
     val entries: List<BillingEntry>,
