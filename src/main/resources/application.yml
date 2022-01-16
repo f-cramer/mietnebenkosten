@@ -15,5 +15,8 @@ spring:
     visibility.setter: none
     visibility.is-getter: none
 
+  messages:
+    fallback-to-system-locale: false
+
 server:
   forward-headers-strategy: framework
