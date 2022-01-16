@@ -4,10 +4,12 @@ import java.time.LocalDate
 import de.cramer.nebenkosten.entities.Flat
 import de.cramer.nebenkosten.entities.LocalDatePeriod
 import de.cramer.nebenkosten.entities.Rental
+import de.cramer.nebenkosten.entities.Rental_
 import de.cramer.nebenkosten.exceptions.ConflictException
 import de.cramer.nebenkosten.exceptions.NotFoundException
 import de.cramer.nebenkosten.forms.RentalForm
 import de.cramer.nebenkosten.repositories.RentalRepository
+import org.springframework.data.jpa.domain.Specification
 import org.springframework.stereotype.Service
 
 @Service
@@ -17,7 +19,7 @@ class RentalService(
     private val tenantService: TenantService,
 ) {
     fun getRentals(includeClosed: Boolean = false): List<Rental> =
-        (if (includeClosed) repository.findAll() else repository.findByPeriodEndIsNullOrPeriodEndGreaterThanEqual(LocalDate.now()))
+        (if (includeClosed) repository.findAll() else repository.findAll(overlappingDatePeriodSpecification(LocalDatePeriod(LocalDate.now()))))
             .sorted()
 
     fun getRental(id: Long): Rental = repository.findById(id)
@@ -40,16 +42,14 @@ class RentalService(
         }
     }
 
-    fun getRentalsByPeriod(period: LocalDatePeriod): List<Rental> = if (period.end == null)
-        repository.findByOpenTimePeriod(period.start)
-    else
-        repository.findByTimePeriod(period.start, period.end)
+    fun getRentalsByPeriod(period: LocalDatePeriod): List<Rental> =
+        repository.findAll(overlappingDatePeriodSpecification(period))
 
 
-    fun getRentalsByFlatAndPeriod(flat: Flat, period: LocalDatePeriod): List<Rental> = if (period.end == null)
-        repository.findByFlatAndOpenTimePeriod(flat, period.start)
-    else
-        repository.findByFlatAndTimePeriod(flat, period.start, period.end)
+    fun getRentalsByFlatAndPeriod(flat: Flat, period: LocalDatePeriod): List<Rental> =
+        repository.findAll(overlappingDatePeriodSpecification(period).and { root, _, criteriaBuilder ->
+            criteriaBuilder.equal(root.get(Rental_.flat), flat)
+        })
 
     fun deleteRental(id: Long) {
         if (repository.existsById(id)) {
@@ -65,4 +65,6 @@ class RentalService(
         period = LocalDatePeriod(start, end),
         persons = persons
     )
+
+    private fun overlappingDatePeriodSpecification(period: LocalDatePeriod): Specification<Rental> = de.cramer.nebenkosten.extensions.overlappingDatePeriodSpecification(period) { it.get(Rental_.period) }
 }

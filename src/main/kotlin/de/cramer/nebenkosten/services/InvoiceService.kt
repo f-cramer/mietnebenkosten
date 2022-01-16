@@ -6,6 +6,7 @@ import de.cramer.nebenkosten.entities.ByAreaSplitAlgorithm
 import de.cramer.nebenkosten.entities.ByPersonsSplitAlgorithm
 import de.cramer.nebenkosten.entities.GeneralInvoice
 import de.cramer.nebenkosten.entities.Invoice
+import de.cramer.nebenkosten.entities.Invoice_
 import de.cramer.nebenkosten.entities.LinearSplitAlgorithm
 import de.cramer.nebenkosten.entities.LocalDatePeriod
 import de.cramer.nebenkosten.entities.MonetaryAmount
@@ -16,10 +17,12 @@ import de.cramer.nebenkosten.entities.SplitAlgorithmType.*
 import de.cramer.nebenkosten.exceptions.BadRequestException
 import de.cramer.nebenkosten.exceptions.ConflictException
 import de.cramer.nebenkosten.exceptions.NotFoundException
+import de.cramer.nebenkosten.extensions.overlappingDatePeriodSpecification
 import de.cramer.nebenkosten.forms.InvoiceForm
 import de.cramer.nebenkosten.forms.InvoiceType.*
 import de.cramer.nebenkosten.forms.InvoiceType.Rental
 import de.cramer.nebenkosten.repositories.InvoiceRepository
+import org.springframework.data.jpa.domain.Specification
 import org.springframework.stereotype.Service
 
 @Service
@@ -28,14 +31,11 @@ class InvoiceService(
     private val rentalService: RentalService,
 ) {
     fun getInvoices(includeClosed: Boolean = false): List<Invoice> =
-        (if (includeClosed) repository.findAll() else repository.findByOpenTimePeriod(LocalDate.now()))
+        (if (includeClosed) repository.findAll() else repository.findAll(overlappingDatePeriodSpecification(LocalDatePeriod(LocalDate.now()))))
             .sorted()
 
     fun getInvoicesByTimePeriod(period: LocalDatePeriod): List<Invoice> =
-        (if (period.end == null)
-            repository.findByOpenTimePeriod(period.start)
-        else
-            repository.findByTimePeriod(period.start, period.end))
+        repository.findAll(overlappingDatePeriodSpecification(period))
             .sorted()
 
     fun getInvoice(id: Long): Invoice =
@@ -97,4 +97,6 @@ class InvoiceService(
 
     private val InvoiceForm.monetaryAmount: MonetaryAmount
         get() = MonetaryAmount(priceInCent) / 100
+
+    private fun overlappingDatePeriodSpecification(period: LocalDatePeriod): Specification<Invoice> = overlappingDatePeriodSpecification(period) { it.get(Invoice_.period) }
 }

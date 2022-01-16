@@ -7,6 +7,7 @@ plugins {
     kotlin("plugin.spring") version "1.6.10"
     kotlin("plugin.jpa") version "1.6.10"
     kotlin("plugin.allopen") version "1.6.10"
+    kotlin("kapt") version "1.6.10"
 }
 
 group = "de.cramer.nebenkosten"
@@ -51,7 +52,8 @@ dependencies {
 
     developmentOnly("org.springframework.boot:spring-boot-devtools")
 
-    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+    kapt("org.springframework.boot:spring-boot-configuration-processor")
+    kapt("org.hibernate:hibernate-jpamodelgen")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
