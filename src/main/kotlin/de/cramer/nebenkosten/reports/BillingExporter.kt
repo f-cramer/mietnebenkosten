@@ -113,13 +113,13 @@ class BillingExporter(
         FormOfAddress.INFORMAL ->
             """
                 Hallo ${tenant.firstName},
-                hiermit erhälst du deine Mietnebenkostenabrechnung für den Rechnungszeitraum ${getPeriodFormatted()}.
+                hiermit erhältst du deine Mietnebenkostenabrechnung für den Rechnungszeitraum ${getPeriodFormatted()}.
                 Ich bitte um Überweisung einer etwaigen Nachzahlung an IBAN: ${landlord.iban}.
             """
         FormOfAddress.FORMAL ->
             """
                 Guten Tag ${tenant.gender.address} ${tenant.lastName},
-                hiermit erhälten Sie Ihre Mietnebenkostenabrechnung für den Rechnungszeitraum ${getPeriodFormatted()}.
+                hiermit erhalten Sie Ihre Mietnebenkostenabrechnung für den Rechnungszeitraum ${getPeriodFormatted()}.
                 Ich bitte um Überweisung einer etwaigen Nachzahlung an IBAN: ${landlord.iban}.
             """
     }.trimIndent()
