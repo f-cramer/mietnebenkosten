@@ -11,6 +11,7 @@ import de.cramer.nebenkosten.entities.Gender
 import de.cramer.nebenkosten.entities.LocalDatePeriod
 import de.cramer.nebenkosten.entities.Rental
 import de.cramer.nebenkosten.entities.SplitAlgorithmType
+import de.cramer.nebenkosten.entities.User
 import de.cramer.nebenkosten.forms.FlatForm
 import de.cramer.nebenkosten.forms.InvoiceForm
 import de.cramer.nebenkosten.forms.InvoiceType
@@ -23,6 +24,7 @@ import de.cramer.nebenkosten.services.InvoiceService
 import de.cramer.nebenkosten.services.LandlordService
 import de.cramer.nebenkosten.services.RentalService
 import de.cramer.nebenkosten.services.TenantService
+import de.cramer.nebenkosten.services.UserService
 import org.springframework.boot.CommandLineRunner
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Profile
@@ -34,6 +36,7 @@ class DevelopmentConfiguration {
 
     @Bean
     fun initializer(
+        userService: UserService,
         landlordService: LandlordService,
         flatService: FlatService,
         tenantService: TenantService,
@@ -41,6 +44,8 @@ class DevelopmentConfiguration {
         invoiceService: InvoiceService,
         billingService: BillingService,
     ) = CommandLineRunner {
+        userService.saveUser(User("test", "user123"))
+
         landlordService.createLandlord(LandlordForm("Torsten", "Schweitzer", "Hans-Grade-Allee", 86, "24875", "Havetoftloit", null, "DE81 5001 0517 8228 8538 63", Year.of(2014), Year.of(2016)))
         landlordService.createLandlord(LandlordForm("Monika", "Bader", "Landsberger Allee", 79, "80076", "München", null, "DE84 7402 0100 6161 4961 81", Year.of(2017)))
 

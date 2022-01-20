@@ -1,0 +1,45 @@
+<html lang="de" th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="template.html :: head">
+    <title></title>
+</head>
+<body>
+<div class="container">
+    <nav th:replace="template.html :: navbar ('login')"></nav>
+
+	<div class="alert alert-danger" role="alert" th:if="${error}">
+		Beim Login ist ein Fehler aufgetreten.
+	</div>
+
+    <form method="post" th:action="@{/login}">
+		<table class="table table-striped align-middle">
+			<tbody>
+			<tr>
+				<td>Benutzername</td>
+				<td>
+					<input type="text" class="form-control" id="username" name="username" aria-label="Benutzername" placeholder="Benutzername">
+				</td>
+			</tr>
+			<tr>
+				<td>Passwort</td>
+				<td>
+					<input type="password" class="form-control" id="password" name="password" aria-label="Passwort" placeholder="Passwort">
+				</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td>
+					<input type="checkbox" class="form-check-input" id="rememberme" name="remember-me">
+					<label class="form-check-label" for="rememberme">Benutzername speichern</label>
+				</td>
+			</tr>
+			</tbody>
+		</table>
+		<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+
+		<div class="d-flex flex-row-reverse" style="gap: 0.5rem">
+			<button type="submit" class="btn btn-success">Anmelden</button>
+		</div>
+	</form>
+</div>
+</body>
+</html>

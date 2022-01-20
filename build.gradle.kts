@@ -34,6 +34,7 @@ repositories {
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
     implementation("org.springframework.boot:spring-boot-starter-web")
 
@@ -42,6 +43,8 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 
     implementation("org.flywaydb:flyway-core")
+
+    implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity5")
 
     val jasperReportsVersion = "6.18.1"
     implementation("net.sf.jasperreports:jasperreports:$jasperReportsVersion")
@@ -56,6 +59,7 @@ dependencies {
     kapt("org.hibernate:hibernate-jpamodelgen")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.springframework.security:spring-security-test")
 }
 
 tasks.withType<Test> {
