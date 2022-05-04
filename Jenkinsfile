@@ -17,7 +17,7 @@ pipeline {
 			post {
 				always {
 					junit allowEmptyResults: true, testResults: '**/build/test-results/test/*.xml'
-					recordIssues enabledForFailure: true, tools: [spotBugs(pattern: 'build/reports/spotbugs/*.xml', reportEncoding: 'UTF-8', useRankAsPriority: true)]
+					recordIssues enabledForFailure: true, tools: [ktLint(pattern: 'build/reports/ktlint/**/*.xml', reportEncoding: 'UTF-8')]
 				}
 			}
 		}

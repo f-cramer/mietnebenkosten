@@ -13,13 +13,15 @@ import de.cramer.nebenkosten.entities.MonetaryAmount
 import de.cramer.nebenkosten.entities.RentalInvoice
 import de.cramer.nebenkosten.entities.SimplePersonFallback
 import de.cramer.nebenkosten.entities.SplitAlgorithm
-import de.cramer.nebenkosten.entities.SplitAlgorithmType.*
+import de.cramer.nebenkosten.entities.SplitAlgorithmType.ByArea
+import de.cramer.nebenkosten.entities.SplitAlgorithmType.ByPersons
+import de.cramer.nebenkosten.entities.SplitAlgorithmType.Linear
 import de.cramer.nebenkosten.exceptions.BadRequestException
 import de.cramer.nebenkosten.exceptions.ConflictException
 import de.cramer.nebenkosten.exceptions.NotFoundException
 import de.cramer.nebenkosten.extensions.overlappingDatePeriodSpecification
 import de.cramer.nebenkosten.forms.InvoiceForm
-import de.cramer.nebenkosten.forms.InvoiceType.*
+import de.cramer.nebenkosten.forms.InvoiceType.General
 import de.cramer.nebenkosten.forms.InvoiceType.Rental
 import de.cramer.nebenkosten.repositories.InvoiceRepository
 import org.springframework.data.jpa.domain.Specification

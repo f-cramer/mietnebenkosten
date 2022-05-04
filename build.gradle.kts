@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 
 plugins {
     id("org.springframework.boot") version "2.6.7"
@@ -8,6 +9,8 @@ plugins {
     kotlin("plugin.jpa") version "1.6.21"
     kotlin("plugin.allopen") version "1.6.21"
     kotlin("kapt") version "1.6.21"
+
+    id("org.jlleitschuh.gradle.ktlint") version "10.3.0"
 }
 
 group = "de.cramer.nebenkosten"
@@ -75,4 +78,15 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Wrapper> {
     gradleVersion = "7.4.2"
+}
+
+configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
+    disabledRules.set(setOf("import-ordering", "indent", "experimental:annotation"))
+    enableExperimentalRules.set(true)
+
+    reporters {
+        reporter(ReporterType.PLAIN)
+        reporter(ReporterType.HTML)
+        reporter(ReporterType.CHECKSTYLE)
+    }
 }

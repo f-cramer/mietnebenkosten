@@ -3,7 +3,10 @@ package de.cramer.nebenkosten.entities
 import java.math.BigDecimal
 import java.math.BigInteger
 import java.math.RoundingMode
-import java.math.RoundingMode.*
+import java.math.RoundingMode.CEILING
+import java.math.RoundingMode.DOWN
+import java.math.RoundingMode.FLOOR
+import java.math.RoundingMode.UP
 import java.text.NumberFormat
 import java.util.Locale
 import javax.persistence.Column

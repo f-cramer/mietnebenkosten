@@ -15,7 +15,6 @@ import de.cramer.nebenkosten.entities.LocalDatePeriod
 import de.cramer.nebenkosten.entities.Rental
 import de.cramer.nebenkosten.entities.RentalInvoice
 import de.cramer.nebenkosten.entities.Tenant
-import de.cramer.nebenkosten.exceptions.ConflictException
 import de.cramer.nebenkosten.exceptions.NoLandlordFoundException
 import org.springframework.stereotype.Service
 

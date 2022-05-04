@@ -19,13 +19,14 @@ data class SimplePersonFallback(
 
     override fun getTotalFallbackTime(invoice: Invoice, billingPeriods: Collection<BillingPeriod>): BigDecimal {
         val totalLengthInMonths = invoice.period.getLengthInMonths()
-        return (persons * billingPeriods
-            .groupBy { it.rental.flat }
-            .values
-            .asSequence()
-            .map { b -> totalLengthInMonths - b.sumOf { it.period.getLengthInMonths() } }
-            .filter { it > 0 }
-            .sum())
-            .toInternalBigDecimal()
+        return (
+                persons * billingPeriods
+                    .groupBy { it.rental.flat }
+                    .values
+                    .asSequence()
+                    .map { b -> totalLengthInMonths - b.sumOf { it.period.getLengthInMonths() } }
+                    .filter { it > 0 }
+                    .sum()
+                ).toInternalBigDecimal()
     }
 }

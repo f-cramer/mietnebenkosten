@@ -15,14 +15,17 @@ import de.cramer.nebenkosten.entities.FormOfAddress
 import de.cramer.nebenkosten.entities.Gender
 import de.cramer.nebenkosten.entities.GeneralInvoice
 import de.cramer.nebenkosten.entities.RentalInvoice
-import net.sf.jasperreports.engine.JRParameter.*
+import net.sf.jasperreports.engine.JRParameter.REPORT_LOCALE
+import net.sf.jasperreports.engine.JRParameter.REPORT_RESOURCE_BUNDLE
 import net.sf.jasperreports.engine.JasperCompileManager
 import net.sf.jasperreports.engine.JasperFillManager
 import net.sf.jasperreports.engine.JasperPrint
 import net.sf.jasperreports.engine.JasperReport
 import net.sf.jasperreports.engine.data.JsonDataSource
 import net.sf.jasperreports.engine.export.JRPdfExporter
-import net.sf.jasperreports.engine.query.JsonQueryExecuterFactory.*
+import net.sf.jasperreports.engine.query.JsonQueryExecuterFactory.JSON_DATE_PATTERN
+import net.sf.jasperreports.engine.query.JsonQueryExecuterFactory.JSON_LOCALE
+import net.sf.jasperreports.engine.query.JsonQueryExecuterFactory.JSON_NUMBER_PATTERN
 import net.sf.jasperreports.export.SimpleExporterInput
 import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput
 import org.springframework.context.MessageSource
@@ -79,7 +82,7 @@ class BillingExporter(
     private fun addDefaultParameters(parameters: MutableMap<String, Any>, locale: Locale) {
         parameters.putIfAbsent(REPORT_LOCALE, locale)
         parameters.putIfAbsent(JSON_LOCALE, Locale.US)
-        parameters.putIfAbsent(JSON_DATE_PATTERN, "yyyy-MM-dd HH:mm:ss") //$NON-NLS-1$
+        parameters.putIfAbsent(JSON_DATE_PATTERN, "yyyy-MM-dd HH:mm:ss")
         parameters.putIfAbsent(REPORT_RESOURCE_BUNDLE, SpringResourceBundle(locale))
     }
 

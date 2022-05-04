@@ -68,8 +68,7 @@ class InvoiceController(
 
     @PostMapping("create")
     fun createInvoice(
-        @SessionAttribute
-        @RequestParam("description") description: String,
+        @SessionAttribute @RequestParam("description") description: String,
         @RequestParam("price") price: Long,
         @RequestParam("type") type: InvoiceType,
         @RequestParam("splitAlgorithm", required = false) splitAlgorithmType: SplitAlgorithmType?,

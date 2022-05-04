@@ -42,9 +42,7 @@ class RentalController(
             .map { RentalsByFlat(it.key, it.value) }
             .onEach { flats -= it.flat }
             .toList().asSequence() // evaluate onEach eagerly
-            .plus(
-                flats.map { RentalsByFlat(it, emptyList()) }
-            )
+            .plus(flats.map { RentalsByFlat(it, emptyList()) })
             .sorted()
             .toList()
         model["rentalsByFlat"] = rentalsByFlat

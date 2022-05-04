@@ -45,11 +45,12 @@ class RentalService(
     fun getRentalsByPeriod(period: LocalDatePeriod): List<Rental> =
         repository.findAll(overlappingDatePeriodSpecification(period))
 
-
     fun getRentalsByFlatAndPeriod(flat: Flat, period: LocalDatePeriod): List<Rental> =
-        repository.findAll(overlappingDatePeriodSpecification(period).and { root, _, criteriaBuilder ->
-            criteriaBuilder.equal(root.get(Rental_.flat), flat)
-        })
+        repository.findAll(
+            overlappingDatePeriodSpecification(period).and { root, _, criteriaBuilder ->
+                criteriaBuilder.equal(root.get(Rental_.flat), flat)
+            }
+        )
 
     fun deleteRental(id: Long) {
         if (repository.existsById(id)) {

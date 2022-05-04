@@ -1,8 +1,6 @@
 package de.cramer.nebenkosten.forms
 
 import java.time.Year
-import de.cramer.nebenkosten.entities.FormOfAddress
-import de.cramer.nebenkosten.entities.Gender
 
 data class LandlordForm(
     val firstName: String,

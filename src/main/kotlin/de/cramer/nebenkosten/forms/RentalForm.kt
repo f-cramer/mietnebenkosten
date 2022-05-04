@@ -12,7 +12,7 @@ class RentalForm(
 ) {
     fun validate() {
         if (end != null && start > end) {
-            throw BadRequestException();
+            throw BadRequestException()
         }
     }
 }
