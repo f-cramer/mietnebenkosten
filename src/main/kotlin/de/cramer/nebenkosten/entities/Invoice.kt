@@ -12,9 +12,10 @@ import javax.persistence.Inheritance
 import javax.persistence.InheritanceType
 import javax.persistence.JoinColumn
 import javax.persistence.ManyToOne
+import javax.persistence.MappedSuperclass
 import javax.persistence.Table
 
-@Entity
+@MappedSuperclass
 @Table(name = "invoices")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "type")
