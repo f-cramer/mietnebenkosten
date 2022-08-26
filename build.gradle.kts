@@ -49,13 +49,12 @@ dependencies {
 
     implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity5")
 
-    val jasperReportsVersion = "6.19.1"
+    val jasperReportsVersion = "6.20.0"
     implementation("net.sf.jasperreports:jasperreports:$jasperReportsVersion")
     implementation("net.sf.jasperreports:jasperreports-functions:$jasperReportsVersion")
 
     // cve mitigation
     implementation("org.apache.commons:commons-collections4:4.4")
-    implementation("org.bouncycastle:bcprov-jdk15on:1.70")
 
     runtimeOnly("com.h2database:h2")
     runtimeOnly("org.postgresql:postgresql")
