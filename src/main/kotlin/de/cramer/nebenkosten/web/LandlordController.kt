@@ -1,6 +1,5 @@
 package de.cramer.nebenkosten.web
 
-import java.time.Year
 import de.cramer.nebenkosten.extensions.set
 import de.cramer.nebenkosten.forms.LandlordForm
 import de.cramer.nebenkosten.services.LandlordService
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.servlet.mvc.support.RedirectAttributes
+import java.time.Year
 
 @Controller
 @RequestMapping("landlords")

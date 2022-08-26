@@ -86,7 +86,7 @@ tasks.withType<Wrapper> {
 }
 
 ktlint {
-    disabledRules.set(setOf("import-ordering", "indent", "experimental:annotation", "experimental:trailing-comma"))
+    disabledRules.set(setOf("indent", "experimental:annotation", "experimental:trailing-comma"))
     enableExperimentalRules.set(true)
 
     reporters {

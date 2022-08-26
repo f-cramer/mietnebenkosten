@@ -1,10 +1,10 @@
 package de.cramer.nebenkosten.entities
 
-import java.math.BigDecimal
 import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.fasterxml.jackson.annotation.JsonTypeInfo
 import de.cramer.nebenkosten.extensions.getLengthInMonths
 import de.cramer.nebenkosten.extensions.toInternalBigDecimal
+import java.math.BigDecimal
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.MINIMAL_CLASS, include = JsonTypeInfo.As.PROPERTY)
 @JsonSubTypes(JsonSubTypes.Type(SimplePersonFallback::class))

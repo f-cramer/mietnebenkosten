@@ -1,6 +1,5 @@
 package de.cramer.nebenkosten.services
 
-import java.time.Year
 import de.cramer.nebenkosten.entities.Address
 import de.cramer.nebenkosten.entities.Landlord
 import de.cramer.nebenkosten.entities.Landlord_
@@ -13,6 +12,7 @@ import de.cramer.nebenkosten.forms.LandlordForm
 import de.cramer.nebenkosten.repositories.LandlordRepository
 import org.springframework.data.jpa.domain.Specification
 import org.springframework.stereotype.Service
+import java.time.Year
 
 @Service
 class LandlordService(

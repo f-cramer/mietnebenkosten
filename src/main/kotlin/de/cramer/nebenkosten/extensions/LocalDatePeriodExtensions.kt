@@ -1,12 +1,12 @@
 package de.cramer.nebenkosten.extensions
 
+import de.cramer.nebenkosten.entities.LocalDatePeriod
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.temporal.ChronoUnit
 import java.time.temporal.TemporalAdjusters
 import kotlin.math.ceil
 import kotlin.math.max
-import de.cramer.nebenkosten.entities.LocalDatePeriod
 
 fun LocalDatePeriod.getLengthInMonths(): Double {
     val end = this.end ?: LocalDate.now()

@@ -1,13 +1,13 @@
 package de.cramer.nebenkosten.extensions
 
-import javax.persistence.criteria.CriteriaBuilder
-import javax.persistence.criteria.Path
-import javax.persistence.criteria.Predicate
 import de.cramer.nebenkosten.entities.LocalDatePeriod
 import de.cramer.nebenkosten.entities.LocalDatePeriod_
 import de.cramer.nebenkosten.entities.YearPeriod
 import de.cramer.nebenkosten.entities.YearPeriod_
 import org.springframework.data.jpa.domain.Specification
+import javax.persistence.criteria.CriteriaBuilder
+import javax.persistence.criteria.Path
+import javax.persistence.criteria.Predicate
 
 inline fun <T> overlappingDatePeriodSpecification(
     period: LocalDatePeriod,

@@ -1,10 +1,10 @@
 package de.cramer.nebenkosten.jpa.converter
 
-import javax.persistence.AttributeConverter
-import javax.persistence.Converter
 import com.fasterxml.jackson.databind.ObjectMapper
 import de.cramer.nebenkosten.entities.SplitAlgorithm
 import org.springframework.stereotype.Component
+import javax.persistence.AttributeConverter
+import javax.persistence.Converter
 
 @Component
 @Converter(autoApply = true)

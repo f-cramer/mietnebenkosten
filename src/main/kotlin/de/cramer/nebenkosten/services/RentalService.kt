@@ -1,6 +1,5 @@
 package de.cramer.nebenkosten.services
 
-import java.time.LocalDate
 import de.cramer.nebenkosten.entities.Flat
 import de.cramer.nebenkosten.entities.LocalDatePeriod
 import de.cramer.nebenkosten.entities.Rental
@@ -11,6 +10,7 @@ import de.cramer.nebenkosten.forms.RentalForm
 import de.cramer.nebenkosten.repositories.RentalRepository
 import org.springframework.data.jpa.domain.Specification
 import org.springframework.stereotype.Service
+import java.time.LocalDate
 
 @Service
 class RentalService(

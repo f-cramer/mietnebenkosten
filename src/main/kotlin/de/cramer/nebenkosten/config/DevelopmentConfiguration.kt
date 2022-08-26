@@ -1,11 +1,5 @@
 package de.cramer.nebenkosten.config
 
-import java.math.BigInteger
-import java.time.LocalDate
-import java.time.Month
-import java.time.Year
-import java.time.YearMonth
-import kotlin.math.roundToLong
 import de.cramer.nebenkosten.entities.FormOfAddress
 import de.cramer.nebenkosten.entities.Gender
 import de.cramer.nebenkosten.entities.LocalDatePeriod
@@ -29,6 +23,12 @@ import org.springframework.boot.CommandLineRunner
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Profile
 import org.springframework.stereotype.Component
+import java.math.BigInteger
+import java.time.LocalDate
+import java.time.Month
+import java.time.Year
+import java.time.YearMonth
+import kotlin.math.roundToLong
 
 @Component
 @Profile("development")

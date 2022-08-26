@@ -1,9 +1,5 @@
 package de.cramer.nebenkosten.services
 
-import java.math.BigDecimal
-import java.math.RoundingMode
-import java.time.LocalDate
-import java.time.Year
 import de.cramer.nebenkosten.entities.Billing
 import de.cramer.nebenkosten.entities.BillingEntry
 import de.cramer.nebenkosten.entities.BillingPeriod
@@ -17,6 +13,10 @@ import de.cramer.nebenkosten.entities.RentalInvoice
 import de.cramer.nebenkosten.entities.Tenant
 import de.cramer.nebenkosten.exceptions.NoLandlordFoundException
 import org.springframework.stereotype.Service
+import java.math.BigDecimal
+import java.math.RoundingMode
+import java.time.LocalDate
+import java.time.Year
 
 @Service
 class BillingService(

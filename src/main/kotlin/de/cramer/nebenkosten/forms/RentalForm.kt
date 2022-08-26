@@ -1,7 +1,7 @@
 package de.cramer.nebenkosten.forms
 
-import java.time.LocalDate
 import de.cramer.nebenkosten.exceptions.BadRequestException
+import java.time.LocalDate
 
 class RentalForm(
     val flatName: String,

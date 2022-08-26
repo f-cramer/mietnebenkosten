@@ -1,7 +1,5 @@
 package de.cramer.nebenkosten.services
 
-import de.cramer.nebenkosten.entities.Rental as RentalEntity
-import java.time.LocalDate
 import de.cramer.nebenkosten.entities.ByAreaSplitAlgorithm
 import de.cramer.nebenkosten.entities.ByPersonsSplitAlgorithm
 import de.cramer.nebenkosten.entities.GeneralInvoice
@@ -26,6 +24,8 @@ import de.cramer.nebenkosten.forms.InvoiceType.Rental
 import de.cramer.nebenkosten.repositories.InvoiceRepository
 import org.springframework.data.jpa.domain.Specification
 import org.springframework.stereotype.Service
+import java.time.LocalDate
+import de.cramer.nebenkosten.entities.Rental as RentalEntity
 
 @Service
 class InvoiceService(
