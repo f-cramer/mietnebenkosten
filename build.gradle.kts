@@ -2,20 +2,22 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 
 plugins {
-    id("org.springframework.boot") version "2.7.4"
-    id("io.spring.dependency-management") version "1.0.14.RELEASE"
-    kotlin("jvm") version "1.7.10"
-    kotlin("plugin.spring") version "1.7.10"
-    kotlin("plugin.jpa") version "1.7.10"
-    kotlin("plugin.allopen") version "1.7.10"
-    kotlin("kapt") version "1.7.10"
+    id("org.springframework.boot")
+    id("io.spring.dependency-management")
+    kotlin("jvm")
+    kotlin("plugin.spring")
+    kotlin("plugin.jpa")
+    kotlin("plugin.allopen")
+    kotlin("kapt")
 
     id("org.jlleitschuh.gradle.ktlint") version "11.0.0"
 }
 
 group = "de.cramer.nebenkosten"
-version = "0.0.1-SNAPSHOT"
-java.sourceCompatibility = JavaVersion.VERSION_17
+version = properties["VERSION"] as String
+java.sourceCompatibility = JavaVersion.toVersion(properties["JAVA_VERSION"] as String)
+
+ext["kotlin.version"] = properties["KOTLIN_VERSION"] as String
 
 allOpen {
     annotations("javax.persistence.Entity", "javax.persistence.MappedSuperclass")
@@ -49,7 +51,7 @@ dependencies {
 
     implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity5")
 
-    val jasperReportsVersion = "6.20.0"
+    val jasperReportsVersion = properties["JASPERREPORTS_VERSION"] as String
     implementation("net.sf.jasperreports:jasperreports:$jasperReportsVersion")
     implementation("net.sf.jasperreports:jasperreports-functions:$jasperReportsVersion")
 
@@ -75,7 +77,7 @@ tasks.withType<Test> {
 tasks.withType<KotlinCompile> {
     kotlinOptions {
         freeCompilerArgs = listOf("-Xjsr305=strict")
-        jvmTarget = "17"
+        jvmTarget = properties["JAVA_VERSION"] as String
         allWarningsAsErrors = true
     }
 }
