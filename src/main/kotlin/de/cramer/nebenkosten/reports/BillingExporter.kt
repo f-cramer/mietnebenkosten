@@ -149,6 +149,7 @@ class BillingExporter(
             splitUnit = when (invoice) {
                 is GeneralInvoice -> invoice.splitAlgorithm.unit
                 is RentalInvoice -> ""
+                else -> error("unsupported invoice type $invoice")
             },
             totalValue = totalValue,
             totalPrice = totalValue.let { invoice.price.amount },

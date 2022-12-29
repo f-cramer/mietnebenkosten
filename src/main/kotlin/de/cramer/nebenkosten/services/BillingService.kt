@@ -52,6 +52,7 @@ class BillingService(
     private fun Invoice.splitByRental(billingPeriods: List<BillingPeriod>): List<InvoiceSplit> = when (this) {
         is GeneralInvoice -> splitAlgorithm.split(this, billingPeriods)
         is RentalInvoice -> listOf(InvoiceSplit(this, BillingPeriod(rental, period.intersect(rental.period)), null, null, price))
+        else -> error("unsupported invoice type $this")
     }
 
     private fun Map.Entry<Rental, List<InvoiceSplit>>.toBilling(period: LocalDatePeriod): RentalBilling = RentalBilling(
@@ -117,6 +118,7 @@ class BillingService(
     private fun Invoice.mergeValues(billingEntries: List<BillingEntry>): BigDecimal? = when (this) {
         is GeneralInvoice -> splitAlgorithm.mergeValues(billingEntries.mapNotNull { it.proportionalValue })
         is RentalInvoice -> null
+        else -> error("unsupported invoice type $this")
     }
 
     private fun List<Billing>.addMissingTennants(landlord: Landlord, billingPeriods: List<BillingPeriod>, rounded: Boolean): List<Billing> {

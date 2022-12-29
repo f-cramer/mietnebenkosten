@@ -34,6 +34,7 @@ class BillingController(
             val billings = billingService.createBillings(year, true)
             model["billings"] = billings
         } catch (e: Exception) {
+            e.printStackTrace()
             model["billings"] = emptyList<Billing>()
             model["error"] = e.message
         }
