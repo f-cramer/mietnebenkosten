@@ -33,6 +33,8 @@ class RentalController(
     @GetMapping
     fun getRentals(
         year: Year,
+        @RequestParam(name = "error", required = false) error: String?,
+        @RequestParam(name = "errorMessage", required = false) errorMessage: String?,
         model: Model,
     ): String {
         val flats = flatService.getFlats().toMutableList()
@@ -46,6 +48,8 @@ class RentalController(
             .sorted()
             .toList()
         model["rentalsByFlat"] = rentalsByFlat
+        model["error"] = error
+        model["errorMessage"] = errorMessage
         return "rentals"
     }
 

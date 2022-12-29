@@ -5,6 +5,12 @@
 <body>
 <div class="container">
     <nav th:replace="template.html :: navbar ('rentals')"></nav>
+
+	<div class="row alert alert-danger" role="alert" th:if="${error}">
+		<object th:if="${error} == 'create'" th:remove="tag">Beim Anlegen des Mietvertrags ist ein Fehler aufgetreten.</object>
+		<object th:unless="${error} == 'create'" th:remove="tag">Ein unbekannter Fehler ist aufgetreten</object>
+	</div>
+
     <div class="row list-group list-group-striped mb-3" th:each="flatWithRentals : ${rentalsByFlat}">
         <span class="list-group-item list-group-item-action list-group-item-primary" th:text="${flatWithRentals.flat}">Test-Wohnung</span>
         <a class="list-group-item list-group-item-action"
