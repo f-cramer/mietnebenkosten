@@ -1,5 +1,6 @@
 package de.cramer.nebenkosten.config.year
 
+import jakarta.servlet.http.HttpServletRequest
 import org.springframework.core.MethodParameter
 import org.springframework.stereotype.Component
 import org.springframework.web.bind.support.WebDataBinderFactory
@@ -8,7 +9,6 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver
 import org.springframework.web.method.support.ModelAndViewContainer
 import org.springframework.web.util.WebUtils
 import java.time.Year
-import javax.servlet.http.HttpServletRequest
 import kotlin.reflect.jvm.jvmName
 
 @Component

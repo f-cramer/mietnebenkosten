@@ -1,12 +1,12 @@
 package de.cramer.nebenkosten.config.year
 
 import de.cramer.nebenkosten.exceptions.BadRequestException
+import jakarta.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletResponse
 import org.springframework.stereotype.Component
 import org.springframework.web.servlet.HandlerInterceptor
 import org.springframework.web.util.WebUtils
 import java.time.Year
-import javax.servlet.http.HttpServletRequest
-import javax.servlet.http.HttpServletResponse
 
 @Component
 class YearChangeInterceptor : HandlerInterceptor {

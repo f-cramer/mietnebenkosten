@@ -1,8 +1,8 @@
 package de.cramer.nebenkosten.extensions
 
-import javax.persistence.criteria.CriteriaBuilder
-import javax.persistence.criteria.Expression
-import javax.persistence.criteria.Predicate
+import jakarta.persistence.criteria.CriteriaBuilder
+import jakarta.persistence.criteria.Expression
+import jakarta.persistence.criteria.Predicate
 
 fun <X : Comparable<X>> CriteriaBuilder.lessThanOrEqualTo(x: X, y: Expression<out X>): Predicate =
     greaterThanOrEqualTo(y, x)

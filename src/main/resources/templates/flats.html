@@ -1,10 +1,10 @@
 <html lang="de" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="template.html :: head">
+<head th:replace="~{template.html :: head}">
     <title></title>
 </head>
 <body>
 <div class="container">
-    <nav th:replace="template.html :: navbar ('flats')"></nav>
+    <nav th:replace="~{template.html :: navbar ('flats')}"></nav>
     <div class="row list-group list-group-striped">
         <a class="list-group-item list-group-item-action" th:each="flat: ${flats}" th:text="${flat}" th:href="@{/flats/show/{flatName}(flatName=${flat.name})}">Test-Wohnung</a>
         <a class="list-group-item list-group-item-action list-group-item-success" th:href="@{/flats/create}">

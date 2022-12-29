@@ -1,11 +1,11 @@
 <html lang="de" th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="template.html :: head">
+<head th:replace="~{template.html :: head}">
     <title></title>
 </head>
 <body>
 <!--/*@thymesVar id="invoice" type="de.cramer.nebenkosten.entities.Invoice"*/-->
 <div class="container">
-    <nav th:replace="template.html :: navbar ('invoices')"></nav>
+    <nav th:replace="~{template.html :: navbar ('invoices')}"></nav>
 
     <form id="saveForm" method="post" th:action="${invoice != null} ? @{/invoices/edit/{invoiceId}(invoiceId=${invoice.id})} : @{/invoices/create}"></form>
     <form id="deleteForm" method="post" th:action="${invoice != null} ? @{/invoices/delete/{invoiceId}(invoiceId=${invoice.id})} : ''"></form>

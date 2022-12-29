@@ -1,9 +1,9 @@
 package de.cramer.nebenkosten.jpa.converter
 
+import jakarta.persistence.AttributeConverter
+import jakarta.persistence.Converter
 import org.springframework.stereotype.Component
 import java.time.Year
-import javax.persistence.AttributeConverter
-import javax.persistence.Converter
 
 @Component
 @Converter(autoApply = true)

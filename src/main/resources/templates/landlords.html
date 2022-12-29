@@ -1,10 +1,10 @@
 <html lang="de" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="template.html :: head">
+<head th:replace="~{template.html :: head}">
     <title></title>
 </head>
 <body>
 <div class="container">
-    <nav th:replace="template.html :: navbar ('landlords')"></nav>
+    <nav th:replace="~{template.html :: navbar ('landlords')}"></nav>
     <div class="row list-group list-group-striped">
         <a class="list-group-item list-group-item-action" th:each="landlord: ${landlords}" th:text="${landlord}" th:href="@{/landlords/show/{landlordId}(landlordId=${landlord.id})}">Test-Vermieter</a>
         <a class="list-group-item list-group-item-action list-group-item-success" th:href="@{/landlords/create}">

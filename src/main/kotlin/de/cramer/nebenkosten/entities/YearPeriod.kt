@@ -1,13 +1,13 @@
 package de.cramer.nebenkosten.entities
 
+import jakarta.persistence.Basic
+import jakarta.persistence.Column
+import jakarta.persistence.Embeddable
 import org.springframework.context.MessageSource
 import java.time.Year
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import java.util.Locale
-import javax.persistence.Basic
-import javax.persistence.Column
-import javax.persistence.Embeddable
 
 @Embeddable
 data class YearPeriod(

@@ -49,7 +49,7 @@ dependencies {
 
     implementation("org.flywaydb:flyway-core")
 
-    implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity5")
+    implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity6")
 
     val jasperReportsVersion = properties["JASPERREPORTS_VERSION"] as String
     implementation("net.sf.jasperreports:jasperreports:$jasperReportsVersion")
@@ -64,7 +64,7 @@ dependencies {
     developmentOnly("org.springframework.boot:spring-boot-devtools")
 
     kapt("org.springframework.boot:spring-boot-configuration-processor")
-    kapt("org.hibernate:hibernate-jpamodelgen")
+    kapt("org.hibernate.orm:hibernate-jpamodelgen")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.security:spring-security-test")

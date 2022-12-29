@@ -7,6 +7,7 @@ import de.cramer.nebenkosten.entities.FormOfAddress
 import de.cramer.nebenkosten.entities.Gender
 import de.cramer.nebenkosten.entities.GeneralInvoice
 import de.cramer.nebenkosten.entities.RentalInvoice
+import jakarta.annotation.PostConstruct
 import net.sf.jasperreports.engine.JRParameter.REPORT_LOCALE
 import net.sf.jasperreports.engine.JRParameter.REPORT_RESOURCE_BUNDLE
 import net.sf.jasperreports.engine.JasperCompileManager
@@ -30,7 +31,6 @@ import java.util.Collections
 import java.util.Enumeration
 import java.util.Locale
 import java.util.ResourceBundle
-import javax.annotation.PostConstruct
 
 @Service
 class BillingExporter(

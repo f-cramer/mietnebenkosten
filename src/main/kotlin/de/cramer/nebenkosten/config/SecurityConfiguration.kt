@@ -19,8 +19,8 @@ class SecurityConfiguration(
     fun configure(http: HttpSecurity): SecurityFilterChain {
         http.httpBasic().disable()
 
-        http.authorizeRequests()
-            .antMatchers("/css/**").permitAll()
+        http.authorizeHttpRequests()
+            .requestMatchers("/css/**").permitAll()
             .requestMatchers(EndpointRequest.toAnyEndpoint()).permitAll()
             .anyRequest().authenticated()
 
@@ -40,7 +40,7 @@ class SecurityConfiguration(
     fun passwordEncoder(): PasswordEncoder {
         return DelegatingPasswordEncoder(
             "argon2",
-            mapOf("argon2" to Argon2PasswordEncoder())
+            mapOf("argon2" to Argon2PasswordEncoder.defaultsForSpringSecurity_v5_8())
         ).apply {
             @Suppress("DEPRECATION", "RemoveRedundantQualifierName")
             setDefaultPasswordEncoderForMatches(org.springframework.security.crypto.password.NoOpPasswordEncoder.getInstance())

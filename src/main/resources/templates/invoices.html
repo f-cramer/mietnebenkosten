@@ -1,10 +1,10 @@
 <html lang="de" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="template.html :: head">
+<head th:replace="~{template.html :: head}">
     <title></title>
 </head>
 <body>
 <div class="container">
-    <nav th:replace="template.html :: navbar ('invoices')"></nav>
+    <nav th:replace="~{template.html :: navbar ('invoices')}"></nav>
     <div class="row list-group list-group-striped">
         <a class="list-group-item list-group-item-action"
            th:each="invoice: ${invoices}"

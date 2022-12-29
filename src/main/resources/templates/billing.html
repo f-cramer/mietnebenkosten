@@ -1,10 +1,10 @@
 <html lang="de" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="template.html :: head">
+<head th:replace="~{template.html :: head}">
     <title></title>
 </head>
 <body>
 <div class="container">
-    <nav th:replace="template.html :: navbar ('billings')"></nav>
+    <nav th:replace="~{template.html :: navbar ('billings')}"></nav>
 
 	<div class="alert alert-danger" role="alert" th:if="${error}">
 		Beim Erstellen der Abrechnung ist ein Fehler aufgetreten. Die Fehlermeldung lautet:

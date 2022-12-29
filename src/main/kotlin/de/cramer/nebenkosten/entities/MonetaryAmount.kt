@@ -3,6 +3,8 @@ package de.cramer.nebenkosten.entities
 import de.cramer.nebenkosten.extensions.ONE
 import de.cramer.nebenkosten.extensions.ZERO
 import de.cramer.nebenkosten.extensions.toInternalBigDecimal
+import jakarta.persistence.Column
+import jakarta.persistence.Embeddable
 import java.math.BigDecimal
 import java.math.BigInteger
 import java.math.RoundingMode
@@ -12,8 +14,6 @@ import java.math.RoundingMode.FLOOR
 import java.math.RoundingMode.UP
 import java.text.NumberFormat
 import java.util.Locale
-import javax.persistence.Column
-import javax.persistence.Embeddable
 import kotlin.math.pow
 
 @Embeddable

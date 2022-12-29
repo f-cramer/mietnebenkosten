@@ -1,10 +1,10 @@
 <html lang="de" th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="template.html :: head">
+<head th:replace="~{template.html :: head}">
     <title></title>
 </head>
 <body>
 <div class="container">
-    <nav th:replace="template.html :: navbar ('login')"></nav>
+    <nav th:replace="~{template.html :: navbar ('login')}"></nav>
 
 	<div class="alert alert-danger" role="alert" th:if="${error}">
 		Beim Login ist ein Fehler aufgetreten.

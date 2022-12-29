@@ -1,10 +1,10 @@
 <html lang="de" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="template.html :: head">
+<head th:replace="~{template.html :: head}">
     <title></title>
 </head>
 <body>
 <div class="container">
-    <nav th:replace="template.html :: navbar ('tenants')"></nav>
+    <nav th:replace="~{template.html :: navbar ('tenants')}"></nav>
     <div class="row form-check mb-2">
         <form id="includeHidden-form">
             <input id="includeHidden" name="includeHidden" class="form-check-input" type="checkbox" onclick="document.getElementById('includeHidden-form').submit()" th:checked="${includeHidden}">
