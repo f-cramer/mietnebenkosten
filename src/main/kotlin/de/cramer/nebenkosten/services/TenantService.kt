@@ -7,6 +7,7 @@ import de.cramer.nebenkosten.exceptions.NotFoundException
 import de.cramer.nebenkosten.forms.TenantForm
 import de.cramer.nebenkosten.repositories.TenantRepository
 import org.springframework.stereotype.Service
+import kotlin.jvm.optionals.getOrElse
 
 @Service
 class TenantService(
@@ -17,7 +18,7 @@ class TenantService(
             .sorted()
 
     fun getTenant(id: Long): Tenant = repository.findById(id)
-        .orElseThrow { NotFoundException() }
+        .getOrElse { throw NotFoundException() }
 
     fun editTenant(id: Long, form: TenantForm): Tenant =
         if (repository.existsById(id)) {

@@ -6,6 +6,7 @@ import de.cramer.nebenkosten.exceptions.NotFoundException
 import de.cramer.nebenkosten.forms.FlatForm
 import de.cramer.nebenkosten.repositories.FlatRepository
 import org.springframework.stereotype.Service
+import kotlin.jvm.optionals.getOrElse
 
 @Service
 class FlatService(
@@ -14,7 +15,7 @@ class FlatService(
     fun getFlats(): List<Flat> = repository.findAll().sorted()
 
     fun getFlat(name: String): Flat = repository.findById(name)
-        .orElseThrow { NotFoundException() }
+        .getOrElse { throw NotFoundException() }
 
     fun editFlat(name: String, form: FlatForm): Flat =
         if (repository.existsById(name)) {

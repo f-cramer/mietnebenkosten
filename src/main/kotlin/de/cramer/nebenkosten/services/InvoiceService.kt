@@ -25,6 +25,7 @@ import de.cramer.nebenkosten.repositories.InvoiceRepository
 import org.springframework.data.jpa.domain.Specification
 import org.springframework.stereotype.Service
 import java.time.LocalDate
+import kotlin.jvm.optionals.getOrElse
 import de.cramer.nebenkosten.entities.Rental as RentalEntity
 
 @Service
@@ -42,7 +43,7 @@ class InvoiceService(
 
     fun getInvoice(id: Long): Invoice =
         repository.findById(id)
-            .orElseThrow { NotFoundException() }
+            .getOrElse { throw NotFoundException() }
 
     fun editInvoice(id: Long, form: InvoiceForm): Invoice {
         val current = repository.findById(id)

@@ -13,6 +13,7 @@ import de.cramer.nebenkosten.repositories.LandlordRepository
 import org.springframework.data.jpa.domain.Specification
 import org.springframework.stereotype.Service
 import java.time.Year
+import kotlin.jvm.optionals.getOrElse
 
 @Service
 class LandlordService(
@@ -28,7 +29,7 @@ class LandlordService(
 
     fun getLandlord(id: Long): Landlord =
         repository.findById(id)
-            .orElseThrow { NotFoundException() }
+            .getOrElse { throw NotFoundException() }
 
     fun editLandlord(id: Long, form: LandlordForm): Landlord =
         if (repository.existsById(id)) {

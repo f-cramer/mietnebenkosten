@@ -3,6 +3,7 @@ package de.cramer.nebenkosten.services
 import de.cramer.nebenkosten.entities.User
 import de.cramer.nebenkosten.repositories.UserRepository
 import org.springframework.stereotype.Service
+import kotlin.jvm.optionals.getOrNull
 
 @Service
 class UserService(
@@ -14,6 +15,6 @@ class UserService(
     }
 
     fun getUser(username: String): User? {
-        return repository.findById(username).orElse(null)
+        return repository.findById(username).getOrNull()
     }
 }

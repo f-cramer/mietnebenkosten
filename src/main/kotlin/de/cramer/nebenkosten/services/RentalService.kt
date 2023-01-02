@@ -11,6 +11,7 @@ import de.cramer.nebenkosten.repositories.RentalRepository
 import org.springframework.data.jpa.domain.Specification
 import org.springframework.stereotype.Service
 import java.time.LocalDate
+import kotlin.jvm.optionals.getOrElse
 
 @Service
 class RentalService(
@@ -23,7 +24,7 @@ class RentalService(
             .sorted()
 
     fun getRental(id: Long): Rental = repository.findById(id)
-        .orElseThrow { NotFoundException() }
+        .getOrElse { throw NotFoundException() }
 
     fun editRental(id: Long, form: RentalForm): Rental =
         if (repository.existsById(id)) {
