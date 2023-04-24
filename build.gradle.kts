@@ -20,7 +20,7 @@ java.sourceCompatibility = JavaVersion.toVersion(properties["JAVA_VERSION"] as S
 ext["kotlin.version"] = properties["KOTLIN_VERSION"] as String
 
 allOpen {
-    annotations("javax.persistence.Entity", "javax.persistence.MappedSuperclass")
+    annotations("jakarta.persistence.Entity", "jakarta.persistence.MappedSuperclass")
 }
 
 configurations {
