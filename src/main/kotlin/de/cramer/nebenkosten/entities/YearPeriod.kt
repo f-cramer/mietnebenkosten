@@ -11,8 +11,12 @@ import java.util.Locale
 
 @Embeddable
 data class YearPeriod(
-    @Column(name = "start") val start: Year,
-    @Basic(optional = true) @Column(name = "end", nullable = true) val end: Year? = null,
+    @Column(name = "start")
+    val start: Year,
+
+    @Basic(optional = true)
+    @Column(name = "end", nullable = true)
+    val end: Year? = null,
 ) : Comparable<YearPeriod> {
     init {
         require(end == null || !start.isAfter(end)) { "start cannot be after end ($start > $end)" }
