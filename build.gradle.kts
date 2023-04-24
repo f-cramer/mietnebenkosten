@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 
@@ -75,10 +76,10 @@ tasks.withType<Test> {
 }
 
 tasks.withType<KotlinCompile> {
-    kotlinOptions {
-        freeCompilerArgs = listOf("-Xjsr305=strict")
-        jvmTarget = properties["JAVA_VERSION"] as String
-        allWarningsAsErrors = true
+    compilerOptions {
+        freeCompilerArgs.set(listOf("-Xjsr305=strict"))
+        jvmTarget.set(JvmTarget.valueOf("JVM_${properties["JAVA_VERSION"]}"))
+        allWarningsAsErrors.set(true)
     }
 }
 
