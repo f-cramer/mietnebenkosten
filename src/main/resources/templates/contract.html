@@ -3,12 +3,12 @@
     <title></title>
 </head>
 <body>
-<!--/*@thymesVar id="rental" type="de.cramer.nebenkosten.entities.Rental"*/-->
+<!--/*@thymesVar id="contract" type="de.cramer.nebenkosten.entities.Contract"*/-->
 <div class="container">
-    <nav th:replace="~{template.html :: navbar ('rentals')}"></nav>
+    <nav th:replace="~{template.html :: navbar ('contracts')}"></nav>
 
-    <form id="saveForm" method="post" th:action="${rental != null} ? @{/rentals/edit/{rentalId}(rentalId=${rental.id})} : @{/rentals/create}"></form>
-    <form id="deleteForm" method="post" th:action="${rental != null} ? @{/rentals/delete/{rentalId}(rentalId=${rental.id})} : ''"></form>
+    <form id="saveForm" method="post" th:action="${contract != null} ? @{/contracts/edit/{contractId}(contractId=${contract.id})} : @{/contracts/create}"></form>
+    <form id="deleteForm" method="post" th:action="${contract != null} ? @{/contracts/delete/{contractId}(contractId=${contract.id})} : ''"></form>
 
     <div class="alert alert-danger" role="alert" th:if="${saveError}">
         Beim Speichern des Mietvertrags ist ein Fehler aufgetreten.
@@ -23,7 +23,7 @@
             <td>Wohnung</td>
             <td>
                 <select class="form-control" name="flat" id="flat" aria-label="Wohnung" form="saveForm" required>
-                    <option th:each="flat: ${flats}" th:selected="${rental != null && flat == rental.flat || flat == selectedFlat}" th:value="${flat.name}" th:text="${flat.name}">Erdgeschoss</option>
+                    <option th:each="flat: ${flats}" th:selected="${contract != null && flat == contract.flat || flat == selectedFlat}" th:value="${flat.name}" th:text="${flat.name}">Erdgeschoss</option>
                 </select>
             </td>
         </tr>
@@ -31,27 +31,27 @@
             <td>Mieter</td>
             <td>
                 <select class="form-control" name="tenant" id="tenant" aria-label="Mieter" form="saveForm" required>
-                    <option th:each="tenant: ${tenants}" th:selected="${rental != null && tenant == rental.tenant}" th:value="${tenant.id}" th:text="${tenant.name}">Uta Krüger</option>
-                    <option th:unless="${rental == null || tenants.contains(rental.tenant)}" selected th:value="${rental.tenant.id}" th:text="${rental.tenant.name}">Max Probst</option>
+                    <option th:each="tenant: ${tenants}" th:selected="${contract != null && tenant == contract.tenant}" th:value="${tenant.id}" th:text="${tenant.name}">Uta Krüger</option>
+                    <option th:unless="${contract == null || tenants.contains(contract.tenant)}" selected th:value="${contract.tenant.id}" th:text="${contract.tenant.name}">Max Probst</option>
                 </select>
             </td>
         </tr>
         <tr>
             <td>Anzahl Personen</td>
             <td>
-                <input class="form-control" type="number" name="persons" id="persons" placeholder="Anzahl Personen" aria-label="Anzahl Personen" form="saveForm" required min="1" value="1" th:value="${rental != null ? rental.persons : null}">
+                <input class="form-control" type="number" name="persons" id="persons" placeholder="Anzahl Personen" aria-label="Anzahl Personen" form="saveForm" required min="1" value="1" th:value="${contract != null ? contract.persons : null}">
             </td>
         </tr>
         <tr>
             <td>Start</td>
             <td>
-                <input class="form-control" type="date" name="start" id="start" placeholder="Startdatum" aria-label="Startdatum" form="saveForm" required value="2020-12-14" onchange="checkDates()" th:value="${rental != null ? rental.period.start : T(java.time.LocalDate).now()}">
+                <input class="form-control" type="date" name="start" id="start" placeholder="Startdatum" aria-label="Startdatum" form="saveForm" required value="2020-12-14" onchange="checkDates()" th:value="${contract != null ? contract.period.start : T(java.time.LocalDate).now()}">
             </td>
         </tr>
         <tr>
             <td>Ende</td>
             <td class="form-inline">
-                <input class="form-control" type="date" name="end" id="end" placeholder="Enddatum" aria-label="Enddatum" form="saveForm" value="2020-12-14" style="flex-grow: 1;" onchange="checkDates()" th:value="${rental != null ? rental.period.end : null}">
+                <input class="form-control" type="date" name="end" id="end" placeholder="Enddatum" aria-label="Enddatum" form="saveForm" value="2020-12-14" style="flex-grow: 1;" onchange="checkDates()" th:value="${contract != null ? contract.period.end : null}">
                 <button class="btn btn-outline-danger ml-2" type="button" onclick="clearEnd();checkDates()">Leeren</button>
             </td>
         </tr>
@@ -60,8 +60,8 @@
 
     <div class="d-flex flex-row-reverse" style="gap: 0.5rem">
         <button class="btn btn-outline-success my-2 my-sm-0 col-md-2" form="saveForm" type="submit">Speichern</button>
-        <button class="btn btn-outline-danger my-2 my-sm-0 col-md-2" form="deleteForm" type="submit" th:if="${rental != null}">Löschen</button>
-        <a class="btn btn-outline-danger my-2 my-sm-0 col-md-2" th:href="@{/rentals}" th:if="${rental == null}">Abbrechen</a>
+        <button class="btn btn-outline-danger my-2 my-sm-0 col-md-2" form="deleteForm" type="submit" th:if="${contract != null}">Löschen</button>
+        <a class="btn btn-outline-danger my-2 my-sm-0 col-md-2" th:href="@{/contracts}" th:if="${contract == null}">Abbrechen</a>
     </div>
 
     <script>

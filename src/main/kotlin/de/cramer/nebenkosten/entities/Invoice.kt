@@ -108,8 +108,8 @@ class GeneralInvoice(
 }
 
 @Entity
-@DiscriminatorValue("rental")
-class RentalInvoice(
+@DiscriminatorValue("contract")
+class ContractInvoice(
     id: Long,
     description: String,
     period: LocalDatePeriod,
@@ -117,32 +117,32 @@ class RentalInvoice(
     order: Int,
 
     @ManyToOne
-    @JoinColumn(name = "rental_id")
-    val rental: Rental,
+    @JoinColumn(name = "contract_id")
+    val contract: Contract,
 ) : Invoice(id, description, period, price, order) {
 
     override val type: InvoiceType
-        get() = InvoiceType.Rental
+        get() = InvoiceType.Contract
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
         if (!super.equals(other)) return false
 
-        other as RentalInvoice
+        other as ContractInvoice
 
-        if (rental != other.rental) return false
+        if (contract != other.contract) return false
 
         return true
     }
 
     override fun hashCode(): Int {
         var result = super.hashCode()
-        result = 31 * result + rental.hashCode()
+        result = 31 * result + contract.hashCode()
         return result
     }
 }
 
 enum class InvoiceType {
-    General, Rental
+    General, Contract
 }

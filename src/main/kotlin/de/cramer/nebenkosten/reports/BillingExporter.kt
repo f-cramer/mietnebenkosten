@@ -3,10 +3,10 @@ package de.cramer.nebenkosten.reports
 import com.fasterxml.jackson.databind.ObjectMapper
 import de.cramer.nebenkosten.entities.Billing
 import de.cramer.nebenkosten.entities.BillingEntry
+import de.cramer.nebenkosten.entities.ContractInvoice
 import de.cramer.nebenkosten.entities.FormOfAddress
 import de.cramer.nebenkosten.entities.Gender
 import de.cramer.nebenkosten.entities.GeneralInvoice
-import de.cramer.nebenkosten.entities.RentalInvoice
 import jakarta.annotation.PostConstruct
 import net.sf.jasperreports.engine.JRParameter.REPORT_LOCALE
 import net.sf.jasperreports.engine.JRParameter.REPORT_RESOURCE_BUNDLE
@@ -148,7 +148,7 @@ class BillingExporter(
             name = invoice.description,
             splitUnit = when (invoice) {
                 is GeneralInvoice -> invoice.splitAlgorithm.unit
-                is RentalInvoice -> ""
+                is ContractInvoice -> ""
                 else -> error("unsupported invoice type $invoice")
             },
             totalValue = totalValue,

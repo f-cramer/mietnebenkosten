@@ -1,59 +1,59 @@
 package de.cramer.nebenkosten.services
 
+import de.cramer.nebenkosten.entities.Contract
+import de.cramer.nebenkosten.entities.Contract_
 import de.cramer.nebenkosten.entities.Flat
 import de.cramer.nebenkosten.entities.LocalDatePeriod
-import de.cramer.nebenkosten.entities.Rental
-import de.cramer.nebenkosten.entities.Rental_
 import de.cramer.nebenkosten.exceptions.ConflictException
 import de.cramer.nebenkosten.exceptions.NotFoundException
-import de.cramer.nebenkosten.forms.RentalForm
-import de.cramer.nebenkosten.repositories.RentalRepository
+import de.cramer.nebenkosten.forms.ContractForm
+import de.cramer.nebenkosten.repositories.ContractRepository
 import org.springframework.data.jpa.domain.Specification
 import org.springframework.stereotype.Service
 import java.time.LocalDate
 import kotlin.jvm.optionals.getOrElse
 
 @Service
-class RentalService(
-    private val repository: RentalRepository,
+class ContractService(
+    private val repository: ContractRepository,
     private val flatService: FlatService,
     private val tenantService: TenantService,
 ) {
-    fun getRentals(includeClosed: Boolean = false): List<Rental> =
+    fun getContracts(includeClosed: Boolean = false): List<Contract> =
         (if (includeClosed) repository.findAll() else repository.findAll(overlappingDatePeriodSpecification(LocalDatePeriod(LocalDate.now()))))
             .sorted()
 
-    fun getRental(id: Long): Rental = repository.findById(id)
+    fun getContract(id: Long): Contract = repository.findById(id)
         .getOrElse { throw NotFoundException() }
 
-    fun editRental(id: Long, form: RentalForm): Rental =
+    fun editContract(id: Long, form: ContractForm): Contract =
         if (repository.existsById(id)) {
-            repository.save(form.toRental().copy(id = id))
+            repository.save(form.toContract().copy(id = id))
         } else {
             throw ConflictException()
         }
 
-    fun createRental(form: RentalForm): Rental {
-        val rental = form.toRental()
+    fun createContract(form: ContractForm): Contract {
+        val contract = form.toContract()
 
-        if (getRentalsByFlatAndPeriod(rental.flat, rental.period).isEmpty()) {
-            return repository.save(rental)
+        if (getContractsByFlatAndPeriod(contract.flat, contract.period).isEmpty()) {
+            return repository.save(contract)
         } else {
-            throw ConflictException("error.rental.flatAlreadyInUse")
+            throw ConflictException("error.contract.flatAlreadyInUse")
         }
     }
 
-    fun getRentalsByPeriod(period: LocalDatePeriod): List<Rental> =
+    fun getContractsByPeriod(period: LocalDatePeriod): List<Contract> =
         repository.findAll(overlappingDatePeriodSpecification(period))
 
-    fun getRentalsByFlatAndPeriod(flat: Flat, period: LocalDatePeriod): List<Rental> =
+    fun getContractsByFlatAndPeriod(flat: Flat, period: LocalDatePeriod): List<Contract> =
         repository.findAll(
             overlappingDatePeriodSpecification(period).and { root, _, criteriaBuilder ->
-                criteriaBuilder.equal(root.get(Rental_.flat), flat)
+                criteriaBuilder.equal(root.get(Contract_.flat), flat)
             }
         )
 
-    fun deleteRental(id: Long) {
+    fun deleteContract(id: Long) {
         if (repository.existsById(id)) {
             repository.deleteById(id)
         } else {
@@ -61,12 +61,12 @@ class RentalService(
         }
     }
 
-    fun RentalForm.toRental() = Rental(
+    fun ContractForm.toContract() = Contract(
         flat = flatService.getFlat(flatName),
         tenant = tenantService.getTenant(tenantId),
         period = LocalDatePeriod(start, end),
         persons = persons
     )
 
-    private fun overlappingDatePeriodSpecification(period: LocalDatePeriod): Specification<Rental> = de.cramer.nebenkosten.extensions.overlappingDatePeriodSpecification(period) { it.get(Rental_.period) }
+    private fun overlappingDatePeriodSpecification(period: LocalDatePeriod): Specification<Contract> = de.cramer.nebenkosten.extensions.overlappingDatePeriodSpecification(period) { it.get(Contract_.period) }
 }

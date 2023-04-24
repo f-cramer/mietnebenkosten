@@ -21,7 +21,7 @@ data class SimplePersonFallback(
         val totalLengthInMonths = invoice.period.getLengthInMonths()
         return (
                 persons * billingPeriods
-                    .groupBy { it.rental.flat }
+                    .groupBy { it.contract.flat }
                     .values
                     .asSequence()
                     .map { b -> totalLengthInMonths - b.sumOf { it.period.getLengthInMonths() } }

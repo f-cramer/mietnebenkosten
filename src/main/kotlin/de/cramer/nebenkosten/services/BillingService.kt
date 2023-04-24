@@ -3,13 +3,13 @@ package de.cramer.nebenkosten.services
 import de.cramer.nebenkosten.entities.Billing
 import de.cramer.nebenkosten.entities.BillingEntry
 import de.cramer.nebenkosten.entities.BillingPeriod
+import de.cramer.nebenkosten.entities.Contract
+import de.cramer.nebenkosten.entities.ContractInvoice
 import de.cramer.nebenkosten.entities.GeneralInvoice
 import de.cramer.nebenkosten.entities.Invoice
 import de.cramer.nebenkosten.entities.InvoiceSplit
 import de.cramer.nebenkosten.entities.Landlord
 import de.cramer.nebenkosten.entities.LocalDatePeriod
-import de.cramer.nebenkosten.entities.Rental
-import de.cramer.nebenkosten.entities.RentalInvoice
 import de.cramer.nebenkosten.entities.Tenant
 import de.cramer.nebenkosten.exceptions.NoLandlordFoundException
 import org.springframework.stereotype.Service
@@ -21,7 +21,7 @@ import java.time.Year
 @Service
 class BillingService(
     private val flatService: FlatService,
-    private val rentalService: RentalService,
+    private val contractService: ContractService,
     private val invoiceService: InvoiceService,
     private val landlordService: LandlordService,
 ) {
@@ -35,27 +35,27 @@ class BillingService(
         val billingPeriods = getBillingPeriods(period)
 
         return invoices.asSequence()
-            .flatMap { it.splitByRental(billingPeriods) }
-            .groupBy { it.billing.rental }
+            .flatMap { it.splitByContract(billingPeriods) }
+            .groupBy { it.billing.contract }
             .asSequence()
             .map { it.toBilling(period.intersect(it.key.period)) }
-            .groupBy { it.rental.tenant }
+            .groupBy { it.contract.tenant }
             .map { it.value.toBilling(landlord, rounded) }
             .addMissingTennants(landlord, billingPeriods, rounded)
     }
 
     private fun getBillingPeriods(period: LocalDatePeriod): List<BillingPeriod> = flatService.getFlats().asSequence()
-        .flatMap { rentalService.getRentalsByFlatAndPeriod(it, period) }
+        .flatMap { contractService.getContractsByFlatAndPeriod(it, period) }
         .map { BillingPeriod(it, period.intersect(it.period)) }
         .toList()
 
-    private fun Invoice.splitByRental(billingPeriods: List<BillingPeriod>): List<InvoiceSplit> = when (this) {
+    private fun Invoice.splitByContract(billingPeriods: List<BillingPeriod>): List<InvoiceSplit> = when (this) {
         is GeneralInvoice -> splitAlgorithm.split(this, billingPeriods)
-        is RentalInvoice -> listOf(InvoiceSplit(this, BillingPeriod(rental, period.intersect(rental.period)), null, null, price))
+        is ContractInvoice -> listOf(InvoiceSplit(this, BillingPeriod(contract, period.intersect(contract.period)), null, null, price))
         else -> error("unsupported invoice type $this")
     }
 
-    private fun Map.Entry<Rental, List<InvoiceSplit>>.toBilling(period: LocalDatePeriod): RentalBilling = RentalBilling(
+    private fun Map.Entry<Contract, List<InvoiceSplit>>.toBilling(period: LocalDatePeriod): ContractBilling = ContractBilling(
         key,
         period,
         value.map { it.toBillingEntry() }
@@ -87,9 +87,9 @@ class BillingService(
         return LocalDatePeriod(start, end)
     }
 
-    private fun List<RentalBilling>.toBilling(landlord: Landlord, rounded: Boolean): Billing = Billing(
+    private fun List<ContractBilling>.toBilling(landlord: Landlord, rounded: Boolean): Billing = Billing(
         landlord = landlord,
-        tenant = this[0].rental.tenant,
+        tenant = this[0].contract.tenant,
         period = asSequence()
             .map { it.period }
             .merge(),
@@ -117,18 +117,18 @@ class BillingService(
 
     private fun Invoice.mergeValues(billingEntries: List<BillingEntry>): BigDecimal? = when (this) {
         is GeneralInvoice -> splitAlgorithm.mergeValues(billingEntries.mapNotNull { it.proportionalValue })
-        is RentalInvoice -> null
+        is ContractInvoice -> null
         else -> error("unsupported invoice type $this")
     }
 
     private fun List<Billing>.addMissingTennants(landlord: Landlord, billingPeriods: List<BillingPeriod>, rounded: Boolean): List<Billing> {
         fun Tenant.getPeriod() = billingPeriods.asSequence()
-            .filter { this == it.rental.tenant }
+            .filter { this == it.contract.tenant }
             .map { it.period }
             .merge()
 
         val tenants = billingPeriods.asSequence()
-            .map { it.rental.tenant }
+            .map { it.contract.tenant }
             .toSet()
 
         val allBillings = toMutableList()
@@ -142,8 +142,8 @@ class BillingService(
         return allBillings.sorted()
     }
 
-    private data class RentalBilling(
-        val rental: Rental,
+    private data class ContractBilling(
+        val contract: Contract,
         val period: LocalDatePeriod,
         val entries: List<BillingEntry>,
     )

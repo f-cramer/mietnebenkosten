@@ -56,8 +56,8 @@
         <tr>
             <td>Wohnung</td>
             <td>
-                <select class="form-control" name="rental" id="rental" aria-label="Mietvertrag" form="saveForm" required>
-                    <option th:each="rental: ${rentals}" th:selected="${rental == selectedRental}" th:value="${rental.id}" th:text="${rental.flat} + ' - ' + ${rental.tenant} + ' (' + ${rental.period.format(@messageSource, #locale)} + ')'">Uta Krüger</option>
+                <select class="form-control" name="contract" id="contract" aria-label="Mietvertrag" form="saveForm" required>
+                    <option th:each="contract: ${contracts}" th:selected="${contract == selectedContract}" th:value="${contract.id}" th:text="${contract.flat} + ' - ' + ${contract.tenant} + ' (' + ${contract.period.format(@messageSource, #locale)} + ')'">Uta Krüger</option>
                 </select>
             </td>
         </tr>
@@ -107,10 +107,10 @@
         function onTypeChanged() {
             const type = document.getElementById("type")
             const splitAlgorithm = document.getElementById("splitAlgorithm")
-            const rental = document.getElementById("rental")
+            const contract = document.getElementById("contract")
 
             splitAlgorithm.disabled = type.value !== 'General'
-            rental.disabled = type.value !== 'Rental'
+            contract.disabled = type.value !== 'Contract'
         }
 
         function updatePrice() {

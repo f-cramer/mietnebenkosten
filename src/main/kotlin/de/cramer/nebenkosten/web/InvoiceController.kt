@@ -1,16 +1,16 @@
 package de.cramer.nebenkosten.web
 
+import de.cramer.nebenkosten.entities.ContractInvoice
 import de.cramer.nebenkosten.entities.GeneralInvoice
 import de.cramer.nebenkosten.entities.LocalDatePeriod
 import de.cramer.nebenkosten.entities.MonetaryAmount
-import de.cramer.nebenkosten.entities.RentalInvoice
 import de.cramer.nebenkosten.entities.SplitAlgorithmType
 import de.cramer.nebenkosten.exceptions.BadRequestException
 import de.cramer.nebenkosten.extensions.set
 import de.cramer.nebenkosten.forms.InvoiceForm
 import de.cramer.nebenkosten.forms.InvoiceType
+import de.cramer.nebenkosten.services.ContractService
 import de.cramer.nebenkosten.services.InvoiceService
-import de.cramer.nebenkosten.services.RentalService
 import org.slf4j.Logger
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
@@ -30,7 +30,7 @@ import java.time.temporal.TemporalAdjusters
 class InvoiceController(
     private val log: Logger,
     private val invoiceService: InvoiceService,
-    private val rentalService: RentalService,
+    private val contractService: ContractService,
 ) {
 
     @GetMapping
@@ -54,14 +54,14 @@ class InvoiceController(
         val firstDayOfYear = year.atDay(1)
         model["invoiceTypes"] = de.cramer.nebenkosten.entities.InvoiceType.values()
         model["splitAlgorithmTypes"] = SplitAlgorithmType.values()
-        model["rentals"] = rentalService.getRentalsByPeriod(LocalDatePeriod.ofYear(year))
+        model["contracts"] = contractService.getContractsByPeriod(LocalDatePeriod.ofYear(year))
         model["defaultStart"] = firstDayOfYear
         model["defaultEnd"] = firstDayOfYear.with(TemporalAdjusters.lastDayOfYear())
         model["defaultDescription"] = invoice?.description ?: ""
         model["defaultPrice"] = invoice?.price ?: MonetaryAmount()
         model["defaultType"] = invoice?.type
         model["selectedSplitAlgorithmType"] = (invoice as? GeneralInvoice)?.splitAlgorithm?.type ?: ""
-        model["selectedRental"] = (invoice as? RentalInvoice)?.rental ?: ""
+        model["selectedContract"] = (invoice as? ContractInvoice)?.contract ?: ""
         model["defaultOrder"] = invoice?.order
         return "invoice"
     }
@@ -74,13 +74,13 @@ class InvoiceController(
         @RequestParam("price") price: Long,
         @RequestParam("type") type: InvoiceType,
         @RequestParam("splitAlgorithm", required = false) splitAlgorithmType: SplitAlgorithmType?,
-        @RequestParam("rental", required = false) rental: Long?,
+        @RequestParam("contract", required = false) contract: Long?,
         @RequestParam("order") order: Int,
         @RequestParam("start") start: LocalDate,
         @RequestParam("end", required = false) end: LocalDate?,
         redirectAttributes: RedirectAttributes,
     ): String = try {
-        InvoiceForm(description, price, type, splitAlgorithmType, rental, order, start, end).apply {
+        InvoiceForm(description, price, type, splitAlgorithmType, contract, order, start, end).apply {
             validate()
             invoiceService.createInvoice(this)
         }
@@ -103,9 +103,9 @@ class InvoiceController(
         model["invoice"] = invoice
         model["invoiceTypes"] = de.cramer.nebenkosten.entities.InvoiceType.values()
         model["splitAlgorithmTypes"] = SplitAlgorithmType.values()
-        model["rentals"] = rentalService.getRentalsByPeriod(LocalDatePeriod.ofYear(year))
+        model["contracts"] = contractService.getContractsByPeriod(LocalDatePeriod.ofYear(year))
         model["selectedSplitAlgorithmType"] = (invoice as? GeneralInvoice)?.splitAlgorithm?.type ?: ""
-        model["selectedRental"] = (invoice as? RentalInvoice)?.rental ?: ""
+        model["selectedContract"] = (invoice as? ContractInvoice)?.contract ?: ""
         return "invoice"
     }
 
@@ -116,13 +116,13 @@ class InvoiceController(
         @RequestParam("price") price: Long,
         @RequestParam("type") type: InvoiceType,
         @RequestParam("splitAlgorithm", required = false) splitAlgorithmType: SplitAlgorithmType?,
-        @RequestParam("rental", required = false) rental: Long?,
+        @RequestParam("contract", required = false) contract: Long?,
         @RequestParam("order") order: Int,
         @RequestParam("start") start: LocalDate,
         @RequestParam("end", required = false) end: LocalDate?,
         redirectAttributes: RedirectAttributes,
     ): String = try {
-        InvoiceForm(description, price, type, splitAlgorithmType, rental, order, start, end).apply {
+        InvoiceForm(description, price, type, splitAlgorithmType, contract, order, start, end).apply {
             validate()
             invoiceService.editInvoice(id, this)
         }

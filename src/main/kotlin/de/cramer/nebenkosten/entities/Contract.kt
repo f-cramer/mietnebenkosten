@@ -11,8 +11,8 @@ import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
 
 @Entity
-@Table(name = "rentals")
-data class Rental(
+@Table(name = "contracts")
+data class Contract(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -31,16 +31,16 @@ data class Rental(
 
     @Embedded
     val period: LocalDatePeriod,
-) : Comparable<Rental> {
+) : Comparable<Contract> {
     constructor(flat: Flat, tenant: Tenant, persons: Int, period: LocalDatePeriod) : this(0, flat, tenant, persons, period)
 
-    override fun compareTo(other: Rental) = COMPARATOR.compare(this, other)
+    override fun compareTo(other: Contract) = COMPARATOR.compare(this, other)
 
     override fun toString(): String = "$flat - $tenant ($period)"
 
     companion object {
 
-        private val COMPARATOR = compareBy<Rental> { it.flat }
+        private val COMPARATOR = compareBy<Contract> { it.flat }
             .thenBy { it.period }
             .thenBy { it.tenant }
             .thenBy { it.persons }

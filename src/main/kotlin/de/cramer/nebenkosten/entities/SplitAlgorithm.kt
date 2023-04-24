@@ -67,10 +67,10 @@ abstract class ByTimeSplitAlgorithm(type: SplitAlgorithmType, unit: String) : Sp
 
 object ByAreaSplitAlgorithm : ByTimeSplitAlgorithm(SplitAlgorithmType.ByArea, "m²") {
 
-    override fun getPart(invoice: Invoice, billingPeriod: BillingPeriod): BigDecimal = billingPeriod.rental.flat.area.toInternalBigDecimal()
+    override fun getPart(invoice: Invoice, billingPeriod: BillingPeriod): BigDecimal = billingPeriod.contract.flat.area.toInternalBigDecimal()
 
     override fun getTotal(invoice: Invoice, billingPeriods: Collection<BillingPeriod>): BigDecimal = billingPeriods.asSequence()
-        .map { it.rental.flat }
+        .map { it.contract.flat }
         .distinct()
         .sumOf { it.area }
         .toInternalBigDecimal()
@@ -104,7 +104,7 @@ data class ByPersonsSplitAlgorithm(
         }
 
     private fun getPart(invoice: Invoice, billingPeriod: BillingPeriod): BigDecimal =
-        (billingPeriod.rental.persons * billingPeriod.period.intersect(invoice.period).getLengthInMonths()).toInternalBigDecimal()
+        (billingPeriod.contract.persons * billingPeriod.period.intersect(invoice.period).getLengthInMonths()).toInternalBigDecimal()
 
     private fun getTotal(invoice: Invoice, billingPeriods: Collection<BillingPeriod>): BigDecimal {
         val simpleTotal = billingPeriods.sumOf { getPart(invoice, it) }
@@ -119,7 +119,7 @@ object LinearSplitAlgorithm : ByTimeSplitAlgorithm(SplitAlgorithmType.Linear, ""
 
     override fun getTotal(invoice: Invoice, billingPeriods: Collection<BillingPeriod>): BigDecimal =
         billingPeriods.asSequence()
-            .map { it.rental.flat }
+            .map { it.contract.flat }
             .distinct()
             .count()
             .toInternalBigDecimal()

@@ -1,13 +1,13 @@
 package de.cramer.nebenkosten.web
 
+import de.cramer.nebenkosten.entities.Contract
 import de.cramer.nebenkosten.entities.Flat
 import de.cramer.nebenkosten.entities.LocalDatePeriod
-import de.cramer.nebenkosten.entities.Rental
 import de.cramer.nebenkosten.exceptions.BadRequestException
 import de.cramer.nebenkosten.extensions.set
-import de.cramer.nebenkosten.forms.RentalForm
+import de.cramer.nebenkosten.forms.ContractForm
+import de.cramer.nebenkosten.services.ContractService
 import de.cramer.nebenkosten.services.FlatService
-import de.cramer.nebenkosten.services.RentalService
 import de.cramer.nebenkosten.services.TenantService
 import org.slf4j.Logger
 import org.springframework.stereotype.Controller
@@ -22,39 +22,39 @@ import java.time.LocalDate
 import java.time.Year
 
 @Controller
-@RequestMapping("rentals")
-class RentalController(
+@RequestMapping("contracts")
+class ContractController(
     private val log: Logger,
-    private val rentalService: RentalService,
+    private val contractService: ContractService,
     private val flatService: FlatService,
     private val tenantService: TenantService,
 ) {
 
     @GetMapping
-    fun getRentals(
+    fun getContracts(
         year: Year,
         @RequestParam(name = "error", required = false) error: String?,
         @RequestParam(name = "errorMessage", required = false) errorMessage: String?,
         model: Model,
     ): String {
         val flats = flatService.getFlats().toMutableList()
-        val rentalsByFlat = rentalService.getRentalsByPeriod(LocalDatePeriod.ofYear(year))
+        val contractsByFlat = contractService.getContractsByPeriod(LocalDatePeriod.ofYear(year))
             .groupBy { it.flat }
             .asSequence()
-            .map { RentalsByFlat(it.key, it.value) }
+            .map { ContractsByFlat(it.key, it.value) }
             .onEach { flats -= it.flat }
             .toList().asSequence() // evaluate onEach eagerly
-            .plus(flats.map { RentalsByFlat(it, emptyList()) })
+            .plus(flats.map { ContractsByFlat(it, emptyList()) })
             .sorted()
             .toList()
-        model["rentalsByFlat"] = rentalsByFlat
+        model["contractsByFlat"] = contractsByFlat
         model["error"] = error
         model["errorMessage"] = errorMessage
-        return "rentals"
+        return "contracts"
     }
 
     @GetMapping("create")
-    fun createRental(
+    fun createContract(
         @RequestParam(name = "flat", required = false) flatName: String?,
         model: Model,
     ): String {
@@ -65,11 +65,11 @@ class RentalController(
         }
         model["flats"] = flats
         model["tenants"] = tenantService.getTenants(false)
-        return "rental"
+        return "contract"
     }
 
     @PostMapping("create")
-    fun createRental(
+    fun createContract(
         @RequestParam("flat") flatName: String,
         @RequestParam("tenant") tenantId: Long,
         @RequestParam("persons") persons: Int,
@@ -77,31 +77,31 @@ class RentalController(
         @RequestParam("end", required = false) end: LocalDate?,
         redirectAttributes: RedirectAttributes,
     ): String = try {
-        RentalForm(flatName, tenantId, persons, start, end).apply {
+        ContractForm(flatName, tenantId, persons, start, end).apply {
             validate()
-            rentalService.createRental(this)
+            contractService.createContract(this)
         }
-        "redirect:/rentals"
+        "redirect:/contracts"
     } catch (e: Exception) {
         log.error(e.message, e)
         redirectAttributes["error"] = "create"
         redirectAttributes["errorMessage"] = e.message ?: ""
-        "redirect:/rentals"
+        "redirect:/contracts"
     }
 
     @GetMapping("show/{id}")
-    fun getRental(
+    fun getContract(
         @PathVariable("id") id: Long,
         model: Model,
     ): String {
-        model["rental"] = rentalService.getRental(id)
+        model["contract"] = contractService.getContract(id)
         model["flats"] = flatService.getFlats()
         model["tenants"] = tenantService.getTenants(false)
-        return "rental"
+        return "contract"
     }
 
     @PostMapping("edit/{id}")
-    fun editRental(
+    fun editContract(
         @PathVariable("id") id: Long,
         @RequestParam("flat") flatName: String,
         @RequestParam("tenant") tenantId: Long,
@@ -110,48 +110,48 @@ class RentalController(
         @RequestParam("end", required = false) end: LocalDate?,
         redirectAttributes: RedirectAttributes,
     ): String = try {
-        RentalForm(flatName, tenantId, persons, start, end).apply {
+        ContractForm(flatName, tenantId, persons, start, end).apply {
             validate()
-            rentalService.editRental(id, this)
+            contractService.editContract(id, this)
         }
-        "redirect:/rentals"
+        "redirect:/contracts"
     } catch (e: BadRequestException) {
         log.debug(e.message, e)
         redirectAttributes["error"] = "badRequest"
         redirectAttributes["errorMessage"] = e.message ?: ""
-        "redirect:/rentals/show/$id"
+        "redirect:/contracts/show/$id"
     } catch (e: Exception) {
         log.error(e.message, e)
         redirectAttributes["error"] = "edit"
         redirectAttributes["errorMessage"] = e.message ?: ""
-        "redirect:/rentals/show/$id"
+        "redirect:/contracts/show/$id"
     }
 
     @PostMapping("delete/{id}")
-    fun alterRental(
+    fun alterContract(
         @PathVariable("id") id: Long,
         redirectAttributes: RedirectAttributes,
     ): String = try {
-        rentalService.deleteRental(id)
-        "redirect:/rentals"
+        contractService.deleteContract(id)
+        "redirect:/contracts"
     } catch (e: Exception) {
         log.error(e.message, e)
         redirectAttributes["error"] = "delete"
         redirectAttributes["errorMessage"] = e.message ?: ""
-        "redirect:/rentals/show/$id"
+        "redirect:/contracts/show/$id"
     }
 
-    private data class RentalsByFlat(
+    private data class ContractsByFlat(
         val flat: Flat,
-        val rentals: List<Rental>,
-    ) : Comparable<RentalsByFlat> {
+        val contracts: List<Contract>,
+    ) : Comparable<ContractsByFlat> {
 
-        override fun compareTo(other: RentalsByFlat) =
+        override fun compareTo(other: ContractsByFlat) =
             COMPARATOR.compare(this, other)
 
         companion object {
 
-            private val COMPARATOR = compareBy<RentalsByFlat> { it.flat }
+            private val COMPARATOR = compareBy<ContractsByFlat> { it.flat }
         }
     }
 }

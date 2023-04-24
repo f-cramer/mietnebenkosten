@@ -9,7 +9,7 @@ data class InvoiceForm(
     val priceInCent: Long,
     val type: InvoiceType,
     val splitAlgorithmType: SplitAlgorithmType?,
-    val rental: Long?,
+    val contract: Long?,
     val order: Int,
     val start: LocalDate,
     val end: LocalDate? = null,
@@ -21,7 +21,7 @@ data class InvoiceForm(
         if (type == InvoiceType.General && splitAlgorithmType == null) {
             throw BadRequestException()
         }
-        if (type == InvoiceType.Rental && rental == null) {
+        if (type == InvoiceType.Contract && contract == null) {
             throw BadRequestException()
         }
     }
@@ -29,5 +29,5 @@ data class InvoiceForm(
 
 enum class InvoiceType {
 
-    General, Rental
+    General, Contract
 }
