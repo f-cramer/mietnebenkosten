@@ -87,6 +87,10 @@ tasks.withType<KotlinCompile> {
     }
 }
 
+tasks.withType<Jar>().configureEach {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
 tasks.withType<Wrapper> {
     gradleVersion = "7.6.1"
 }
