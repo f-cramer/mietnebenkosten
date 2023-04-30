@@ -99,6 +99,7 @@ class InvoiceService(
     private fun InvoiceForm.toContract(): Contract = contract?.let { contractService.getContract(it) } ?: throw BadRequestException()
 
     private val InvoiceForm.monetaryAmount: MonetaryAmount
+        @Suppress("MagicNumber")
         get() = MonetaryAmount(priceInCent) / 100
 
     private fun overlappingDatePeriodSpecification(period: LocalDatePeriod): Specification<Invoice> = overlappingDatePeriodSpecification(period) { it.get(Invoice_.period) }

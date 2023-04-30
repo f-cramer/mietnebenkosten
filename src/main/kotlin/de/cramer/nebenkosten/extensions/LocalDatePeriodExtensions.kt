@@ -15,6 +15,7 @@ fun LocalDatePeriod.getLengthInMonths(): Double {
     val endYearMonth = YearMonth.from(end)
 
     if (startYearMonth == endYearMonth) {
+        @Suppress("MagicNumber")
         return ((start.until(end, ChronoUnit.DAYS) + 1) / 30).roundToHalf()
     }
 

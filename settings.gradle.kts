@@ -15,6 +15,9 @@ pluginManagement {
         val springDependencyManagementVersion = extra["SPRING_DEPENDENCY_MANAGEMENT_VERSION"] as String
         id("io.spring.dependency-management") version springDependencyManagementVersion
 
+        val detektVersion = extra["DETEKT_PLUGIN_VERSION"] as String
+        id("io.gitlab.arturbosch.detekt") version detektVersion
+
         val ktlintVersion = extra["KTLINT_PLUGIN_VERSION"] as String
         id("org.jlleitschuh.gradle.ktlint") version ktlintVersion
     }

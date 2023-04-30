@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping
 class WebController {
 
     @GetMapping("", "index.htm", "index.html")
+    @Suppress("FunctionOnlyReturningConstant")
     fun getIndex(): String {
         return "redirect:/flats"
     }

@@ -31,6 +31,7 @@ class LandlordController(
     }
 
     @GetMapping("create")
+    @Suppress("FunctionOnlyReturningConstant")
     fun createLandlord(): String {
         return "landlord"
     }
@@ -86,6 +87,7 @@ class LandlordController(
     }
 
     @PostMapping("delete/{id}")
+    @Suppress("InstanceOfCheckForException")
     fun deleteLandlord(
         @PathVariable("id") id: Long,
         redirectAttributes: RedirectAttributes,

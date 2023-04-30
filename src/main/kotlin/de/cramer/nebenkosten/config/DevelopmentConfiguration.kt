@@ -1,3 +1,5 @@
+@file:Suppress("MagicNumber")
+
 package de.cramer.nebenkosten.config
 
 import de.cramer.nebenkosten.entities.Contract

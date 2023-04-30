@@ -95,7 +95,9 @@ class InvoiceController(
     @GetMapping("show/{id}")
     fun getInvoice(
         @PathVariable("id") id: Long,
-        @RequestParam("error", defaultValue = "[]") error: List<String>,
+        @Suppress("UnusedParameter")
+        @RequestParam("error", defaultValue = "[]")
+        error: List<String>,
         year: Year,
         model: Model,
     ): String {

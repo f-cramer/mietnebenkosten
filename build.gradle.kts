@@ -12,6 +12,7 @@ plugins {
     kotlin("kapt")
 
     id("org.jlleitschuh.gradle.ktlint")
+    id("io.gitlab.arturbosch.detekt")
 }
 
 group = "de.cramer.nebenkosten"
@@ -104,4 +105,9 @@ ktlint {
         reporter(ReporterType.HTML)
         reporter(ReporterType.CHECKSTYLE)
     }
+}
+
+detekt {
+    buildUponDefaultConfig = true
+    config.from(".config/detekt.yml")
 }

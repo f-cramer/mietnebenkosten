@@ -1,0 +1,21 @@
+complexity:
+  ComplexCondition:
+    active: false
+  LongParameterList:
+    active: false
+  TooManyFunctions:
+    active: false
+
+exceptions:
+  TooGenericExceptionCaught:
+    active: false
+
+performance:
+  SpreadOperator:
+    active: false
+
+style:
+  MaxLineLength:
+    active: false
+  ThrowsCount:
+    active: false

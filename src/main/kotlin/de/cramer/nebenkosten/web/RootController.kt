@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping
 class RootController {
 
     @GetMapping("", "/")
+    @Suppress("FunctionOnlyReturningConstant")
     fun root(): String {
         return "redirect:flats"
     }
