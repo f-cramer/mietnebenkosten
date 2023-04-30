@@ -12,6 +12,7 @@ plugins {
     kotlin("plugin.allopen") version "1.9.23"
     kotlin("kapt") version "1.9.23"
 
+    id("org.graalvm.buildtools.native") version "0.10.1"
     id("org.jlleitschuh.gradle.ktlint") version "12.1.0"
     id("io.gitlab.arturbosch.detekt") version "1.23.6"
     id("com.github.ben-manes.versions") version "0.51.0"
