@@ -12,7 +12,6 @@ import de.cramer.nebenkosten.forms.InvoiceForm
 import de.cramer.nebenkosten.forms.InvoiceType
 import de.cramer.nebenkosten.forms.LandlordForm
 import de.cramer.nebenkosten.forms.TenantForm
-import de.cramer.nebenkosten.services.BillingService
 import de.cramer.nebenkosten.services.ContractService
 import de.cramer.nebenkosten.services.FlatService
 import de.cramer.nebenkosten.services.InvoiceService
@@ -43,7 +42,6 @@ class DevelopmentConfiguration {
         tenantService: TenantService,
         contractService: ContractService,
         invoiceService: InvoiceService,
-        billingService: BillingService,
         passwordEncoder: PasswordEncoder,
     ) = CommandLineRunner {
         userService.saveUser(User("test", passwordEncoder.encode("user123")))
