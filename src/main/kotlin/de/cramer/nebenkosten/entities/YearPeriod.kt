@@ -42,9 +42,7 @@ data class YearPeriod(
     }
 
     fun intersect(other: YearPeriod): YearPeriod {
-        if (!isOverlapping(other)) {
-            throw IllegalArgumentException()
-        }
+        require(isOverlapping(other)) { "$this is not overlapping $other" }
 
         val start = maxOf(start, other.start)
         val end = if (end != null && other.end != null) {

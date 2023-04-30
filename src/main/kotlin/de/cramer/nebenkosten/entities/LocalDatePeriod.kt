@@ -47,9 +47,7 @@ data class LocalDatePeriod(
     }
 
     fun intersect(other: LocalDatePeriod): LocalDatePeriod {
-        if (!isOverlapping(other)) {
-            throw IllegalArgumentException("$this is not overlapping $other")
-        }
+        require(isOverlapping(other)) { "$this is not overlapping $other" }
 
         val start = maxOf(start, other.start)
         val end = if (end != null && other.end != null) {

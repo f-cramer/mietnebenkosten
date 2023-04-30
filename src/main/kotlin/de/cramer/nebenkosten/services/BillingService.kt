@@ -81,9 +81,7 @@ class BillingService(
             }
         }
 
-        if (start == null) {
-            throw IllegalArgumentException("merge() can only be called on non empty instances of Iterable")
-        }
+        require(start != null) { "merge() can only be called on non empty instances of Iterable" }
         return LocalDatePeriod(start, end)
     }
 
