@@ -11,38 +11,53 @@
 </head>
 <body>
 <div class="container">
-    <nav class="navbar navbar-expand-lg navbar-light" th:fragment="navbar(activeNav)">
-        <span class="navbar-brand" th:text="#{template.brand}">Mietnebenkosten</span>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Navigation toggle">
-            <i class="material-icons">menu</i>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item" th:classappend="${activeNav == 'flats'} ? active : ''">
-                    <a class="nav-link" th:href="@{/flats}" th:text="#{template.flats}">Wohnungen</a>
-                </li>
-				<li class="nav-item" th:classappend="${activeNav == 'tenants'} ? active : ''">
-					<a class="nav-link" th:href="@{/tenants}" th:text="#{template.tenants}">Mieter</a>
-				</li>
-				<li class="nav-item" th:classappend="${activeNav == 'landlords'} ? active : ''">
-					<a class="nav-link" th:href="@{/landlords}" th:text="#{template.landlords}">Vermieter</a>
-				</li>
-                <li class="nav-item" th:classappend="${activeNav == 'contracts'} ? active : ''">
-                    <a class="nav-link" th:href="@{/contracts}" th:text="#{template.contracts}">Mietverträge</a>
-                </li>
-                <li class="nav-item" th:classappend="${activeNav == 'invoices'} ? active : ''">
-                    <a class="nav-link" href="#" th:href="@{/invoices}" th:text="#{template.invoices}">Rechnungen</a>
-                </li>
-                <li class="nav-item" th:classappend="${activeNav == 'billings'} ? active : ''">
-                    <a class="nav-link" th:href="@{/billings}" th:text="#{template.billings}">Abrechnungen</a>
-                </li>
-            </ul>
-            <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" type="number" id="year" name="year" th:placeholder="#{template.year}" placeholder="Jahr" th:value="${year}" th:aria-label="#{template.search}" aria-label="Jahr">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit" th:text="#{template.changeYear}">Jahr ändern</button>
+    <div th:fragment="navbar(activeNav)" th:remove="tag">
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <span class="navbar-brand" th:text="#{template.brand}">Mietnebenkosten</span>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Navigation toggle">
+                <i class="material-icons">menu</i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item" th:classappend="${activeNav == 'flats'} ? active : ''">
+                        <a class="nav-link" th:href="@{/flats}" th:text="#{template.flats}">Wohnungen</a>
+                    </li>
+                    <li class="nav-item" th:classappend="${activeNav == 'tenants'} ? active : ''">
+                        <a class="nav-link" th:href="@{/tenants}" th:text="#{template.tenants}">Mieter</a>
+                    </li>
+                    <li class="nav-item" th:classappend="${activeNav == 'landlords'} ? active : ''">
+                        <a class="nav-link" th:href="@{/landlords}" th:text="#{template.landlords}">Vermieter</a>
+                    </li>
+                    <li class="nav-item" th:classappend="${activeNav == 'contracts'} ? active : ''">
+                        <a class="nav-link" th:href="@{/contracts}" th:text="#{template.contracts}">Mietverträge</a>
+                    </li>
+                    <li class="nav-item" th:classappend="${activeNav == 'invoices'} ? active : ''">
+                        <a class="nav-link" href="#" th:href="@{/invoices}" th:text="#{template.invoices}">Rechnungen</a>
+                    </li>
+                    <li class="nav-item" th:classappend="${activeNav == 'billings'} ? active : ''">
+                        <a class="nav-link" th:href="@{/billings}" th:text="#{template.billings}">Abrechnungen</a>
+                    </li>
+                </ul>
+                <i class="material-icons btn btn-outline-secondary" onclick="document.getElementById('settings-dialog').showModal()">settings</i>
+            </div>
+        </nav>
+        <dialog id="settings-dialog" style="border-radius: 10px;border-color: darkgray;border-width: 1px;">
+            <form class="my-2 my-lg-0">
+                <table class="table table-striped align-middle">
+                    <tr>
+                        <td>Jahr</td>
+                        <td>
+                            <input class="form-control mr-sm-2" type="number" id="year" name="year" th:placeholder="#{template.year}" placeholder="Jahr" th:value="${year}" th:aria-label="#{template.search}" aria-label="Jahr">
+                        </td>
+                    </tr>
+                </table>
+                <div class="d-flex flex-row-reverse" style="gap: 0.5rem">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit" th:text="#{template.changeYear}">Jahr ändern</button>
+                    <button value="cancel" formmethod="dialog" class="btn btn-outline-danger my-2 my-sm-0">Abbrechen</button>
+                </div>
             </form>
-        </div>
-    </nav>
+        </dialog>
+    </div>
 </div>
 </body>
 </html>
