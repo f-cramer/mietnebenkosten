@@ -14,5 +14,8 @@ pluginManagement {
 
         val springDependencyManagementVersion = extra["SPRING_DEPENDENCY_MANAGEMENT_VERSION"] as String
         id("io.spring.dependency-management") version springDependencyManagementVersion
+
+        val ktlintVersion = extra["KTLINT_PLUGIN_VERSION"] as String
+        id("org.jlleitschuh.gradle.ktlint") version ktlintVersion
     }
 }
