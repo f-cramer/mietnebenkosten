@@ -4,6 +4,7 @@ import de.cramer.nebenkosten.entities.Billing
 import de.cramer.nebenkosten.extensions.set
 import de.cramer.nebenkosten.reports.BillingExporter
 import de.cramer.nebenkosten.services.BillingService
+import org.slf4j.Logger
 import org.springframework.core.io.ByteArrayResource
 import org.springframework.core.io.Resource
 import org.springframework.http.HttpHeaders
@@ -23,6 +24,7 @@ import java.util.Locale
 class BillingController(
     private val billingService: BillingService,
     private val billingExporter: BillingExporter,
+    private val log: Logger,
 ) {
 
     @GetMapping
@@ -34,7 +36,7 @@ class BillingController(
             val billings = billingService.createBillings(year, true)
             model["billings"] = billings
         } catch (e: Exception) {
-            e.printStackTrace()
+            log.error(e.message, e)
             model["billings"] = emptyList<Billing>()
             model["error"] = e.message
         }
