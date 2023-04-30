@@ -71,7 +71,7 @@ class BillingExporter(
         }
     }
 
-    protected fun createJasperPrint(source: String, parameters: Map<String, Any>): JasperPrint {
+    private fun createJasperPrint(source: String, parameters: Map<String, Any>): JasperPrint {
         val dataSource = JsonDataSource(source.byteInputStream(Charsets.UTF_8))
         dataSource.datePattern = parameters[JSON_DATE_PATTERN]?.toString() ?: "yyyy-MM-dd"
         dataSource.setLocale(parameters[JSON_LOCALE]?.toString() ?: Locale.US.toString())
