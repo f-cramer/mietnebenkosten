@@ -51,6 +51,7 @@ class LandlordController(
         landlordService.createLandlord(LandlordForm(firstName, lastName, street, houseNumber, zipCode, city, country, iban, start, end))
         "redirect:/landlords"
     } catch (e: Exception) {
+        log.debug(e.message, e)
         "redirect:/landlords?error=create"
     }
 

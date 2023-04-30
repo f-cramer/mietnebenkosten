@@ -54,6 +54,7 @@ class TenantController(
         tenantService.createTenant(TenantForm(firstName, lastName, street, houseNumber, zipCode, city, country, gender, formOfAddress, hidden))
         "redirect:/tenants"
     } catch (e: Exception) {
+        log.debug(e.message, e)
         "redirect:/tenants?error=create"
     }
 
