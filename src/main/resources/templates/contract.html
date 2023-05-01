@@ -50,9 +50,9 @@
         </tr>
         <tr>
             <td>Ende</td>
-            <td class="form-inline">
-                <input class="form-control" type="date" name="end" id="end" placeholder="Enddatum" aria-label="Enddatum" form="saveForm" value="2020-12-14" style="flex-grow: 1;" onchange="checkDates()" th:value="${contract != null ? contract.period.end : null}">
-                <button class="btn btn-outline-danger ml-2" type="button" onclick="clearEnd();checkDates()">Leeren</button>
+            <td class="d-flex">
+                <input class="form-control col" type="date" name="end" id="end" placeholder="Enddatum" aria-label="Enddatum" form="saveForm" value="2020-12-14" onchange="checkDates()" th:value="${contract != null ? contract.period.end : null}">
+                <button class="btn btn-outline-danger ms-2" type="button" onclick="clearEnd();checkDates()">Leeren</button>
             </td>
         </tr>
         </tbody>

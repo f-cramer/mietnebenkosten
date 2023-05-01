@@ -8,7 +8,7 @@
     <div class="row list-group list-group-striped">
         <a class="list-group-item list-group-item-action" th:each="landlord: ${landlords}" th:text="${landlord}" th:href="@{/landlords/show/{landlordId}(landlordId=${landlord.id})}">Test-Vermieter</a>
         <a class="list-group-item list-group-item-action list-group-item-success" th:href="@{/landlords/create}">
-            <i class="material-icons align-text-bottom bg-transparent">add_circle</i><span class="ml-1">Vermieter hinzufügen</span>
+            <i class="material-icons align-text-bottom bg-transparent">add_circle</i><span class="ms-1">Vermieter hinzufügen</span>
         </a>
     </div>
 </div>

@@ -2,10 +2,20 @@ table td {
     vertical-align: middle !important;
 }
 
+.list-group {
+    --bs-list-group-item-padding-y: 0.75rem;
+    --bs-list-group-striped-bg: rgba(0, 0, 0, 0.05);
+    --bs-list-group-striped-bg-hover: rgba(0, 0, 0, 0.075);
+    --bs-list-group-striped-color: var(--bs-body-color);
+    --bs-list-group-striped-color-hover: var(--bs-body-color);
+}
+
 .list-group.list-group-striped :nth-child(odd):not(.list-group-item-primary):not(.list-group-item-secondary):not(.list-group-item-success):not(.list-group-item-danger):not(.list-group-item-warning):not(.list-group-item-info):not(.list-group-item-light):not(.list-group-item-dark) {
-    background: var(--light);
+    color: var(--bs-list-group-striped-color);
+    background-color: var(--bs-list-group-striped-bg);
 }
 
 .list-group.list-group-striped :nth-child(odd):not(.list-group-item-primary):not(.list-group-item-secondary):not(.list-group-item-success):not(.list-group-item-danger):not(.list-group-item-warning):not(.list-group-item-info):not(.list-group-item-light):not(.list-group-item-dark):hover {
-    background: #f1f3f5;
+    color: var(--bs-list-group-striped-color-hover);
+    background-color: var(--bs-list-group-striped-bg-hover);
 }

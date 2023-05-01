@@ -74,9 +74,9 @@
 		</tr>
 		<tr>
 			<td>Ende</td>
-			<td class="form-inline">
-				<input class="form-control" type="number" min="2000" max="3000" name="end" id="end" placeholder="Endjahr" aria-label="Endjahr" form="saveForm" value="2020" style="flex-grow: 1;" onchange="checkDates()" th:value="${landlord != null ? landlord.period.end : null}">
-				<button class="btn btn-outline-danger ml-2" type="button" onclick="clearEnd();checkDates()">Leeren</button>
+			<td class="d-flex">
+				<input class="form-control col" type="number" min="2000" max="3000" name="end" id="end" placeholder="Endjahr" aria-label="Endjahr" form="saveForm" value="2020" onchange="checkDates()" th:value="${landlord != null ? landlord.period.end : null}">
+				<button class="btn btn-outline-danger ms-2" type="button" onclick="clearEnd();checkDates()">Leeren</button>
 			</td>
 		</tr>
         </tbody>
