@@ -54,7 +54,7 @@
             </td>
         </tr>
         <tr>
-            <td>Wohnung</td>
+            <td>Mietvertrag</td>
             <td>
                 <select class="form-control" name="contract" id="contract" aria-label="Mietvertrag" form="saveForm" required>
                     <option th:each="contract: ${contracts}" th:selected="${contract == selectedContract}" th:value="${contract.id}" th:text="${contract.flat} + ' - ' + ${contract.tenant} + ' (' + ${contract.period.format(@messageSource, #locale)} + ')'">Uta Krüger</option>
