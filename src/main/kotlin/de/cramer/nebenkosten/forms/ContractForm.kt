@@ -4,7 +4,7 @@ import de.cramer.nebenkosten.exceptions.BadRequestException
 import java.time.LocalDate
 
 class ContractForm(
-    val flatName: String,
+    val flatId: Long,
     val tenantId: Long,
     val persons: Int,
     val start: LocalDate,

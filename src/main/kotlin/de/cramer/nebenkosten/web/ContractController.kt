@@ -70,14 +70,14 @@ class ContractController(
 
     @PostMapping("create")
     fun createContract(
-        @RequestParam("flat") flatName: String,
+        @RequestParam("flat") flatId: Long,
         @RequestParam("tenant") tenantId: Long,
         @RequestParam("persons") persons: Int,
         @RequestParam("start") start: LocalDate,
         @RequestParam("end", required = false) end: LocalDate?,
         redirectAttributes: RedirectAttributes,
     ): String = try {
-        ContractForm(flatName, tenantId, persons, start, end).apply {
+        ContractForm(flatId, tenantId, persons, start, end).apply {
             validate()
             contractService.createContract(this)
         }
@@ -103,14 +103,14 @@ class ContractController(
     @PostMapping("edit/{id}")
     fun editContract(
         @PathVariable("id") id: Long,
-        @RequestParam("flat") flatName: String,
+        @RequestParam("flat") flatId: Long,
         @RequestParam("tenant") tenantId: Long,
         @RequestParam("persons") persons: Int,
         @RequestParam("start") start: LocalDate,
         @RequestParam("end", required = false) end: LocalDate?,
         redirectAttributes: RedirectAttributes,
     ): String = try {
-        ContractForm(flatName, tenantId, persons, start, end).apply {
+        ContractForm(flatId, tenantId, persons, start, end).apply {
             validate()
             contractService.editContract(id, this)
         }

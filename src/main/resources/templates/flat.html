@@ -7,8 +7,8 @@
 <div class="container">
     <nav th:replace="~{template.html :: navbar ('flats')}"></nav>
 
-    <form id="saveForm" method="post" th:action="${flat != null} ? @{/flats/edit/{flatName}(flatName=${flat.name})} : @{/flats/create}"></form>
-    <form id="deleteForm" method="post" th:action="${flat != null} ? @{/flats/delete/{flatName}(flatName=${flat.name})} : ''"></form>
+    <form id="saveForm" method="post" th:action="${flat != null} ? @{/flats/edit/{flatId}(flatId=${flat.id})} : @{/flats/create}"></form>
+    <form id="deleteForm" method="post" th:action="${flat != null} ? @{/flats/delete/{flatId}(flatId=${flat.id})} : ''"></form>
 
     <div class="alert alert-danger" role="alert" th:if="${saveError}">
         Beim Speichern der Wohnung ist ein Fehler aufgetreten.

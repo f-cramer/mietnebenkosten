@@ -24,12 +24,12 @@ class FlatRestController(
     @PutMapping
     fun createFlat(@RequestBody form: FlatForm): Flat = service.createFlat(form)
 
-    @GetMapping("{name}")
-    fun getFlatById(@PathVariable("name") name: String): Flat = service.getFlat(name)
+    @GetMapping("{id}")
+    fun getFlatById(@PathVariable("id") id: Long): Flat = service.getFlat(id)
 
-    @PostMapping("{name}")
-    fun editFlat(@PathVariable("name") name: String, @RequestBody form: FlatForm): Flat = service.editFlat(name, form)
+    @PostMapping("{id}")
+    fun editFlat(@PathVariable("id") id: Long, @RequestBody form: FlatForm): Flat = service.editFlat(id, form)
 
-    @DeleteMapping("{name}")
-    fun deleteFlat(@PathVariable("name") name: String): Unit = service.deleteFlat(name)
+    @DeleteMapping("{id}")
+    fun deleteFlat(@PathVariable("id") id: Long): Unit = service.deleteFlat(id)
 }

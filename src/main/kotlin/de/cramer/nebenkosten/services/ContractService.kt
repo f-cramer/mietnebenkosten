@@ -62,7 +62,7 @@ class ContractService(
     }
 
     fun ContractForm.toContract() = Contract(
-        flat = flatService.getFlat(flatName),
+        flat = flatService.getFlat(flatId),
         tenant = tenantService.getTenant(tenantId),
         period = LocalDatePeriod(start, end),
         persons = persons

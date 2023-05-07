@@ -19,7 +19,7 @@ data class Contract(
     val id: Long,
 
     @ManyToOne
-    @JoinColumn(name = "flat_name")
+    @JoinColumn(name = "flat_id")
     val flat: Flat,
 
     @ManyToOne

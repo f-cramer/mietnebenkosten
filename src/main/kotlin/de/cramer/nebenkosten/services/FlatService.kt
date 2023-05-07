@@ -14,32 +14,29 @@ class FlatService(
 ) {
     fun getFlats(): List<Flat> = repository.findAll().sorted()
 
-    fun getFlat(name: String): Flat = repository.findById(name)
+    fun getFlat(id: Long): Flat = repository.findById(id)
         .getOrElse { throw NotFoundException() }
 
-    fun editFlat(name: String, form: FlatForm): Flat =
-        if (repository.existsById(name)) {
-            repository.save(form.toFlat().copy(name = name))
+    fun editFlat(id: Long, form: FlatForm): Flat =
+        if (repository.existsById(id)) {
+            repository.save(form.toFlat().copy(id = id))
         } else {
             throw ConflictException()
         }
 
     fun createFlat(form: FlatForm): Flat =
-        if (repository.existsById(form.name)) {
-            throw ConflictException()
-        } else {
-            repository.save(form.toFlat())
-        }
+        repository.save(form.toFlat())
 
-    fun deleteFlat(name: String) {
-        if (repository.existsById(name)) {
-            repository.deleteById(name)
+    fun deleteFlat(id: Long) {
+        if (repository.existsById(id)) {
+            repository.deleteById(id)
         } else {
             throw NotFoundException()
         }
     }
 
     fun FlatForm.toFlat() = Flat(
+        0,
         name = name.trim(),
         order = order,
         area = area

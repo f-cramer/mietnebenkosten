@@ -46,37 +46,37 @@ class FlatController(
         "redirect:/flats?error=create"
     }
 
-    @GetMapping("show/{name}")
+    @GetMapping("show/{id}")
     fun getFlat(
-        @PathVariable("name") name: String,
+        @PathVariable("id") id: Long,
         model: Model,
     ): String {
-        model["flat"] = flatService.getFlat(name)
+        model["flat"] = flatService.getFlat(id)
         return "flat"
     }
 
-    @PostMapping("edit/{name}")
+    @PostMapping("edit/{id}")
     fun editFlat(
-        @PathVariable("name") originalName: String,
+        @PathVariable("id") id: Long,
         @RequestParam("name") name: String,
         @RequestParam("area") area: Long,
         @RequestParam("order") order: Int,
     ): String = try {
-        flatService.editFlat(originalName, FlatForm(name, area, order))
+        flatService.editFlat(id, FlatForm(name, area, order))
         "redirect:/flats?success=edit"
     } catch (e: Exception) {
         log.error(e.message, e)
         "redirect:/flats/show/$name?error=edit"
     }
 
-    @PostMapping("delete/{name}")
+    @PostMapping("delete/{id}")
     fun alterFlat(
-        @PathVariable("name") name: String,
+        @PathVariable("id") id: Long,
     ): String = try {
-        flatService.deleteFlat(name)
+        flatService.deleteFlat(id)
         "redirect:/flats?success=delete"
     } catch (e: Exception) {
         log.error(e.message, e)
-        "redirect:/flats/show/$name?error=delete"
+        "redirect:/flats/show/$id?error=delete"
     }
 }

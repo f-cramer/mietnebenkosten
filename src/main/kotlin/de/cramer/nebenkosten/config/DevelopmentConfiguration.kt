@@ -60,10 +60,10 @@ class DevelopmentConfiguration {
         val tenant3 = tenantService.createTenant(TenantForm("Sara", "Weiss", "Fugger Straße", 22, "14403", "Potsdam", gender = Gender.MALE, formOfAddress = FormOfAddress.INFORMAL, hidden = false))
         val tenant4 = tenantService.createTenant(TenantForm("Phillipp", "Wurfel", "Waßmannsdorfer Chaussee", 1, "21035", "Hamburg", gender = Gender.FEMALE, formOfAddress = FormOfAddress.INFORMAL, hidden = false))
 
-        val tenant1Erdgeschoss = contractService.createContract(ContractForm(erdgeschoss.name, tenant1.id, 2, LocalDate.of(2018, Month.FEBRUARY, 1)))
-        val tenant2Og1 = contractService.createContract(ContractForm(og1.name, tenant2.id, 2, LocalDate.of(2010, Month.JANUARY, 1), YearMonth.of(2019, Month.MAY).atEndOfMonth()))
-        val tenant3Og1 = contractService.createContract(ContractForm(og1.name, tenant3.id, 1, LocalDate.of(2019, Month.DECEMBER, 1)))
-        val tenant4Dachgeschoss = contractService.createContract(ContractForm(dachgeschoss.name, tenant4.id, 1, LocalDate.of(2017, Month.NOVEMBER, 1)))
+        val tenant1Erdgeschoss = contractService.createContract(ContractForm(erdgeschoss.id, tenant1.id, 2, LocalDate.of(2018, Month.FEBRUARY, 1)))
+        val tenant2Og1 = contractService.createContract(ContractForm(og1.id, tenant2.id, 2, LocalDate.of(2010, Month.JANUARY, 1), YearMonth.of(2019, Month.MAY).atEndOfMonth()))
+        val tenant3Og1 = contractService.createContract(ContractForm(og1.id, tenant3.id, 1, LocalDate.of(2019, Month.DECEMBER, 1)))
+        val tenant4Dachgeschoss = contractService.createContract(ContractForm(dachgeschoss.id, tenant4.id, 1, LocalDate.of(2017, Month.NOVEMBER, 1)))
 
         val year = Year.of(2019)
         invoiceService.createInvoice(generalInvoice("Wasser", 223.euros() + 46.cents(), SplitAlgorithmType.ByPersons, year, 1))
