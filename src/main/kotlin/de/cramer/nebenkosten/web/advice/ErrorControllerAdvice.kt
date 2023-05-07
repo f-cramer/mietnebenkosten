@@ -1,22 +1,13 @@
-package de.cramer.nebenkosten.web
+package de.cramer.nebenkosten.web.advice
 
 import de.cramer.nebenkosten.extensions.set
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.RequestParam
-import java.time.Year
 
 @ControllerAdvice
-class YearControllerAdvice {
-
-    @ModelAttribute
-    fun publishYear(
-        year: Year,
-        model: Model,
-    ) {
-        model["year"] = year.toString()
-    }
+class ErrorControllerAdvice {
 
     @ModelAttribute
     fun publishErrors(
