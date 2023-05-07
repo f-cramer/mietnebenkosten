@@ -1,0 +1,22 @@
+<html lang="de" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{template.html :: head}">
+    <title></title>
+</head>
+<body>
+<div class="container">
+    <nav th:replace="~{template.html :: navbar ('rentalComplexes')}"></nav>
+
+	<div class="row alert alert-danger" role="alert" th:if="${error}">
+		<object th:if="${error} == 'create'" th:remove="tag">Beim Anlegen der Mieteinheit ist ein Fehler aufgetreten.</object>
+		<object th:unless="${error} == 'create'" th:remove="tag">Ein unbekannter Fehler ist aufgetreten</object>
+	</div>
+
+    <div class="row list-group list-group-striped">
+        <a class="list-group-item list-group-item-action" th:each="rentalComplex: ${rentalComplexes}" th:text="${rentalComplex}" th:href="@{/rentalComplexes/show/{rentalComplexId}(rentalComplexId=${rentalComplex.id})}">Test-Mieteinheit</a>
+        <a class="list-group-item list-group-item-action list-group-item-success" th:href="@{/rentalComplexes/create}">
+            <i class="material-icons align-text-bottom bg-transparent">add_circle</i><span class="ms-1">Mieteinheit hinzufügen</span>
+        </a>
+    </div>
+</div>
+</body>
+</html>

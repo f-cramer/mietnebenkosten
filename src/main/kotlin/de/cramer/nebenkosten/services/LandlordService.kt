@@ -4,6 +4,7 @@ import de.cramer.nebenkosten.entities.Address
 import de.cramer.nebenkosten.entities.Landlord
 import de.cramer.nebenkosten.entities.Landlord_
 import de.cramer.nebenkosten.entities.LocalDatePeriod
+import de.cramer.nebenkosten.entities.RentalComplex
 import de.cramer.nebenkosten.entities.YearPeriod
 import de.cramer.nebenkosten.exceptions.ConflictException
 import de.cramer.nebenkosten.exceptions.NotFoundException
@@ -31,15 +32,15 @@ class LandlordService(
         repository.findById(id)
             .getOrElse { throw NotFoundException() }
 
-    fun editLandlord(id: Long, form: LandlordForm): Landlord =
+    fun editLandlord(id: Long, form: LandlordForm, rentalComplex: RentalComplex): Landlord =
         if (repository.existsById(id)) {
-            repository.save(form.toLandlord(id))
+            repository.save(form.toLandlord(id, rentalComplex))
         } else {
             throw ConflictException()
         }
 
-    fun createLandlord(form: LandlordForm): Landlord =
-        repository.save(form.toLandlord(0))
+    fun createLandlord(form: LandlordForm, rentalComplex: RentalComplex): Landlord =
+        repository.save(form.toLandlord(0, rentalComplex))
 
     fun deleteLandlord(id: Long) {
         if (repository.existsById(id)) {
@@ -49,7 +50,7 @@ class LandlordService(
         }
     }
 
-    private fun LandlordForm.toLandlord(id: Long) = Landlord(
+    private fun LandlordForm.toLandlord(id: Long, rentalComplex: RentalComplex) = Landlord(
         id = id,
         firstName = firstName.trim(),
         lastName = lastName.trim(),
@@ -62,6 +63,7 @@ class LandlordService(
         ),
         iban = iban,
         period = YearPeriod(start, end),
+        rentalComplex = rentalComplex,
     )
 
     private fun overlappingYearPeriodSpecification(period: YearPeriod): Specification<Landlord> = overlappingYearPeriodSpecification(period) { it.get(Landlord_.period) }

@@ -183,7 +183,7 @@ class BillingService(
         val vacancyName = messageSource.getMessage("vacancy", null, locale)
         val tenant by lazy {
             // only create the tenant (and use an id) when necessary
-            Tenant(tenantId.decrementAndGet(), vacancyName, flat.name, Address.EMPTY, Gender.MALE, FormOfAddress.FORMAL, true, generated = true)
+            Tenant(tenantId.decrementAndGet(), vacancyName, flat.name, Address.EMPTY, Gender.MALE, FormOfAddress.FORMAL, flat.rentalComplex, true, generated = true)
         }
 
         return buildList {

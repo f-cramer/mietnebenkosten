@@ -1,5 +1,7 @@
 package de.cramer.nebenkosten.config
 
+import de.cramer.nebenkosten.config.rentalcomplex.RentalComplexChangeInterceptor
+import de.cramer.nebenkosten.config.rentalcomplex.RentalComplexMethodArgumentResolver
 import de.cramer.nebenkosten.config.year.YearChangeInterceptor
 import de.cramer.nebenkosten.config.year.YearResolver
 import org.springframework.boot.web.servlet.FilterRegistrationBean
@@ -18,14 +20,18 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver
 class WebConfiguration(
     private val yearResolver: YearResolver,
     private val yearChangeInterceptor: YearChangeInterceptor,
+    private val rentalComplexResolver: RentalComplexMethodArgumentResolver,
+    private val rentalComplexChangeInterceptor: RentalComplexChangeInterceptor,
 ) : WebMvcConfigurer {
 
     override fun addArgumentResolvers(resolvers: MutableList<HandlerMethodArgumentResolver>) {
         resolvers += yearResolver
+        resolvers += rentalComplexResolver
     }
 
     override fun addInterceptors(registry: InterceptorRegistry) {
         registry.addInterceptor(yearChangeInterceptor)
+        registry.addInterceptor(rentalComplexChangeInterceptor)
         registry.addInterceptor(LocaleChangeInterceptor())
     }
 
