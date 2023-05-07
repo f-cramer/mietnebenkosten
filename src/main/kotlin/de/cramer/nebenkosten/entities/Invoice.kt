@@ -35,6 +35,10 @@ abstract class Invoice(
 
     @Column(name = "order")
     val order: Int,
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "rental_complex_id", nullable = false)
+    val rentalComplex: RentalComplex,
 ) : Comparable<Invoice> {
 
     abstract val type: InvoiceType
@@ -79,11 +83,12 @@ class GeneralInvoice(
     period: LocalDatePeriod,
     price: MonetaryAmount,
     order: Int,
+    rentalComplex: RentalComplex,
 
     @Suppress("JpaAttributeTypeInspection")
     @Column(name = "split_algorithm")
     val splitAlgorithm: SplitAlgorithm,
-) : Invoice(id, description, period, price, order) {
+) : Invoice(id, description, period, price, order, rentalComplex) {
 
     override val type: InvoiceType
         get() = InvoiceType.General
@@ -115,11 +120,12 @@ class ContractInvoice(
     period: LocalDatePeriod,
     price: MonetaryAmount,
     order: Int,
+    rentalComplex: RentalComplex,
 
     @ManyToOne
     @JoinColumn(name = "contract_id")
     val contract: Contract,
-) : Invoice(id, description, period, price, order) {
+) : Invoice(id, description, period, price, order, rentalComplex) {
 
     override val type: InvoiceType
         get() = InvoiceType.Contract

@@ -1,6 +1,7 @@
 package de.cramer.nebenkosten.web.rest
 
 import de.cramer.nebenkosten.entities.Invoice
+import de.cramer.nebenkosten.entities.RentalComplex
 import de.cramer.nebenkosten.forms.InvoiceForm
 import de.cramer.nebenkosten.services.InvoiceService
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -22,13 +23,13 @@ class InvoiceRestController(
     fun getAllInvoices(): List<Invoice> = service.getInvoices()
 
     @PutMapping
-    fun createInvoice(@RequestBody form: InvoiceForm): Invoice = service.createInvoice(form)
+    fun createInvoice(@RequestBody form: InvoiceForm, rentalComplex: RentalComplex): Invoice = service.createInvoice(form, rentalComplex)
 
     @GetMapping("{id}")
     fun getInvoiceById(@PathVariable("id") id: Long): Invoice = service.getInvoice(id)
 
     @PostMapping("{id}")
-    fun editInvoice(@PathVariable("id") id: Long, @RequestBody form: InvoiceForm): Invoice = service.editInvoice(id, form)
+    fun editInvoice(@PathVariable("id") id: Long, @RequestBody form: InvoiceForm, rentalComplex: RentalComplex): Invoice = service.editInvoice(id, form, rentalComplex)
 
     @DeleteMapping("{id}")
     fun deleteInvoice(@PathVariable("id") id: Long): Unit = service.deleteInvoice(id)
