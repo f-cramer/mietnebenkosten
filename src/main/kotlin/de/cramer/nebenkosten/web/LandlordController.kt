@@ -1,5 +1,6 @@
 package de.cramer.nebenkosten.web
 
+import de.cramer.nebenkosten.entities.RentalComplex
 import de.cramer.nebenkosten.extensions.set
 import de.cramer.nebenkosten.forms.LandlordForm
 import de.cramer.nebenkosten.services.LandlordService
@@ -48,8 +49,9 @@ class LandlordController(
         @RequestParam("iban") iban: String,
         @RequestParam("start") start: Year,
         @RequestParam("end", required = false) end: Year?,
+        rentalComplex: RentalComplex,
     ): String = try {
-        landlordService.createLandlord(LandlordForm(firstName, lastName, street, houseNumber, zipCode, city, country, iban, start, end))
+        landlordService.createLandlord(LandlordForm(firstName, lastName, street, houseNumber, zipCode, city, country, iban, start, end), rentalComplex)
         "redirect:/landlords"
     } catch (e: Exception) {
         log.debug(e.message, e)
@@ -78,8 +80,9 @@ class LandlordController(
         @RequestParam("iban") iban: String,
         @RequestParam("start") start: Year,
         @RequestParam("end", required = false) end: Year?,
+        rentalComplex: RentalComplex,
     ): String = try {
-        landlordService.editLandlord(id, LandlordForm(firstName, lastName, street, houseNumber, zipCode, city, country, iban, start, end))
+        landlordService.editLandlord(id, LandlordForm(firstName, lastName, street, houseNumber, zipCode, city, country, iban, start, end), rentalComplex)
         "redirect:/landlords"
     } catch (e: Exception) {
         log.error(e.message, e)

@@ -2,6 +2,7 @@ package de.cramer.nebenkosten.web
 
 import de.cramer.nebenkosten.entities.FormOfAddress
 import de.cramer.nebenkosten.entities.Gender
+import de.cramer.nebenkosten.entities.RentalComplex
 import de.cramer.nebenkosten.extensions.set
 import de.cramer.nebenkosten.forms.TenantForm
 import de.cramer.nebenkosten.services.TenantService
@@ -51,8 +52,9 @@ class TenantController(
         @RequestParam("gender") gender: Gender,
         @RequestParam("formOfAddress") formOfAddress: FormOfAddress,
         @RequestParam("hidden", defaultValue = "false") hidden: Boolean,
+        rentalComplex: RentalComplex,
     ): String = try {
-        tenantService.createTenant(TenantForm(firstName, lastName, street, houseNumber, zipCode, city, country, gender, formOfAddress, hidden))
+        tenantService.createTenant(TenantForm(firstName, lastName, street, houseNumber, zipCode, city, country, gender, formOfAddress, hidden), rentalComplex)
         "redirect:/tenants"
     } catch (e: Exception) {
         log.debug(e.message, e)
@@ -81,8 +83,9 @@ class TenantController(
         @RequestParam("gender") gender: Gender,
         @RequestParam("formOfAddress") formOfAddress: FormOfAddress,
         @RequestParam("hidden", defaultValue = "false") hidden: Boolean,
+        rentalComplex: RentalComplex,
     ): String = try {
-        tenantService.editTenant(id, TenantForm(firstName, lastName, street, houseNumber, zipCode, city, country, gender, formOfAddress, hidden))
+        tenantService.editTenant(id, TenantForm(firstName, lastName, street, houseNumber, zipCode, city, country, gender, formOfAddress, hidden), rentalComplex)
         "redirect:/tenants"
     } catch (e: Exception) {
         log.error(e.message, e)
