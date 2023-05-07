@@ -1,9 +1,8 @@
 package de.cramer.nebenkosten.web
 
-import de.cramer.nebenkosten.entities.RentalComplex
 import de.cramer.nebenkosten.extensions.set
-import de.cramer.nebenkosten.forms.FlatForm
-import de.cramer.nebenkosten.services.FlatService
+import de.cramer.nebenkosten.forms.RentalComplexForm
+import de.cramer.nebenkosten.services.RentalComplexService
 import org.slf4j.Logger
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
@@ -14,72 +13,66 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 
 @Controller
-@RequestMapping("flats")
-class FlatController(
+@RequestMapping("rentalComplexes")
+class RentalComplexController(
     private val log: Logger,
-    private val flatService: FlatService,
+    private val rentalComplexService: RentalComplexService,
 ) {
 
     @GetMapping
-    fun getFlats(
+    fun getRentalComplexes(
         model: Model,
     ): String {
-        model["flats"] = flatService.getFlats()
-        return "flats"
+        model["rentalComplexes"] = rentalComplexService.getRentalComplexes()
+        return "rentalComplexes"
     }
 
     @GetMapping("create")
     @Suppress("FunctionOnlyReturningConstant")
-    fun createFlat(): String {
-        return "flat"
+    fun createRentalComplex(): String {
+        return "rentalComplex"
     }
 
     @PostMapping("create")
-    fun createFlat(
+    fun createRentalComplex(
         @RequestParam("name") name: String,
-        @RequestParam("area") area: Long,
-        @RequestParam("order") order: Int,
-        rentalComplex: RentalComplex,
     ): String = try {
-        flatService.createFlat(FlatForm(name, area, order), rentalComplex)
-        "redirect:/flats?success=create"
+        rentalComplexService.createRentalComplex(RentalComplexForm(name))
+        "redirect:/rentalComplexes?success=create"
     } catch (e: Exception) {
         log.error(e.message, e)
-        "redirect:/flats?error=create"
+        "redirect:/rentalComplexes?error=create"
     }
 
     @GetMapping("show/{id}")
-    fun getFlat(
+    fun getRentalComplex(
         @PathVariable("id") id: Long,
         model: Model,
     ): String {
-        model["flat"] = flatService.getFlat(id)
-        return "flat"
+        model["rentalComplex"] = rentalComplexService.getRentalComplex(id)
+        return "rentalComplex"
     }
 
     @PostMapping("edit/{id}")
-    fun editFlat(
+    fun editRentalComplex(
         @PathVariable("id") id: Long,
         @RequestParam("name") name: String,
-        @RequestParam("area") area: Long,
-        @RequestParam("order") order: Int,
-        rentalComplex: RentalComplex,
     ): String = try {
-        flatService.editFlat(id, FlatForm(name, area, order), rentalComplex)
-        "redirect:/flats?success=edit"
+        rentalComplexService.editRentalComplex(id, RentalComplexForm(name))
+        "redirect:/rentalComplexes?success=edit"
     } catch (e: Exception) {
         log.error(e.message, e)
-        "redirect:/flats/show/$name?error=edit"
+        "redirect:/rentalComplexes/show/$id?error=edit"
     }
 
     @PostMapping("delete/{id}")
-    fun alterFlat(
+    fun alterRentalComplex(
         @PathVariable("id") id: Long,
     ): String = try {
-        flatService.deleteFlat(id)
-        "redirect:/flats?success=delete"
+        rentalComplexService.deleteRentalComplex(id)
+        "redirect:/rentalComplexes?success=delete"
     } catch (e: Exception) {
         log.error(e.message, e)
-        "redirect:/flats/show/$id?error=delete"
+        "redirect:/rentalComplexes/show/$id?error=delete"
     }
 }

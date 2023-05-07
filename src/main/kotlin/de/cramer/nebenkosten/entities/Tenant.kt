@@ -8,6 +8,8 @@ import jakarta.persistence.Enumerated
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
+import jakarta.persistence.JoinColumn
+import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
 
 @Entity
@@ -36,8 +38,12 @@ data class Tenant(
 
     @Column(name = "hidden")
     val hidden: Boolean,
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "rental_complex_id", nullable = false)
+    val rentalComplex: RentalComplex,
 ) : Comparable<Tenant> {
-    constructor(firstName: String, lastName: String, address: Address, gender: Gender, formOfAddress: FormOfAddress, hidden: Boolean) : this(0, firstName, lastName, address, gender, formOfAddress, hidden)
+    constructor(firstName: String, lastName: String, address: Address, gender: Gender, formOfAddress: FormOfAddress, hidden: Boolean, rentalComplex: RentalComplex) : this(0, firstName, lastName, address, gender, formOfAddress, hidden, rentalComplex)
 
     override fun compareTo(other: Tenant): Int = COMPARATOR.compare(this, other)
 

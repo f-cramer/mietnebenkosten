@@ -1,6 +1,7 @@
 package de.cramer.nebenkosten.web.rest
 
 import de.cramer.nebenkosten.entities.Landlord
+import de.cramer.nebenkosten.entities.RentalComplex
 import de.cramer.nebenkosten.forms.LandlordForm
 import de.cramer.nebenkosten.services.LandlordService
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -22,13 +23,13 @@ class LandlordRestController(
     fun getAllLandlords(): List<Landlord> = service.getLandlords()
 
     @PutMapping
-    fun createLandlord(@RequestBody form: LandlordForm): Landlord = service.createLandlord(form)
+    fun createLandlord(@RequestBody form: LandlordForm, rentalComplex: RentalComplex): Landlord = service.createLandlord(form, rentalComplex)
 
     @GetMapping("{id}")
     fun getLandlordById(@PathVariable("id") id: Long): Landlord = service.getLandlord(id)
 
     @PostMapping("{id}")
-    fun editLandlord(@PathVariable("id") id: Long, @RequestBody form: LandlordForm): Landlord = service.editLandlord(id, form)
+    fun editLandlord(@PathVariable("id") id: Long, @RequestBody form: LandlordForm, rentalComplex: RentalComplex): Landlord = service.editLandlord(id, form, rentalComplex)
 
     @DeleteMapping("{id}")
     fun deleteLandlord(@PathVariable("id") id: Long): Unit = service.deleteLandlord(id)
