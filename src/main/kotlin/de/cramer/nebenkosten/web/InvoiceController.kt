@@ -4,6 +4,7 @@ import de.cramer.nebenkosten.entities.ContractInvoice
 import de.cramer.nebenkosten.entities.GeneralInvoice
 import de.cramer.nebenkosten.entities.LocalDatePeriod
 import de.cramer.nebenkosten.entities.MonetaryAmount
+import de.cramer.nebenkosten.entities.RentalComplex
 import de.cramer.nebenkosten.entities.SplitAlgorithmType
 import de.cramer.nebenkosten.exceptions.BadRequestException
 import de.cramer.nebenkosten.extensions.set
@@ -79,11 +80,12 @@ class InvoiceController(
         @RequestParam("order") order: Int,
         @RequestParam("start") start: LocalDate,
         @RequestParam("end", required = false) end: LocalDate?,
+        rentalComplex: RentalComplex,
         redirectAttributes: RedirectAttributes,
     ): String = try {
         InvoiceForm(description, price, type, splitAlgorithmType, contract, order, start, end).apply {
             validate()
-            invoiceService.createInvoice(this)
+            invoiceService.createInvoice(this, rentalComplex)
         }
         "redirect:/invoices"
     } catch (e: Exception) {
@@ -124,11 +126,12 @@ class InvoiceController(
         @RequestParam("order") order: Int,
         @RequestParam("start") start: LocalDate,
         @RequestParam("end", required = false) end: LocalDate?,
+        rentalComplex: RentalComplex,
         redirectAttributes: RedirectAttributes,
     ): String = try {
         InvoiceForm(description, price, type, splitAlgorithmType, contract, order, start, end).apply {
             validate()
-            invoiceService.editInvoice(id, this)
+            invoiceService.editInvoice(id, this, rentalComplex)
         }
         "redirect:/invoices"
     } catch (e: BadRequestException) {

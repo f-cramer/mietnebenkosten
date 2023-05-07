@@ -1,5 +1,6 @@
 package de.cramer.nebenkosten.web
 
+import de.cramer.nebenkosten.entities.RentalComplex
 import de.cramer.nebenkosten.extensions.set
 import de.cramer.nebenkosten.forms.FlatForm
 import de.cramer.nebenkosten.services.FlatService
@@ -38,8 +39,9 @@ class FlatController(
         @RequestParam("name") name: String,
         @RequestParam("area") area: Long,
         @RequestParam("order") order: Int,
+        rentalComplex: RentalComplex,
     ): String = try {
-        flatService.createFlat(FlatForm(name, area, order))
+        flatService.createFlat(FlatForm(name, area, order), rentalComplex)
         "redirect:/flats?success=create"
     } catch (e: Exception) {
         log.error(e.message, e)
@@ -61,8 +63,9 @@ class FlatController(
         @RequestParam("name") name: String,
         @RequestParam("area") area: Long,
         @RequestParam("order") order: Int,
+        rentalComplex: RentalComplex,
     ): String = try {
-        flatService.editFlat(id, FlatForm(name, area, order))
+        flatService.editFlat(id, FlatForm(name, area, order), rentalComplex)
         "redirect:/flats?success=edit"
     } catch (e: Exception) {
         log.error(e.message, e)

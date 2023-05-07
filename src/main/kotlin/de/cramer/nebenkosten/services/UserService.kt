@@ -10,9 +10,8 @@ class UserService(
     private val repository: UserRepository,
 ) {
 
-    fun saveUser(user: User) {
+    fun saveUser(user: User): User =
         repository.save(user)
-    }
 
     fun getUser(username: String): User? {
         return repository.findById(username).getOrNull()
