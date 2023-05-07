@@ -5,6 +5,7 @@ import de.cramer.nebenkosten.entities.Tenant
 import de.cramer.nebenkosten.exceptions.ConflictException
 import de.cramer.nebenkosten.exceptions.NotFoundException
 import de.cramer.nebenkosten.forms.TenantForm
+import de.cramer.nebenkosten.jpa.specifications.TenantsByHiddenSpecification
 import de.cramer.nebenkosten.repositories.TenantRepository
 import org.springframework.stereotype.Service
 import kotlin.jvm.optionals.getOrElse
@@ -14,7 +15,7 @@ class TenantService(
     private val repository: TenantRepository,
 ) {
     fun getTenants(includeHidden: Boolean = false): List<Tenant> =
-        (if (includeHidden) repository.findAll() else repository.findByHiddenFalse())
+        (if (includeHidden) repository.findAll() else repository.findAll(TenantsByHiddenSpecification(false)))
             .sorted()
 
     fun getTenant(id: Long): Tenant = repository.findById(id)
