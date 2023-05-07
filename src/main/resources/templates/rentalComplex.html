@@ -1,0 +1,38 @@
+<html lang="de" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{template.html :: head}">
+    <title></title>
+</head>
+<body>
+<!--/*@thymesVar id="rentalComplex" type="de.cramer.nebenkosten.entities.RentalComplex"*/-->
+<div class="container">
+    <nav th:replace="~{template.html :: navbar ('rentalComplexes')}"></nav>
+
+    <form id="saveForm" method="post" th:action="${rentalComplex != null} ? @{/rentalComplexes/edit/{rentalComplexId}(rentalComplexId=${rentalComplex.id})} : @{/rentalComplexes/create}"></form>
+    <form id="deleteForm" method="post" th:action="${rentalComplex != null} ? @{/rentalComplexes/delete/{rentalComplexId}(rentalComplexId=${rentalComplex.id})} : ''"></form>
+
+    <div class="alert alert-danger" role="alert" th:if="${saveError}">
+        Beim Speichern der Mieteinheit ist ein Fehler aufgetreten.
+    </div>
+    <div class="alert alert-danger" role="alert" th:if="${deletionError}">
+        Beim Löschen der Mieteinheit ist ein Fehler aufgetreten. Die Mieteinheit wird bereits genutzt
+    </div>
+
+    <table class="table table-striped align-middle">
+        <tbody>
+        <tr>
+            <td>Name</td>
+            <td>
+                <input class="form-control" type="text" name="name" id="name" placeholder="Name" aria-label="Name" form="saveForm" required value="Wohnzimmer" th:value="${rentalComplex != null ? rentalComplex.name : ''}">
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="d-flex flex-row-reverse" style="gap: 0.5rem">
+        <button class="btn btn-outline-success my-2 my-sm-0 col-md-2" form="saveForm" type="submit">Speichern</button>
+        <button class="btn btn-outline-danger my-2 my-sm-0 col-md-2" form="deleteForm" type="submit" th:if="${rentalComplex != null}">Löschen</button>
+        <a class="btn btn-outline-danger my-2 my-sm-0 col-md-2" th:href="@{/rentalComplexes}" th:if="${rentalComplex == null}">Abbrechen</a>
+    </div>
+</div>
+</body>
+</html>
