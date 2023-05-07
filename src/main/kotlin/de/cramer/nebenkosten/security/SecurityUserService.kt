@@ -14,7 +14,11 @@ class SecurityUserService(
     UserDetailsPasswordService {
 
     override fun loadUserByUsername(username: String): UserDetails =
-        userService.getUser(username)?.let { SecurityUser(it) } ?: throw UsernameNotFoundException(username)
+        userService.getUser(username)?.takeIf {
+            it.rentalComplexes.isNotEmpty()
+        }?.let {
+            SecurityUser(it)
+        } ?: throw UsernameNotFoundException(username)
 
     override fun updatePassword(user: UserDetails, newPassword: String?): UserDetails {
         if (newPassword == null) return user

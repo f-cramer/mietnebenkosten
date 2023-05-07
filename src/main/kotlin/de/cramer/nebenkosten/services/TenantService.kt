@@ -1,6 +1,7 @@
 package de.cramer.nebenkosten.services
 
 import de.cramer.nebenkosten.entities.Address
+import de.cramer.nebenkosten.entities.RentalComplex
 import de.cramer.nebenkosten.entities.Tenant
 import de.cramer.nebenkosten.exceptions.ConflictException
 import de.cramer.nebenkosten.exceptions.NotFoundException
@@ -21,17 +22,17 @@ class TenantService(
     fun getTenant(id: Long): Tenant = repository.findById(id)
         .getOrElse { throw NotFoundException() }
 
-    fun editTenant(id: Long, form: TenantForm): Tenant =
+    fun editTenant(id: Long, form: TenantForm, rentalComplex: RentalComplex): Tenant =
         if (repository.existsById(id)) {
-            repository.save(form.toTenant().copy(id = id))
+            repository.save(form.toTenant(rentalComplex).copy(id = id))
         } else {
             throw ConflictException()
         }
 
-    fun createTenant(form: TenantForm): Tenant =
-        repository.save(form.toTenant())
+    fun createTenant(form: TenantForm, rentalComplex: RentalComplex): Tenant =
+        repository.save(form.toTenant(rentalComplex))
 
-    fun TenantForm.toTenant() = Tenant(
+    fun TenantForm.toTenant(rentalComplex: RentalComplex) = Tenant(
         firstName = firstName.trim(),
         lastName = lastName.trim(),
         address = Address(
@@ -44,6 +45,7 @@ class TenantService(
         gender = gender,
         formOfAddress = formOfAddress,
         hidden = hidden,
+        rentalComplex = rentalComplex,
     )
 
     fun deleteTenant(id: Long) {

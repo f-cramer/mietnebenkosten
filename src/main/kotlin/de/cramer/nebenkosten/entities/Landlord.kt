@@ -6,6 +6,8 @@ import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
+import jakarta.persistence.JoinColumn
+import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
 
 @Entity
@@ -28,6 +30,10 @@ class Landlord(
 
     @Embedded
     val period: YearPeriod,
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "rental_complex_id", nullable = false)
+    val rentalComplex: RentalComplex,
 ) : Comparable<Landlord> {
     override fun compareTo(other: Landlord): Int = COMPARATOR.compare(this, other)
 

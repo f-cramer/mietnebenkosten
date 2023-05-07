@@ -10,6 +10,7 @@ import de.cramer.nebenkosten.entities.Invoice_
 import de.cramer.nebenkosten.entities.LinearSplitAlgorithm
 import de.cramer.nebenkosten.entities.LocalDatePeriod
 import de.cramer.nebenkosten.entities.MonetaryAmount
+import de.cramer.nebenkosten.entities.RentalComplex
 import de.cramer.nebenkosten.entities.SimplePersonFallback
 import de.cramer.nebenkosten.entities.SplitAlgorithm
 import de.cramer.nebenkosten.entities.SplitAlgorithmType.ByArea
@@ -45,11 +46,11 @@ class InvoiceService(
         repository.findById(id)
             .getOrElse { throw NotFoundException() }
 
-    fun editInvoice(id: Long, form: InvoiceForm): Invoice {
+    fun editInvoice(id: Long, form: InvoiceForm, rentalComplex: RentalComplex): Invoice {
         val current = repository.findById(id)
         return if (current.isPresent) {
             val existing = current.get()
-            val new = form.toInvoice(id)
+            val new = form.toInvoice(id, rentalComplex)
             if (existing.javaClass != new.javaClass) {
                 repository.delete(existing)
             }
@@ -59,8 +60,8 @@ class InvoiceService(
         }
     }
 
-    fun createInvoice(form: InvoiceForm): Invoice =
-        repository.save(form.toInvoice(0))
+    fun createInvoice(form: InvoiceForm, rentalComplex: RentalComplex): Invoice =
+        repository.save(form.toInvoice(0, rentalComplex))
 
     fun deleteInvoice(id: Long) {
         if (repository.existsById(id)) {
@@ -70,7 +71,7 @@ class InvoiceService(
         }
     }
 
-    private fun InvoiceForm.toInvoice(id: Long) = when (type) {
+    private fun InvoiceForm.toInvoice(id: Long, rentalComplex: RentalComplex) = when (type) {
         General -> GeneralInvoice(
             id = id,
             description = description,
@@ -78,6 +79,7 @@ class InvoiceService(
             price = monetaryAmount,
             order = order,
             splitAlgorithm = toSplitAlgorithm(),
+            rentalComplex = rentalComplex,
         )
         InvoiceType.Contract -> ContractInvoice(
             id = id,
@@ -86,6 +88,7 @@ class InvoiceService(
             price = monetaryAmount,
             order = order,
             contract = toContract(),
+            rentalComplex = rentalComplex,
         )
     }
 

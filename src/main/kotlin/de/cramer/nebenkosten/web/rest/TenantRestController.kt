@@ -1,5 +1,6 @@
 package de.cramer.nebenkosten.web.rest
 
+import de.cramer.nebenkosten.entities.RentalComplex
 import de.cramer.nebenkosten.entities.Tenant
 import de.cramer.nebenkosten.forms.TenantForm
 import de.cramer.nebenkosten.services.TenantService
@@ -25,13 +26,13 @@ class TenantRestController(
     ): List<Tenant> = service.getTenants(includeHidden)
 
     @PutMapping
-    fun createTenant(@RequestBody form: TenantForm): Tenant = service.createTenant(form)
+    fun createTenant(@RequestBody form: TenantForm, rentalComplex: RentalComplex): Tenant = service.createTenant(form, rentalComplex)
 
     @GetMapping("{id}")
     fun getTenantById(@PathVariable("id") id: Long): Tenant = service.getTenant(id)
 
     @PostMapping("{id}")
-    fun editTenant(@PathVariable("id") id: Long, @RequestBody form: TenantForm): Tenant = service.editTenant(id, form)
+    fun editTenant(@PathVariable("id") id: Long, @RequestBody form: TenantForm, rentalComplex: RentalComplex): Tenant = service.editTenant(id, form, rentalComplex)
 
     @DeleteMapping("{id}")
     fun deleteTenant(@PathVariable("id") id: Long): Unit = service.deleteTenant(id)
