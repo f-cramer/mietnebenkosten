@@ -1,3 +1,4 @@
+import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
@@ -13,6 +14,7 @@ plugins {
 
     id("org.jlleitschuh.gradle.ktlint")
     id("io.gitlab.arturbosch.detekt")
+    id("com.github.ben-manes.versions")
 }
 
 group = "de.cramer.nebenkosten"
@@ -94,6 +96,16 @@ tasks.withType<Jar>().configureEach {
 
 tasks.withType<Wrapper> {
     gradleVersion = "7.6.1"
+}
+
+tasks.named<DependencyUpdatesTask>("dependencyUpdates").configure {
+    val managedVersions = dependencyManagement.managedVersions.keys.toSet() +
+            setOf("com.pinterest:ktlint")
+
+    rejectVersionIf {
+        val dependency = "${candidate.group}:${candidate.module}"
+        dependency in managedVersions
+    }
 }
 
 ktlint {

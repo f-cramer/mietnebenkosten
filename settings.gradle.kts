@@ -20,5 +20,8 @@ pluginManagement {
 
         val ktlintVersion = extra["KTLINT_PLUGIN_VERSION"] as String
         id("org.jlleitschuh.gradle.ktlint") version ktlintVersion
+
+        val versionsVersion = extra["VERSIONS_PLUGIN_VERSION"] as String
+        id("com.github.ben-manes.versions") version versionsVersion
     }
 }
