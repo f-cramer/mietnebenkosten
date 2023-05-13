@@ -95,7 +95,7 @@ tasks.withType<Jar>().configureEach {
 }
 
 tasks.withType<Wrapper> {
-    gradleVersion = "7.6.1"
+    gradleVersion = project.extra["WRAPPER_VERSION"] as String
 }
 
 tasks.named<DependencyUpdatesTask>("dependencyUpdates").configure {
