@@ -16,19 +16,22 @@ class SecurityConfiguration(
 
     @Bean
     fun configure(http: HttpSecurity): SecurityFilterChain {
-        http.httpBasic().disable()
-
-        http.authorizeHttpRequests()
-            .requestMatchers("/css/**").permitAll()
-            .requestMatchers(EndpointRequest.toAnyEndpoint()).permitAll()
-            .anyRequest().authenticated()
-
-        http.formLogin().apply {
-            loginPage("/login")
-            permitAll()
+        http.httpBasic {
+            it.disable()
         }
 
-        http.rememberMe()
+        http.authorizeHttpRequests {
+            it.requestMatchers("/css/**").permitAll()
+            it.requestMatchers(EndpointRequest.toAnyEndpoint()).permitAll()
+            it.anyRequest().authenticated()
+        }
+
+        http.formLogin {
+            it.loginPage("/login")
+            it.permitAll()
+        }
+
+        http.rememberMe {}
 
         http.userDetailsService(userDetailsService)
 
