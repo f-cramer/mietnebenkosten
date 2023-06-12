@@ -108,6 +108,16 @@ tasks.named<DependencyUpdatesTask>("dependencyUpdates").configure {
     }
 }
 
+dependencyManagement {
+    configurations.getByName("detekt") {
+        dependencies {
+            dependencySet("org.jetbrains.kotlin:${project.properties["DETEKT_PLUGIN_KOTLIN_VERSION"]}") {
+                entry("kotlin-compiler-embeddable")
+            }
+        }
+    }
+}
+
 ktlint {
     disabledRules.set(setOf("indent", "experimental:annotation", "experimental:trailing-comma"))
     enableExperimentalRules.set(true)
