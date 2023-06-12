@@ -99,10 +99,17 @@ tasks.withType<Wrapper> {
 }
 
 tasks.named<DependencyUpdatesTask>("dependencyUpdates").configure {
+    gradleReleaseChannel = "current"
+
+    val ignoredVersions = listOf("rc", "beta")
     val managedVersions = dependencyManagement.managedVersions.keys.toSet() +
             setOf("com.pinterest:ktlint")
 
     rejectVersionIf {
+        if (ignoredVersions.any { candidate.version.lowercase().contains(it) }) {
+            return@rejectVersionIf true
+        }
+
         val dependency = "${candidate.group}:${candidate.module}"
         dependency in managedVersions
     }
