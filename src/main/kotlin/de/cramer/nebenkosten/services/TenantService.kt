@@ -39,11 +39,11 @@ class TenantService(
             houseNumber = houseNumber,
             zipCode = zipCode.trim(),
             city = city.trim(),
-            country = if (country.isNullOrEmpty()) null else country.trim()
+            country = if (country.isNullOrEmpty()) null else country.trim(),
         ),
         gender = gender,
         formOfAddress = formOfAddress,
-        hidden = hidden
+        hidden = hidden,
     )
 
     fun deleteTenant(id: Long) {

@@ -19,7 +19,7 @@ data class Billing(
 
     fun round(scale: Int, roundingMode: RoundingMode): Billing = copy(
         entries = entries.map { it.copy(proportionalPrice = it.proportionalPrice.round(scale, roundingMode)) },
-        scale = scale
+        scale = scale,
     )
 
     fun roundUp(scale: Int): Billing = round(scale, RoundingMode.UP)

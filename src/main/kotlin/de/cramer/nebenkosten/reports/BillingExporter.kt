@@ -92,24 +92,24 @@ class BillingExporter(
             street1 = "${landlord.address.street} ${landlord.address.houseNumber}",
             street2 = "",
             city = "${landlord.address.zipCode} ${landlord.address.city}",
-            country = landlord.address.country ?: ""
+            country = landlord.address.country ?: "",
         ),
         receiver = ReportAddress(
             name = "${tenant.firstName} ${tenant.lastName}",
             street1 = "${tenant.address.street} ${tenant.address.houseNumber}",
             street2 = "",
             city = "${tenant.address.zipCode} ${tenant.address.city}",
-            country = tenant.address.country ?: ""
+            country = tenant.address.country ?: "",
         ),
         note = ReportNote(
             title = "Abrechnung Nebenkosten",
-            text = getNote()
+            text = getNote(),
         ),
         billingSum = ReportBillingSum(
-            totalPrice = total.amount
+            totalPrice = total.amount,
         ),
         billings = entries
-            .map { it.toReportBilling() }
+            .map { it.toReportBilling() },
     )
 
     private fun Billing.getNote(): String = when (tenant.formOfAddress) {
@@ -154,7 +154,7 @@ class BillingExporter(
             totalValue = totalValue,
             totalPrice = totalValue.let { invoice.price.amount },
             partValue = proportionalValue,
-            partPrice = proportionalPrice.amount
+            partPrice = proportionalPrice.amount,
         )
     }
 

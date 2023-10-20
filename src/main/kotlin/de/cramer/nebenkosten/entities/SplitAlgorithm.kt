@@ -129,6 +129,7 @@ object LinearSplitAlgorithm : ByTimeSplitAlgorithm(SplitAlgorithmType.Linear, ""
 }
 
 enum class SplitAlgorithmType {
-
-    ByArea, ByPersons, Linear
+    ByArea,
+    ByPersons,
+    Linear,
 }

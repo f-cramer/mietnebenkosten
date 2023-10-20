@@ -144,5 +144,6 @@ class ContractInvoice(
 }
 
 enum class InvoiceType {
-    General, Contract
+    General,
+    Contract,
 }

@@ -104,7 +104,7 @@ tasks.named<DependencyUpdatesTask>("dependencyUpdates").configure {
 
     val ignoredVersions = listOf("rc", "beta")
     val managedVersions = dependencyManagement.managedVersions.keys.toSet() +
-            setOf("com.pinterest:ktlint")
+        setOf("com.pinterest:ktlint")
 
     rejectVersionIf {
         if (ignoredVersions.any { candidate.version.lowercase().contains(it) }) {
@@ -140,9 +140,13 @@ dependencyManagement {
 }
 
 ktlint {
-    disabledRules.set(setOf("indent", "experimental:annotation", "experimental:trailing-comma"))
+    version.set(project.extra["KTLINT_VERSION"] as String)
     enableExperimentalRules.set(true)
-
+    additionalEditorconfig.putAll(
+        mapOf(
+            "ktlint_code_style" to "intellij_idea",
+        ),
+    )
     reporters {
         reporter(ReporterType.PLAIN)
         reporter(ReporterType.HTML)

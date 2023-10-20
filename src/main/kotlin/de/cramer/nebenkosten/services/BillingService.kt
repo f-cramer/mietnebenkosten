@@ -58,7 +58,7 @@ class BillingService(
     private fun Map.Entry<Contract, List<InvoiceSplit>>.toBilling(period: LocalDatePeriod): ContractBilling = ContractBilling(
         key,
         period,
-        value.map { it.toBillingEntry() }
+        value.map { it.toBillingEntry() },
     )
 
     private fun InvoiceSplit.toBillingEntry(): BillingEntry = BillingEntry(invoice, totalValue, splittedValue, splittedAmount)
@@ -97,7 +97,7 @@ class BillingService(
             .asSequence()
             .map { it.value.mergeSameInvoice(rounded) }
             .sorted()
-            .toList()
+            .toList(),
     )
 
     private fun List<BillingEntry>.mergeSameInvoice(rounded: Boolean): BillingEntry = first().let { first ->
@@ -109,7 +109,7 @@ class BillingService(
             asSequence()
                 .map { it.proportionalPrice }
                 .reduce { acc, price -> acc + price }
-                .let { if (rounded) it.round(2, RoundingMode.UP) else it }
+                .let { if (rounded) it.round(2, RoundingMode.UP) else it },
         )
     }
 

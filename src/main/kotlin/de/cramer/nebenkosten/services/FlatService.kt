@@ -39,6 +39,6 @@ class FlatService(
         0,
         name = name.trim(),
         order = order,
-        area = area
+        area = area,
     )
 }

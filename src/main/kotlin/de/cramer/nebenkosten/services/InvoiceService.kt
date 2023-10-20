@@ -77,7 +77,7 @@ class InvoiceService(
             period = LocalDatePeriod(start, end),
             price = monetaryAmount,
             order = order,
-            splitAlgorithm = toSplitAlgorithm()
+            splitAlgorithm = toSplitAlgorithm(),
         )
         InvoiceType.Contract -> ContractInvoice(
             id = id,
@@ -85,7 +85,7 @@ class InvoiceService(
             period = LocalDatePeriod(start, end),
             price = monetaryAmount,
             order = order,
-            contract = toContract()
+            contract = toContract(),
         )
     }
 

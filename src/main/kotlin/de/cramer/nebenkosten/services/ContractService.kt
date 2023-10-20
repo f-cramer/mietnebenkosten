@@ -50,7 +50,7 @@ class ContractService(
         repository.findAll(
             overlappingDatePeriodSpecification(period).and { root, _, criteriaBuilder ->
                 criteriaBuilder.equal(root.get(Contract_.flat), flat)
-            }
+            },
         )
 
     fun deleteContract(id: Long) {
@@ -65,7 +65,7 @@ class ContractService(
         flat = flatService.getFlat(flatId),
         tenant = tenantService.getTenant(tenantId),
         period = LocalDatePeriod(start, end),
-        persons = persons
+        persons = persons,
     )
 
     private fun overlappingDatePeriodSpecification(period: LocalDatePeriod): Specification<Contract> = de.cramer.nebenkosten.extensions.overlappingDatePeriodSpecification(period) { it.get(Contract_.period) }

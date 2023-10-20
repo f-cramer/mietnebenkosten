@@ -40,7 +40,7 @@ fun <T : Comparable<T>> CriteriaBuilder.overlappingPeriodSpecification(
     return if (end == null) {
         or(
             isNull(dbEnd),
-            greaterThanOrEqualTo(dbEnd, start)
+            greaterThanOrEqualTo(dbEnd, start),
         )
     } else {
         or(
