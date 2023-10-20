@@ -11,6 +11,9 @@
 		<object th:unless="${error} == 'create'" th:remove="tag">Ein unbekannter Fehler ist aufgetreten</object>
 	</div>
 
+	<div class="row alert alert-warning" role="alert" th:if="${contractsByFlat.isEmpty()}">
+		Keine Wohnungen gefunden
+	</div>
     <div class="row list-group list-group-striped mb-3" th:each="flatWithContracts : ${contractsByFlat}">
         <span class="list-group-item list-group-item-action list-group-item-primary" th:text="${flatWithContracts.flat}">Test-Wohnung</span>
         <a class="list-group-item list-group-item-action"
