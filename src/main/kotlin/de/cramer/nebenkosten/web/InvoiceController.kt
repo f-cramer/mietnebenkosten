@@ -52,8 +52,8 @@ class InvoiceController(
     ): String {
         val invoice = templateId?.let { invoiceService.getInvoice(it) }
         val firstDayOfYear = year.atDay(1)
-        model["invoiceTypes"] = de.cramer.nebenkosten.entities.InvoiceType.values()
-        model["splitAlgorithmTypes"] = SplitAlgorithmType.values()
+        model["invoiceTypes"] = de.cramer.nebenkosten.entities.InvoiceType.entries
+        model["splitAlgorithmTypes"] = SplitAlgorithmType.entries
         model["contracts"] = contractService.getContractsByPeriod(LocalDatePeriod.ofYear(year))
         model["defaultStart"] = firstDayOfYear
         model["defaultEnd"] = firstDayOfYear.with(TemporalAdjusters.lastDayOfYear())
@@ -103,8 +103,8 @@ class InvoiceController(
     ): String {
         val invoice = invoiceService.getInvoice(id)
         model["invoice"] = invoice
-        model["invoiceTypes"] = de.cramer.nebenkosten.entities.InvoiceType.values()
-        model["splitAlgorithmTypes"] = SplitAlgorithmType.values()
+        model["invoiceTypes"] = de.cramer.nebenkosten.entities.InvoiceType.entries
+        model["splitAlgorithmTypes"] = SplitAlgorithmType.entries
         model["contracts"] = contractService.getContractsByPeriod(LocalDatePeriod.ofYear(year))
         model["selectedSplitAlgorithmType"] = (invoice as? GeneralInvoice)?.splitAlgorithm?.type ?: ""
         model["selectedContract"] = (invoice as? ContractInvoice)?.contract ?: ""
