@@ -6,7 +6,7 @@
 <div class="container">
     <nav th:replace="~{template.html :: navbar ('billings')}"></nav>
 
-	<div class="alert alert-danger" role="alert" th:if="${error}">
+	<div class="row alert alert-danger" role="alert" th:if="${error}">
 		Beim Erstellen der Abrechnung ist ein Fehler aufgetreten. Die Fehlermeldung lautet:
 		<th:block th:text="${error}">Test-Fehlermeldung</th:block>
 	</div>
