@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.factory.PasswordEncoderFactories
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher
 
 @Configuration
 class SecurityConfiguration(
@@ -21,7 +22,7 @@ class SecurityConfiguration(
         }
 
         http.authorizeHttpRequests {
-            it.requestMatchers("/css/**").permitAll()
+            it.requestMatchers(AntPathRequestMatcher("/css/**")).permitAll()
             it.requestMatchers(EndpointRequest.toAnyEndpoint()).permitAll()
             it.anyRequest().authenticated()
         }
