@@ -104,7 +104,7 @@ tasks.named<DependencyUpdatesTask>("dependencyUpdates").configure {
 
     val ignoredVersions = listOf("rc", "beta")
     val managedVersions = dependencyManagement.managedVersions.keys.toSet() +
-        setOf("com.pinterest:ktlint")
+        setOf("io.github.oshai:kotlin-logging")
 
     rejectVersionIf {
         if (ignoredVersions.any { candidate.version.lowercase().contains(it) }) {
