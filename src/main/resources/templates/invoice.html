@@ -119,7 +119,7 @@
             const price = document.getElementById("price")
 
 			let rawPriceEuro = parseFloat(priceEuro.value || "0");
-			const fullPrice = Math.sign(rawPriceEuro) * (Math.abs(rawPriceEuro * 100) + parseFloat(priceCent.value || "0"))
+			const fullPrice = (Math.sign(rawPriceEuro) || 1) * (Math.abs(rawPriceEuro * 100) + parseFloat(priceCent.value || "0"))
             price.value = fullPrice
             if (fullPrice === 0) {
                 priceEuro.setCustomValidity("Preis muss ungleich 0 sein")
