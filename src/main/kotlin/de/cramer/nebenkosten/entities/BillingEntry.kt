@@ -1,6 +1,7 @@
 package de.cramer.nebenkosten.entities
 
 import java.math.BigDecimal
+import java.text.NumberFormat
 
 data class BillingEntry(
     val invoice: Invoice,
@@ -14,6 +15,14 @@ data class BillingEntry(
 
     override fun toString(): String {
         return "(${invoice.description} ${proportionalPrice.amount})"
+    }
+
+    fun formatTotalValue(format: NumberFormat): String? {
+        return totalValue?.let { format.format(it) }
+    }
+
+    fun formatProportionalValue(format: NumberFormat): String? {
+        return proportionalValue?.let { format.format(it) }
     }
 
     companion object {

@@ -30,14 +30,14 @@
                 <tbody>
                 <tr th:each="billingEntry: ${billing.entries}" th:with="unit = ${billingEntry.invoice.type == T(de.cramer.nebenkosten.entities.InvoiceType).General ? billingEntry.invoice.splitAlgorithm.unit : ''}">
                     <td th:text="${billingEntry.invoice.description}">Abwasser</td>
-                    <th:block th:with="total = ${billingEntry.totalValue}">
+                    <th:block th:with="total = ${billingEntry.formatTotalValue(valueFormat)}">
                         <th:block th:if="${total}">
-                            <td th:text="${total.stripTrailingZeros().toPlainString() + ' ' + unit}">49 PM</td>
+                            <td th:text="${total + ' ' + unit}">49 PM</td>
                             <td th:text="${billingEntry.invoice.price.format(#locale)}">135,34€</td>
                         </th:block>
                         <td th:unless="${total}" th:value="#{individual}" class="text-center" colspan="2">Individuell</td>
                     </th:block>
-                    <td th:with="value = ${billingEntry.proportionalValue}" th:text="${value == null ? '' : value.stripTrailingZeros().toPlainString() + ' ' + unit}">11 PM</td>
+                    <td th:with="value = ${billingEntry.formatProportionalValue(valueFormat)}" th:text="${value == null ? '' : value + ' ' + unit}">11 PM</td>
                     <td th:text="${billingEntry.proportionalPrice.format(#locale)}">135,34€</td>
                 </tr>
                 <tr class="table-info">

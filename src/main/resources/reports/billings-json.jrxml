@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.16.0.final using JasperReports Library version 6.16.0-48579d909b7943b64690c65c71e07e0b80981928  -->
+<!-- Created with Jaspersoft Studio version 6.20.5.final using JasperReports Library version 6.20.5-3efcf2e67f959db3888d79f73dde2dbd7acb4f8e  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="billings" pageWidth="595" pageHeight="842" columnWidth="475" leftMargin="60" rightMargin="60" topMargin="60" bottomMargin="40" uuid="acee341f-4535-4daa-a581-2235e897ba77">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="billings-adapter-json.xml"/>
 	<subDataset name="billingsDataset" uuid="f13eb444-6c56-40fc-84b8-e2c7f40b81ea">
@@ -193,7 +193,7 @@
 									</box>
 									<textElement textAlignment="Center" verticalAlignment="Middle"/>
 									<textFieldExpression><![CDATA[$F{totalValue}]]></textFieldExpression>
-									<patternExpression><![CDATA["# " + $F{splitUnit}]]></patternExpression>
+									<patternExpression><![CDATA["#.## " + $F{splitUnit}]]></patternExpression>
 								</textField>
 							</jr:detailCell>
 						</jr:column>
@@ -269,7 +269,7 @@
 									</box>
 									<textElement textAlignment="Center" verticalAlignment="Middle"/>
 									<textFieldExpression><![CDATA[$F{partValue}]]></textFieldExpression>
-									<patternExpression><![CDATA["# " + $F{splitUnit}]]></patternExpression>
+									<patternExpression><![CDATA["#.## " + $F{splitUnit}]]></patternExpression>
 								</textField>
 							</jr:detailCell>
 						</jr:column>

@@ -5,6 +5,7 @@ import de.cramer.nebenkosten.extensions.set
 import de.cramer.nebenkosten.reports.BillingExporter
 import de.cramer.nebenkosten.services.BillingService
 import org.slf4j.Logger
+import org.springframework.context.i18n.LocaleContextHolder
 import org.springframework.core.io.ByteArrayResource
 import org.springframework.core.io.Resource
 import org.springframework.http.HttpHeaders
@@ -16,6 +17,7 @@ import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
+import java.text.NumberFormat
 import java.time.Year
 import java.util.Locale
 
@@ -32,6 +34,10 @@ class BillingController(
         year: Year,
         model: Model,
     ): String {
+        model["valueFormat"] = NumberFormat.getNumberInstance(LocaleContextHolder.getLocale()).apply {
+            minimumFractionDigits = 0
+            maximumIntegerDigits = 2
+        }
         try {
             val billings = billingService.createBillings(year, true)
             model["billings"] = billings
