@@ -14,7 +14,7 @@ plugins {
 
     id("org.jlleitschuh.gradle.ktlint") version "12.1.0"
     id("io.gitlab.arturbosch.detekt") version "1.23.4"
-    id("com.github.ben-manes.versions") version "0.50.0"
+    id("com.github.ben-manes.versions") version "0.51.0"
 }
 
 group = "de.cramer.nebenkosten"
