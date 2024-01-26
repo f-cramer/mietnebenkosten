@@ -4,24 +4,24 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 
 plugins {
-    id("org.springframework.boot")
-    id("io.spring.dependency-management")
-    kotlin("jvm")
-    kotlin("plugin.spring")
-    kotlin("plugin.jpa")
-    kotlin("plugin.allopen")
-    kotlin("kapt")
+    id("org.springframework.boot") version "3.2.2"
+    id("io.spring.dependency-management") version "1.1.4"
+    kotlin("jvm") version "1.9.22"
+    kotlin("plugin.spring") version "1.9.22"
+    kotlin("plugin.jpa") version "1.9.22"
+    kotlin("plugin.allopen") version "1.9.22"
+    kotlin("kapt") version "1.9.22"
 
-    id("org.jlleitschuh.gradle.ktlint")
-    id("io.gitlab.arturbosch.detekt")
-    id("com.github.ben-manes.versions")
+    id("org.jlleitschuh.gradle.ktlint") version "12.1.0"
+    id("io.gitlab.arturbosch.detekt") version "1.23.4"
+    id("com.github.ben-manes.versions") version "0.50.0"
 }
 
 group = "de.cramer.nebenkosten"
 version = properties["VERSION"] as String
 java.sourceCompatibility = JavaVersion.toVersion(properties["JAVA_VERSION"] as String)
 
-ext["kotlin.version"] = properties["KOTLIN_VERSION"] as String
+ext["kotlin.version"] = kotlin.coreLibrariesVersion
 
 allOpen {
     annotations("jakarta.persistence.Entity", "jakarta.persistence.MappedSuperclass")
@@ -55,7 +55,7 @@ dependencies {
 
     implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity6")
 
-    val jasperReportsVersion = properties["JASPERREPORTS_VERSION"] as String
+    val jasperReportsVersion = "6.21.0"
     implementation("net.sf.jasperreports:jasperreports:$jasperReportsVersion") {
         exclude(group = "commons-logging")
     }
@@ -132,7 +132,7 @@ tasks.named("check").configure {
 dependencyManagement {
     configurations.getByName("detekt") {
         dependencies {
-            dependencySet("org.jetbrains.kotlin:${project.properties["DETEKT_PLUGIN_KOTLIN_VERSION"]}") {
+            dependencySet("org.jetbrains.kotlin:1.9.21") {
                 entry("kotlin-compiler-embeddable")
             }
         }
