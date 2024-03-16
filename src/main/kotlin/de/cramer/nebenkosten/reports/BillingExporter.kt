@@ -10,10 +10,8 @@ import de.cramer.nebenkosten.entities.GeneralInvoice
 import jakarta.annotation.PostConstruct
 import net.sf.jasperreports.engine.JRParameter.REPORT_LOCALE
 import net.sf.jasperreports.engine.JRParameter.REPORT_RESOURCE_BUNDLE
-import net.sf.jasperreports.engine.JasperCompileManager
 import net.sf.jasperreports.engine.JasperFillManager
 import net.sf.jasperreports.engine.JasperPrint
-import net.sf.jasperreports.engine.JasperReport
 import net.sf.jasperreports.engine.data.JsonDataSource
 import net.sf.jasperreports.engine.export.JRPdfExporter
 import net.sf.jasperreports.engine.query.JsonQueryExecuterFactory.JSON_DATE_PATTERN
@@ -22,6 +20,7 @@ import net.sf.jasperreports.engine.query.JsonQueryExecuterFactory.JSON_NUMBER_PA
 import net.sf.jasperreports.export.SimpleExporterInput
 import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput
 import org.springframework.context.MessageSource
+import org.springframework.core.io.Resource
 import org.springframework.core.io.ResourceLoader
 import org.springframework.stereotype.Service
 import java.io.ByteArrayOutputStream
@@ -39,15 +38,13 @@ class BillingExporter(
     private val messageSource: MessageSource,
 ) {
 
-    private val report: JasperReport by lazy {
-        resourceLoader.getResource("classpath:/reports/billings-json.jrxml").inputStream.use {
-            JasperCompileManager.compileReport(it)
-        }
+    private val report: Resource by lazy {
+        resourceLoader.getResource("classpath:/de/cramer/nebenkosten/reports/billings-json.jasper")
     }
 
     @PostConstruct
     fun initialize() {
-        report.compilerClass // explicitly compiling report
+        require(report.exists()) { "report not found at ${report.uri}" }
     }
 
     fun export(
@@ -76,7 +73,9 @@ class BillingExporter(
         dataSource.datePattern = parameters[JSON_DATE_PATTERN]?.toString() ?: "yyyy-MM-dd"
         dataSource.setLocale(parameters[JSON_LOCALE]?.toString() ?: Locale.US.toString())
         dataSource.numberPattern = parameters[JSON_NUMBER_PATTERN]?.toString() ?: ""
-        return JasperFillManager.fillReport(report, parameters, dataSource)
+        return report.inputStream.use {
+            JasperFillManager.fillReport(it, parameters, dataSource)
+        }
     }
 
     private fun addDefaultParameters(parameters: MutableMap<String, Any>, locale: Locale) {
