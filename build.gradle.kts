@@ -13,7 +13,7 @@ plugins {
     kotlin("kapt") version "1.9.23"
 
     id("org.jlleitschuh.gradle.ktlint") version "12.1.0"
-    id("io.gitlab.arturbosch.detekt") version "1.23.5"
+    id("io.gitlab.arturbosch.detekt") version "1.23.6"
     id("com.github.ben-manes.versions") version "0.51.0"
     id("io.github.f-cramer.jasperreports") version "0.0.1"
 }
@@ -133,7 +133,7 @@ tasks.named("check").configure {
 dependencyManagement {
     configurations.getByName("detekt") {
         dependencies {
-            dependencySet("org.jetbrains.kotlin:1.9.22") {
+            dependencySet("org.jetbrains.kotlin:1.9.23") {
                 entry("kotlin-compiler-embeddable")
             }
         }
