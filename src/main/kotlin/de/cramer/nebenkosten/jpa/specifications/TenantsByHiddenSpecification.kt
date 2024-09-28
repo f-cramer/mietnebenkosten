@@ -12,7 +12,7 @@ import java.io.Serial
 data class TenantsByHiddenSpecification(
     private val hidden: Boolean,
 ) : Specification<Tenant> {
-    override fun toPredicate(root: Root<Tenant>, query: CriteriaQuery<*>, criteriaBuilder: CriteriaBuilder): Predicate? {
+    override fun toPredicate(root: Root<Tenant>, query: CriteriaQuery<*>?, criteriaBuilder: CriteriaBuilder): Predicate? {
         return criteriaBuilder.equal(root.get(Tenant_.hidden), hidden)
     }
 
