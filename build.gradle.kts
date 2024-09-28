@@ -15,7 +15,7 @@ plugins {
     id("org.jlleitschuh.gradle.ktlint") version "12.1.1"
     id("io.gitlab.arturbosch.detekt") version "1.23.6"
     id("com.github.ben-manes.versions") version "0.51.0"
-    id("io.github.f-cramer.jasperreports") version "0.0.1"
+    id("io.github.f-cramer.jasperreports") version "0.0.2"
 }
 
 group = "de.cramer.nebenkosten"
