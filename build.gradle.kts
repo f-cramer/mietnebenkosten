@@ -56,7 +56,7 @@ dependencies {
 
     implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity6")
 
-    val jasperReportsVersion = "6.21.3"
+    val jasperReportsVersion = "7.0.0"
     implementation("net.sf.jasperreports:jasperreports:$jasperReportsVersion") {
         exclude(group = "commons-logging")
     }
