@@ -33,6 +33,10 @@ configurations {
         extendsFrom(configurations.annotationProcessor.get())
     }
 }
+val jasperreportsConfiguration by configurations.creating {
+    isCanBeResolved = true
+    extendsFrom(configurations.compileClasspath.get())
+}
 
 repositories {
     mavenCentral()
@@ -57,13 +61,20 @@ dependencies {
 
     implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity6")
 
-    val jasperReportsVersion = "6.21.3"
+    val jasperReportsVersion = "7.0.1"
     implementation("net.sf.jasperreports:jasperreports:$jasperReportsVersion") {
         exclude(group = "commons-logging")
     }
     implementation("net.sf.jasperreports:jasperreports-functions:$jasperReportsVersion") {
         exclude(group = "commons-logging")
     }
+    implementation("net.sf.jasperreports:jasperreports-json:$jasperReportsVersion") {
+        exclude(group = "commons-logging")
+    }
+    implementation("net.sf.jasperreports:jasperreports-pdf:$jasperReportsVersion") {
+        exclude(group = "commons-logging")
+    }
+    jasperreportsConfiguration("net.sf.jasperreports:jasperreports-jdt:$jasperReportsVersion")
 
     // cve mitigation
     implementation("org.apache.commons:commons-collections4:4.4")
@@ -162,7 +173,7 @@ detekt {
 }
 
 jasperreports {
-    classpath.from(configurations.compileClasspath)
+    classpath.from(jasperreportsConfiguration)
 }
 
 tasks.processResources {
