@@ -53,6 +53,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 
     implementation("org.flywaydb:flyway-core")
+    runtimeOnly("org.flywaydb:flyway-database-postgresql")
 
     implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity6")
 
