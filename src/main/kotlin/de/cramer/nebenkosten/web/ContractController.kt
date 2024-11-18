@@ -40,6 +40,7 @@ class ContractController(
         val flats = flatService.getFlats().toMutableList()
         val contractsByFlat = contractService.getContractsByPeriod(LocalDatePeriod.ofYear(year))
             .groupBy { it.flat }
+            .mapValues { it.value.sorted() }
             .asSequence()
             .map { ContractsByFlat(it.key, it.value) }
             .onEach { flats -= it.flat }
