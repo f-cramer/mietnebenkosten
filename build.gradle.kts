@@ -12,7 +12,7 @@ plugins {
     kotlin("plugin.allopen") version "1.9.24"
     kotlin("kapt") version "1.9.24"
 
-    id("org.jlleitschuh.gradle.ktlint") version "12.1.1"
+    id("org.jlleitschuh.gradle.ktlint") version "12.1.2"
     id("io.gitlab.arturbosch.detekt") version "1.23.7"
     id("com.github.ben-manes.versions") version "0.51.0"
     id("io.github.f-cramer.jasperreports") version "0.0.3"
