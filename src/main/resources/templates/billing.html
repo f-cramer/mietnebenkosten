@@ -11,6 +11,10 @@
 		<th:block th:text="${error}">Test-Fehlermeldung</th:block>
 	</div>
 
+	<div class="row alert alert-warning" role="alert" th:if="${warning}" th:text="${warning}">
+		Kein Vermieter gefunden
+	</div>
+
     <div class="card mb-2" th:each="billing: ${billings}">
         <div class="card-body">
             <h4 class="card-title">

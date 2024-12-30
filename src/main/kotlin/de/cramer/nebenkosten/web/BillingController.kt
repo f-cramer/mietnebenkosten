@@ -1,6 +1,7 @@
 package de.cramer.nebenkosten.web
 
 import de.cramer.nebenkosten.entities.Billing
+import de.cramer.nebenkosten.exceptions.NoLandlordFoundException
 import de.cramer.nebenkosten.extensions.set
 import de.cramer.nebenkosten.reports.BillingExporter
 import de.cramer.nebenkosten.services.BillingService
@@ -43,9 +44,13 @@ class BillingController(
             val billings = billingService.createBillings(year, locale, true)
             model["billings"] = billings
         } catch (e: Exception) {
-            log.error(e.message, e)
+            if (e is NoLandlordFoundException) {
+                model["warning"] = e.message
+            } else {
+                log.error(e.message, e)
+                model["error"] = e.message
+            }
             model["billings"] = emptyList<Billing>()
-            model["error"] = e.message
         }
         return "billing"
     }

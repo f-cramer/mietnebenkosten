@@ -38,7 +38,10 @@ class BillingService(
     fun createBillings(period: LocalDatePeriod, locale: Locale, rounded: Boolean = false): List<Billing> {
         val landlords = landlordService.getLandlordsByTimePeriod(period)
 
-        val landlord = landlords.minOrNull() ?: throw NoLandlordFoundException()
+        val landlord = landlords.minOrNull() ?: run {
+            val landlordNotFound = messageSource.getMessage("error.notFound.landlord", null, locale)
+            throw NoLandlordFoundException(landlordNotFound)
+        }
         val invoices = invoiceService.getInvoicesByTimePeriod(period)
         val billingPeriods = getBillingPeriods(period)
             .addVacancies(period, locale)
