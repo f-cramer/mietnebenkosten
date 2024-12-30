@@ -7,7 +7,7 @@
     <nav th:replace="~{template.html :: navbar ('landlords')}"></nav>
 
     <form id="saveForm" method="post" th:action="${landlord != null} ? @{/landlords/edit/{landlordId}(landlordId=${landlord.id})} : @{/landlords/create}"></form>
-    <form id="deleteForm" method="post" th:action="${landlord != null} ? @{/landlords/delete/{landlordId}(landlordId=${landlord.id})} : ''"></form>
+    <form id="deleteForm" method="post" onsubmit="return confirm('Vermieter wirklich löschen?')" th:action="${landlord != null} ? @{/landlords/delete/{landlordId}(landlordId=${landlord.id})} : ''"></form>
 
     <div class="alert alert-danger" role="alert" th:if="${saveError}">
         Beim Speichern des Vermieters ist ein Fehler aufgetreten.

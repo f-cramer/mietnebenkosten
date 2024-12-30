@@ -8,7 +8,7 @@
     <nav th:replace="~{template.html :: navbar ('contracts')}"></nav>
 
     <form id="saveForm" method="post" th:action="${contract != null} ? @{/contracts/edit/{contractId}(contractId=${contract.id})} : @{/contracts/create}"></form>
-    <form id="deleteForm" method="post" th:action="${contract != null} ? @{/contracts/delete/{contractId}(contractId=${contract.id})} : ''"></form>
+    <form id="deleteForm" method="post" onsubmit="return confirm('Mietvertrag wirklich löschen?')" th:action="${contract != null} ? @{/contracts/delete/{contractId}(contractId=${contract.id})} : ''"></form>
 
     <div class="alert alert-danger" role="alert" th:if="${saveError}">
         Beim Speichern des Mietvertrags ist ein Fehler aufgetreten.
