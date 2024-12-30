@@ -2,56 +2,56 @@
 <head th:replace="~{template.html :: head}">
     <title></title>
 </head>
-<body>
+<body th:data-error-end-before-start="#{error.contract.endBeforeStart}">
 <!--/*@thymesVar id="contract" type="de.cramer.nebenkosten.entities.Contract"*/-->
 <div class="container">
     <nav th:replace="~{template.html :: navbar ('contracts')}"></nav>
 
     <form id="saveForm" method="post" th:action="${contract != null} ? @{/contracts/edit/{contractId}(contractId=${contract.id})} : @{/contracts/create}"></form>
-    <form id="deleteForm" method="post" onsubmit="return confirm('Mietvertrag wirklich löschen?')" th:action="${contract != null} ? @{/contracts/delete/{contractId}(contractId=${contract.id})} : ''"></form>
+    <form id="deleteForm" method="post" th:data-confirm="#{confirm.delete.contract}" onsubmit="return confirm(this.getAttribute('data-confirm'))" th:action="${contract != null} ? @{/contracts/delete/{contractId}(contractId=${contract.id})} : ''"></form>
 
-    <div class="alert alert-danger" role="alert" th:if="${saveError}">
+    <div class="alert alert-danger" role="alert" th:if="${saveError}" th:text="#{error.save.contract}">
         Beim Speichern des Mietvertrags ist ein Fehler aufgetreten.
     </div>
-    <div class="alert alert-danger" role="alert" th:if="${deletionError}">
+    <div class="alert alert-danger" role="alert" th:if="${deletionError}" th:text="#{error.delete.contract}">
         Beim Löschen des Mietvertrags ist ein Fehler aufgetreten.
     </div>
 
     <table class="table table-striped align-middle">
         <tbody>
         <tr>
-            <td>Wohnung</td>
+            <td th:text="#{template.flat}">Wohnung</td>
             <td>
-                <select class="form-control" name="flat" id="flat" aria-label="Wohnung" form="saveForm" required>
+                <select class="form-control" name="flat" id="flat" aria-label="Wohnung" th:aria-label="#{template.flat}" form="saveForm" required>
                     <option th:each="flat: ${flats}" th:selected="${contract != null && flat == contract.flat || flat == selectedFlat}" th:value="${flat.id}" th:text="${flat.name}">Erdgeschoss</option>
                 </select>
             </td>
         </tr>
         <tr>
-            <td>Mieter</td>
+            <td th:text="#{template.tenant}">Mieter</td>
             <td>
-                <select class="form-control" name="tenant" id="tenant" aria-label="Mieter" form="saveForm" required>
+                <select class="form-control" name="tenant" id="tenant" aria-label="Mieter" th:aria-label="#{template.tenant}" form="saveForm" required>
                     <option th:each="tenant: ${tenants}" th:selected="${contract != null && tenant == contract.tenant}" th:value="${tenant.id}" th:text="${tenant.name}">Uta Krüger</option>
                     <option th:unless="${contract == null || tenants.contains(contract.tenant)}" selected th:value="${contract.tenant.id}" th:text="${contract.tenant.name}">Max Probst</option>
                 </select>
             </td>
         </tr>
         <tr>
-            <td>Anzahl Personen</td>
+            <td th:text="#{template.numberOfPersons}">Anzahl Personen</td>
             <td>
-                <input class="form-control" type="number" name="persons" id="persons" placeholder="Anzahl Personen" aria-label="Anzahl Personen" form="saveForm" required min="1" value="1" th:value="${contract != null ? contract.persons : null}">
+                <input class="form-control" type="number" name="persons" id="persons" placeholder="Anzahl Personen" th:placeholder="#{template.numberOfPersons}" aria-label="Anzahl Personen" th:aria-label="#{template.numberOfPersons}" form="saveForm" required min="1" value="1" th:value="${contract != null ? contract.persons : null}">
             </td>
         </tr>
         <tr>
-            <td>Start</td>
+            <td th:text="#{template.start}">Start</td>
             <td>
-                <input class="form-control" type="date" name="start" id="start" placeholder="Startdatum" aria-label="Startdatum" form="saveForm" required value="2020-12-14" onchange="checkDates()" th:value="${contract != null ? contract.period.start : T(java.time.LocalDate).now()}">
+                <input class="form-control" type="date" name="start" id="start" placeholder="Start" th:placeholder="#{template.start}" aria-label="Start" th:aria-label="#{template.start}" form="saveForm" required value="2020-12-14" onchange="checkDates()" th:value="${contract != null ? contract.period.start : T(java.time.LocalDate).now()}">
             </td>
         </tr>
         <tr>
             <td>Ende</td>
             <td class="d-flex">
-                <input class="form-control col" type="date" name="end" id="end" placeholder="Enddatum" aria-label="Enddatum" form="saveForm" value="2020-12-14" onchange="checkDates()" th:value="${contract != null ? contract.period.end : null}">
+                <input class="form-control col" type="date" name="end" id="end" placeholder="Ende" th:placeholder="#{template.end}" aria-label="Ende" th:aria-label="#{template.end}" form="saveForm" value="2020-12-14" onchange="checkDates()" th:value="${contract != null ? contract.period.end : null}">
                 <button class="btn btn-outline-danger ms-2" type="button" onclick="clearEnd();checkDates()">Leeren</button>
             </td>
         </tr>
@@ -59,9 +59,9 @@
     </table>
 
     <div class="d-flex flex-row-reverse" style="gap: 0.5rem">
-        <button class="btn btn-outline-success my-2 my-sm-0 col-md-2" form="saveForm" type="submit">Speichern</button>
-        <button class="btn btn-outline-danger my-2 my-sm-0 col-md-2" form="deleteForm" type="submit" th:if="${contract != null}">Löschen</button>
-        <a class="btn btn-outline-danger my-2 my-sm-0 col-md-2" th:href="@{/contracts}" th:if="${contract == null}">Abbrechen</a>
+        <button class="btn btn-outline-success my-2 my-sm-0 col-md-2" form="saveForm" type="submit" th:text="#{template.save}">Speichern</button>
+        <button class="btn btn-outline-danger my-2 my-sm-0 col-md-2" form="deleteForm" type="submit" th:text="#{template.delete}" th:if="${contract != null}">Löschen</button>
+        <a class="btn btn-outline-danger my-2 my-sm-0 col-md-2" th:href="@{/contracts}" th:text="#{template.cancel}" th:if="${contract == null}">Abbrechen</a>
     </div>
 
     <script>
@@ -73,9 +73,10 @@
             const endValue = end.value;
 
             if (endValue && startValue > endValue) {
-                end.setCustomValidity("Ende kann nicht vor Start liegen")
+				let error = document.body.getAttribute("data-error-end-before-start");
+                end.setCustomValidity(error);
             } else {
-                end.setCustomValidity('')
+                end.setCustomValidity('');
             }
         }
 

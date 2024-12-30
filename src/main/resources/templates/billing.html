@@ -7,7 +7,7 @@
     <nav th:replace="~{template.html :: navbar ('billings')}"></nav>
 
 	<div class="row alert alert-danger" role="alert" th:if="${error}">
-		Beim Erstellen der Abrechnung ist ein Fehler aufgetreten. Die Fehlermeldung lautet:
+		<th:block th:text="#{error.create.billing}">Beim Erstellen der Abrechnung ist ein Fehler aufgetreten. Die Fehlermeldung lautet:</th:block>
 		<th:block th:text="${error}">Test-Fehlermeldung</th:block>
 	</div>
 
