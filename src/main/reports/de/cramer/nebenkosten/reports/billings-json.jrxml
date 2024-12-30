@@ -1,102 +1,90 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.21.3.final using JasperReports Library version 6.21.3-4a3078d20785ebe464f18037d738d12fc98c13cf  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="billings" pageWidth="595" pageHeight="842" columnWidth="475" leftMargin="60" rightMargin="60" topMargin="60" bottomMargin="40" uuid="acee341f-4535-4daa-a581-2235e897ba77">
+<!-- Created with Jaspersoft Studio version 7.0.1.final using JasperReports Library version 7.0.1-573496633c2b4074e32f433154b543003f7d2498  -->
+<jasperReport name="billings" language="java" pageWidth="595" pageHeight="842" columnWidth="475" leftMargin="60" rightMargin="60" topMargin="60" bottomMargin="40" uuid="acee341f-4535-4daa-a581-2235e897ba77">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="billings-adapter-json.xml"/>
-	<subDataset name="billingsDataset" uuid="f13eb444-6c56-40fc-84b8-e2c7f40b81ea">
+	<dataset name="billingsDataset" uuid="f13eb444-6c56-40fc-84b8-e2c7f40b81ea">
 		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="billings-adaper-json.xml"/>
 		<parameter name="billingSum" class="java.math.BigDecimal"/>
-		<queryString language="xPath">
-			<![CDATA[/report/billing]]>
-		</queryString>
+		<query language="xPath"><![CDATA[/report/billing]]></query>
 		<field name="name" class="java.lang.String">
-			<fieldDescription><![CDATA[name]]></fieldDescription>
+			<description><![CDATA[name]]></description>
 		</field>
 		<field name="partPrice" class="java.math.BigDecimal">
-			<fieldDescription><![CDATA[partPrice]]></fieldDescription>
+			<description><![CDATA[partPrice]]></description>
 		</field>
 		<field name="partValue" class="java.math.BigDecimal">
-			<fieldDescription><![CDATA[partValue]]></fieldDescription>
+			<description><![CDATA[partValue]]></description>
 		</field>
 		<field name="splitUnit" class="java.lang.String">
-			<fieldDescription><![CDATA[splitUnit]]></fieldDescription>
+			<description><![CDATA[splitUnit]]></description>
 		</field>
 		<field name="totalPrice" class="java.math.BigDecimal">
-			<fieldDescription><![CDATA[totalPrice]]></fieldDescription>
+			<description><![CDATA[totalPrice]]></description>
 		</field>
 		<field name="totalValue" class="java.math.BigDecimal">
-			<fieldDescription><![CDATA[totalValue]]></fieldDescription>
+			<description><![CDATA[totalValue]]></description>
 		</field>
-	</subDataset>
-	<queryString language="XPath">
-		<![CDATA[/report]]>
-	</queryString>
+	</dataset>
+	<query language="XPath"><![CDATA[/report]]></query>
 	<field name="senderCity" class="java.lang.String">
-		<fieldDescription><![CDATA[sender.city]]></fieldDescription>
+		<description><![CDATA[sender.city]]></description>
 	</field>
 	<field name="senderCountry" class="java.lang.String">
-		<fieldDescription><![CDATA[sender.country]]></fieldDescription>
+		<description><![CDATA[sender.country]]></description>
 	</field>
 	<field name="senderName" class="java.lang.String">
-		<fieldDescription><![CDATA[sender.name]]></fieldDescription>
+		<description><![CDATA[sender.name]]></description>
 	</field>
 	<field name="senderStreet1" class="java.lang.String">
-		<fieldDescription><![CDATA[sender.street1]]></fieldDescription>
+		<description><![CDATA[sender.street1]]></description>
 	</field>
 	<field name="senderStreet2" class="java.lang.String">
-		<fieldDescription><![CDATA[sender.street2]]></fieldDescription>
+		<description><![CDATA[sender.street2]]></description>
 	</field>
 	<field name="receiverCity" class="java.lang.String">
-		<fieldDescription><![CDATA[receiver.city]]></fieldDescription>
+		<description><![CDATA[receiver.city]]></description>
 	</field>
 	<field name="receiverCountry" class="java.lang.String">
-		<fieldDescription><![CDATA[receiver.country]]></fieldDescription>
+		<description><![CDATA[receiver.country]]></description>
 	</field>
 	<field name="receiverName" class="java.lang.String">
-		<fieldDescription><![CDATA[receiver.name]]></fieldDescription>
+		<description><![CDATA[receiver.name]]></description>
 	</field>
 	<field name="receiverStreet1" class="java.lang.String">
-		<fieldDescription><![CDATA[receiver.street1]]></fieldDescription>
+		<description><![CDATA[receiver.street1]]></description>
 	</field>
 	<field name="receiverStreet2" class="java.lang.String">
-		<fieldDescription><![CDATA[receiver.street2]]></fieldDescription>
+		<description><![CDATA[receiver.street2]]></description>
 	</field>
 	<field name="noteTitle" class="java.lang.String">
-		<fieldDescription><![CDATA[note.title]]></fieldDescription>
+		<description><![CDATA[note.title]]></description>
 	</field>
 	<field name="noteText" class="java.lang.String">
-		<fieldDescription><![CDATA[note.text]]></fieldDescription>
+		<description><![CDATA[note.text]]></description>
 	</field>
 	<field name="billingSum" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[billingSum.totalPrice]]></fieldDescription>
+		<description><![CDATA[billingSum.totalPrice]]></description>
 	</field>
 	<field name="generated" class="java.lang.Boolean">
-		<fieldDescription><![CDATA[generated]]></fieldDescription>
+		<description><![CDATA[generated]]></description>
 	</field>
 	<field name="year" class="java.lang.Integer">
-		<fieldDescription><![CDATA[year]]></fieldDescription>
+		<description><![CDATA[year]]></description>
 	</field>
-	<title>
-		<band height="79" splitType="Stretch">
-			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.grid.JSSGridBagLayout"/>
-			<textField textAdjust="StretchHeight">
-				<reportElement x="0" y="0" width="317" height="79" uuid="9222957f-e60b-4ee4-8bc1-fbc8f5dd2001">
-					<property name="com.jaspersoft.layout.grid.x" value="-1"/>
-					<property name="com.jaspersoft.layout.grid.y" value="-1"/>
-					<property name="com.jaspersoft.layout.grid.weight.x" value="2.0"/>
-					<property name="com.jaspersoft.layout.grid.weight.y" value="1.0"/>
-					<property name="com.jaspersoft.layout.grid.rowspan" value="1"/>
-					<property name="com.jaspersoft.layout.grid.colspan" value="1"/>
-					<property name="com.jaspersoft.layout.grid.weight.fixed" value="false"/>
-				</reportElement>
-				<textElement markup="html"/>
-				<textFieldExpression><![CDATA[$F{generated} ? $F{receiverName} + " " + $F{year} : $F{senderName} + "<br>" + $F{senderStreet1} + "<br>" + $F{senderStreet2} + "<br>" + $F{senderCity} + "<br>" + $F{senderCountry} + "<br><br><br><br><br><br>" + $F{receiverName} + "<br>" + $F{receiverStreet1} + "<br>" + $F{receiverStreet2} + "<br>" + $F{receiverCity} + "<br>" + $F{receiverCountry}]]></textFieldExpression>
-			</textField>
-			<textField pattern="dd.MM.yyyy">
-				<reportElement x="317" y="0" width="158" height="79" uuid="fe778c8b-1a97-49b7-bf39-844bb0984584"/>
-				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA[java.time.LocalDate.now().format(java.time.format.DateTimeFormatter.ofLocalizedDate(java.time.format.FormatStyle.MEDIUM).withLocale($P{REPORT_LOCALE}))]]></textFieldExpression>
-			</textField>
-		</band>
+	<title height="79" splitType="Stretch">
+		<element kind="textField" uuid="9222957f-e60b-4ee4-8bc1-fbc8f5dd2001" x="0" y="0" width="317" height="79" markup="html" textAdjust="StretchHeight">
+			<expression><![CDATA[$F{generated} ? $F{receiverName} + " " + $F{year} : $F{senderName} + "<br>" + $F{senderStreet1} + "<br>" + $F{senderStreet2} + "<br>" + $F{senderCity} + "<br>" + $F{senderCountry} + "<br><br><br><br><br><br>" + $F{receiverName} + "<br>" + $F{receiverStreet1} + "<br>" + $F{receiverStreet2} + "<br>" + $F{receiverCity} + "<br>" + $F{receiverCountry}]]></expression>
+			<property name="com.jaspersoft.layout.grid.x" value="-1"/>
+			<property name="com.jaspersoft.layout.grid.y" value="-1"/>
+			<property name="com.jaspersoft.layout.grid.weight.x" value="2.0"/>
+			<property name="com.jaspersoft.layout.grid.weight.y" value="1.0"/>
+			<property name="com.jaspersoft.layout.grid.rowspan" value="1"/>
+			<property name="com.jaspersoft.layout.grid.colspan" value="1"/>
+			<property name="com.jaspersoft.layout.grid.weight.fixed" value="false"/>
+		</element>
+		<element kind="textField" uuid="fe778c8b-1a97-49b7-bf39-844bb0984584" x="317" y="0" width="158" height="79" pattern="dd.MM.yyyy" hTextAlign="Right">
+			<expression><![CDATA[java.time.LocalDate.now().format(java.time.format.DateTimeFormatter.ofLocalizedDate(java.time.format.FormatStyle.MEDIUM).withLocale($P{REPORT_LOCALE}))]]></expression>
+		</element>
+		<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.grid.JSSGridBagLayout"/>
 	</title>
 	<detail>
 		<band height="20">
@@ -104,70 +92,63 @@
 			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.spreadsheet.SpreadsheetLayout"/>
 		</band>
 		<band height="20" splitType="Stretch">
+			<printWhenExpression><![CDATA[!$F{generated}]]></printWhenExpression>
+			<element kind="textField" uuid="912e9785-e919-4b78-8b51-63312574ef6c" x="0" y="0" width="453" height="20" markup="html" textAdjust="StretchHeight">
+				<expression><![CDATA[$F{noteTitle} + "<br><br><br>" + SUBSTITUTE(SUBSTITUTE($F{noteText},"\\n","<br>"), "\n", "<br>")]]></expression>
+			</element>
 			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.HorizontalRowLayout"/>
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
-			<printWhenExpression><![CDATA[!$F{generated}]]></printWhenExpression>
-			<textField textAdjust="StretchHeight">
-				<reportElement x="0" y="0" width="453" height="20" uuid="912e9785-e919-4b78-8b51-63312574ef6c"/>
-				<textElement markup="html"/>
-				<textFieldExpression><![CDATA[$F{noteTitle} + "<br><br><br>" + SUBSTITUTE(SUBSTITUTE($F{noteText},"\\n","<br>"), "\n", "<br>")]]></textFieldExpression>
-			</textField>
 		</band>
 		<band height="20">
-			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<printWhenExpression><![CDATA[!$F{generated}]]></printWhenExpression>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 		</band>
 		<band height="50">
-			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.HorizontalRowLayout"/>
-			<property name="com.jaspersoft.studio.unit.height" value="px"/>
-			<componentElement>
-				<reportElement x="0" y="0" width="453" height="50" uuid="9d89c318-67b2-45ec-8509-562a26d2fde9">
-					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
-					<property name="com.jaspersoft.studio.components.autoresize.next" value="true"/>
-				</reportElement>
-				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
-					<datasetRun subDataset="billingsDataset" uuid="75a4dd77-d9dd-4de6-8af3-4c3956da2c9e">
-						<datasetParameter name="billingSum">
-							<datasetParameterExpression><![CDATA[$F{billingSum}]]></datasetParameterExpression>
-						</datasetParameter>
-						<dataSourceExpression><![CDATA[((net.sf.jasperreports.engine.data.JsonDataSource)$P{REPORT_DATA_SOURCE}).subDataSource("billings")]]></dataSourceExpression>
+			<element kind="component" uuid="9d89c318-67b2-45ec-8509-562a26d2fde9" x="0" y="0" width="453" height="50">
+				<component kind="table">
+					<datasetRun uuid="75a4dd77-d9dd-4de6-8af3-4c3956da2c9e" subDataset="billingsDataset">
+						<dataSourceExpression><![CDATA[((net.sf.jasperreports.json.data.JsonDataSource)$P{REPORT_DATA_SOURCE}).subDataSource("billings")]]></dataSourceExpression>
+						<parameter name="billingSum">
+							<expression><![CDATA[$F{billingSum}]]></expression>
+						</parameter>
 					</datasetRun>
-					<jr:column width="120" uuid="c33acda1-c5b8-41f3-8a19-ce03a42afdab">
-						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column1"/>
-						<jr:columnHeader height="30" rowSpan="1">
+					<tableFooter>
+						<printWhenExpression><![CDATA[true]]></printWhenExpression>
+					</tableFooter>
+					<column kind="single" uuid="c33acda1-c5b8-41f3-8a19-ce03a42afdab" width="120">
+						<columnHeader height="30" rowSpan="1">
 							<property name="com.jaspersoft.studio.unit.width" value="px"/>
-						</jr:columnHeader>
-						<jr:columnFooter height="30" rowSpan="1">
-							<property name="com.jaspersoft.studio.unit.height" value="px"/>
-							<staticText>
-								<reportElement x="0" y="0" width="120" height="30" uuid="bf70d120-eaa1-4395-8ddb-5f2ecf2c5d15"/>
-								<box topPadding="10"/>
-								<textElement textAlignment="Right" verticalAlignment="Middle"/>
+						</columnHeader>
+						<columnFooter height="30" rowSpan="1">
+							<element kind="staticText" uuid="bf70d120-eaa1-4395-8ddb-5f2ecf2c5d15" x="0" y="0" width="120" height="30" hTextAlign="Right" vTextAlign="Middle">
 								<text><![CDATA[Summe:]]></text>
-							</staticText>
-						</jr:columnFooter>
-						<jr:detailCell height="20">
+								<box topPadding="10"/>
+							</element>
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</columnFooter>
+						<detailCell height="20">
+							<element kind="textField" uuid="b9e4b61e-3496-404b-ad3c-b6c59636c4c8" x="0" y="0" width="120" height="20" textAdjust="ScaleFont" hTextAlign="Right" vTextAlign="Middle">
+								<expression><![CDATA[$F{name} + ":"]]></expression>
+								<box padding="3"/>
+							</element>
 							<property name="com.jaspersoft.studio.unit.width" value="px"/>
 							<property name="com.jaspersoft.studio.unit.height" value="px"/>
-							<textField textAdjust="ScaleFont">
-								<reportElement x="0" y="0" width="120" height="20" uuid="b9e4b61e-3496-404b-ad3c-b6c59636c4c8"/>
-								<box padding="3"/>
-								<textElement textAlignment="Right" verticalAlignment="Middle"/>
-								<textFieldExpression><![CDATA[$F{name} + ":"]]></textFieldExpression>
-							</textField>
-						</jr:detailCell>
-					</jr:column>
-					<jr:column width="20" uuid="5c1855ea-9b60-4d24-bc09-3183464bf0a7">
-						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column2"/>
-						<jr:columnHeader height="30" rowSpan="1">
+						</detailCell>
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column1"/>
+					</column>
+					<column kind="single" uuid="5c1855ea-9b60-4d24-bc09-3183464bf0a7" width="20">
+						<columnHeader height="30" rowSpan="1">
 							<property name="com.jaspersoft.studio.unit.width" value="px"/>
-						</jr:columnHeader>
-						<jr:columnFooter height="30" rowSpan="1"/>
-						<jr:detailCell height="20"/>
-					</jr:column>
-					<jr:columnGroup width="130" uuid="dda5deaf-a2a3-4b61-b45d-5af211859505">
-						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Columns [2]"/>
-						<jr:columnHeader height="30" rowSpan="1">
+						</columnHeader>
+						<columnFooter height="30" rowSpan="1"/>
+						<detailCell height="20"/>
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column2"/>
+					</column>
+					<column kind="group" uuid="dda5deaf-a2a3-4b61-b45d-5af211859505" width="130">
+						<columnHeader height="30" rowSpan="1">
+							<element kind="staticText" uuid="306a61c5-19eb-4806-97a0-b6795a20ffde" x="0" y="0" width="130" height="30" hTextAlign="Center" vTextAlign="Middle">
+								<text><![CDATA[Gesamt]]></text>
+							</element>
 							<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
 							<box>
 								<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -175,63 +156,57 @@
 								<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 								<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 							</box>
-							<staticText>
-								<reportElement x="0" y="0" width="130" height="30" uuid="306a61c5-19eb-4806-97a0-b6795a20ffde"/>
-								<textElement textAlignment="Center" verticalAlignment="Middle"/>
-								<text><![CDATA[Gesamt]]></text>
-							</staticText>
-						</jr:columnHeader>
-						<jr:column width="65" uuid="3f9a0596-cb14-4afa-8ad3-5aef7735ba18">
-							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column3"/>
-							<jr:columnFooter height="30" rowSpan="1">
+						</columnHeader>
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Columns [2]"/>
+						<column kind="single" uuid="3f9a0596-cb14-4afa-8ad3-5aef7735ba18" width="65">
+							<columnFooter height="30" rowSpan="1">
 								<box>
 									<topPen lineWidth="1.0"/>
 								</box>
-							</jr:columnFooter>
-							<jr:detailCell height="20">
-								<property name="com.jaspersoft.studio.unit.width" value="px"/>
-								<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
-								<textField isBlankWhenNull="true">
-									<reportElement x="0" y="0" width="65" height="20" uuid="9f426930-3f20-477e-a03d-48d1b839f0a0"/>
+							</columnFooter>
+							<detailCell height="20">
+								<element kind="textField" uuid="9f426930-3f20-477e-a03d-48d1b839f0a0" x="0" y="0" width="65" height="20" blankWhenNull="true" hTextAlign="Center" vTextAlign="Middle">
+									<expression><![CDATA[$F{totalValue}]]></expression>
+									<patternExpression><![CDATA["#.## " + $F{splitUnit}]]></patternExpression>
 									<box padding="3">
 										<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 										<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 										<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 										<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 									</box>
-									<textElement textAlignment="Center" verticalAlignment="Middle"/>
-									<textFieldExpression><![CDATA[$F{totalValue}]]></textFieldExpression>
-									<patternExpression><![CDATA["#.## " + $F{splitUnit}]]></patternExpression>
-								</textField>
-							</jr:detailCell>
-						</jr:column>
-						<jr:column width="65" uuid="1a443d9f-a93e-47da-9914-4b0cb2136bcb">
-							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column4"/>
-							<jr:columnFooter height="30" rowSpan="1">
+								</element>
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+							</detailCell>
+							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column3"/>
+						</column>
+						<column kind="single" uuid="1a443d9f-a93e-47da-9914-4b0cb2136bcb" width="65">
+							<columnFooter height="30" rowSpan="1">
 								<box>
 									<topPen lineWidth="1.0"/>
 								</box>
-							</jr:columnFooter>
-							<jr:detailCell height="20">
-								<property name="com.jaspersoft.studio.unit.width" value="px"/>
-								<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
-								<textField pattern="#,##0.00 ¤;-#,##0.00 ¤" isBlankWhenNull="true">
-									<reportElement x="0" y="0" width="65" height="20" uuid="2bd4e859-2ecb-4f10-9b5e-2c5afeafa288"/>
+							</columnFooter>
+							<detailCell height="20">
+								<element kind="textField" uuid="2bd4e859-2ecb-4f10-9b5e-2c5afeafa288" x="0" y="0" width="65" height="20" pattern="#,##0.00 ¤;-#,##0.00 ¤" blankWhenNull="true" hTextAlign="Right" vTextAlign="Middle">
+									<expression><![CDATA[$F{totalValue} != null ? $F{totalPrice} : ""]]></expression>
 									<box padding="3">
 										<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 										<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 										<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 										<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 									</box>
-									<textElement textAlignment="Right" verticalAlignment="Middle"/>
-									<textFieldExpression><![CDATA[$F{totalValue} != null ? $F{totalPrice} : ""]]></textFieldExpression>
-								</textField>
-							</jr:detailCell>
-						</jr:column>
-					</jr:columnGroup>
-					<jr:columnGroup width="130" uuid="05a1d388-fa8d-4340-8a01-f2cbe9166685">
-						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Columns [2]"/>
-						<jr:columnHeader height="30" rowSpan="1">
+								</element>
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+							</detailCell>
+							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column4"/>
+						</column>
+					</column>
+					<column kind="group" uuid="05a1d388-fa8d-4340-8a01-f2cbe9166685" width="130">
+						<columnHeader height="30" rowSpan="1">
+							<element kind="staticText" uuid="225d60a8-6432-49e8-93b2-5bf4808baba3" x="0" y="0" width="130" height="30" hTextAlign="Center" vTextAlign="Middle">
+								<text><![CDATA[Ihr Anteil]]></text>
+							</element>
 							<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
 							<box>
 								<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -239,20 +214,12 @@
 								<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 								<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 							</box>
-							<staticText>
-								<reportElement x="0" y="0" width="130" height="30" uuid="225d60a8-6432-49e8-93b2-5bf4808baba3"/>
-								<textElement textAlignment="Center" verticalAlignment="Middle"/>
-								<text><![CDATA[Ihr Anteil]]></text>
-							</staticText>
-						</jr:columnHeader>
-						<jr:column width="65" uuid="d145895f-0969-47f4-aaa3-6214b6b405c9">
-							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column5"/>
-							<jr:columnFooter height="30" rowSpan="1">
-								<box>
-									<topPen lineWidth="1.0"/>
-								</box>
-								<textField pattern="#,##0.00 ¤;-#,##0.00 ¤" isBlankWhenNull="true">
-									<reportElement x="0" y="0" width="65" height="30" uuid="56b00c41-faac-4fe8-a63c-670ced89ee76"/>
+						</columnHeader>
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Columns [2]"/>
+						<column kind="single" uuid="d145895f-0969-47f4-aaa3-6214b6b405c9" width="65">
+							<columnFooter height="30" rowSpan="1">
+								<element kind="textField" uuid="56b00c41-faac-4fe8-a63c-670ced89ee76" x="0" y="0" width="65" height="30" pattern="#,##0.00 ¤;-#,##0.00 ¤" blankWhenNull="true" hTextAlign="Right" vTextAlign="Middle">
+									<expression><![CDATA[$P{billingSum}.doubleValue() > 0 ? str("additionalPayment") : str("refund")]]></expression>
 									<box topPadding="10" leftPadding="0" bottomPadding="0" rightPadding="0">
 										<pen lineWidth="0.0"/>
 										<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -260,36 +227,31 @@
 										<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 										<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 									</box>
-									<textElement textAlignment="Right" verticalAlignment="Middle"/>
-									<textFieldExpression><![CDATA[$P{billingSum}.doubleValue() > 0 ? str("additionalPayment") : str("refund")]]></textFieldExpression>
-								</textField>
-							</jr:columnFooter>
-							<jr:detailCell height="20">
-								<property name="com.jaspersoft.studio.unit.width" value="px"/>
-								<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
-								<textField isBlankWhenNull="true">
-									<reportElement x="0" y="0" width="65" height="20" uuid="69b93627-8346-40b7-b1e8-3f01620c69c2"/>
+								</element>
+								<box>
+									<topPen lineWidth="1.0"/>
+								</box>
+							</columnFooter>
+							<detailCell height="20">
+								<element kind="textField" uuid="69b93627-8346-40b7-b1e8-3f01620c69c2" x="0" y="0" width="65" height="20" blankWhenNull="true" hTextAlign="Center" vTextAlign="Middle">
+									<expression><![CDATA[$F{partValue}]]></expression>
+									<patternExpression><![CDATA["#.## " + $F{splitUnit}]]></patternExpression>
 									<box padding="3">
 										<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 										<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 										<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 										<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 									</box>
-									<textElement textAlignment="Center" verticalAlignment="Middle"/>
-									<textFieldExpression><![CDATA[$F{partValue}]]></textFieldExpression>
-									<patternExpression><![CDATA["#.## " + $F{splitUnit}]]></patternExpression>
-								</textField>
-							</jr:detailCell>
-						</jr:column>
-						<jr:column width="65" uuid="206bac79-ae76-40b4-9515-7b63476889df">
-							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column6"/>
-							<jr:columnFooter height="30" rowSpan="1">
-								<property name="com.jaspersoft.studio.unit.height" value="px"/>
-								<box>
-									<topPen lineWidth="1.0"/>
-								</box>
-								<textField pattern="#,##0.00 ¤;-#,##0.00 ¤" isBlankWhenNull="true">
-									<reportElement x="0" y="0" width="65" height="30" uuid="e634f8b2-f0ae-4963-83fe-b218b609c276"/>
+								</element>
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+							</detailCell>
+							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column5"/>
+						</column>
+						<column kind="single" uuid="206bac79-ae76-40b4-9515-7b63476889df" width="65">
+							<columnFooter height="30" rowSpan="1">
+								<element kind="textField" uuid="e634f8b2-f0ae-4963-83fe-b218b609c276" x="0" y="0" width="65" height="30" pattern="#,##0.00 ¤;-#,##0.00 ¤" blankWhenNull="true" hTextAlign="Right" vTextAlign="Middle">
+									<expression><![CDATA[ABS($P{billingSum})]]></expression>
 									<box topPadding="10" leftPadding="0" bottomPadding="0" rightPadding="0">
 										<pen lineWidth="0.0"/>
 										<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -297,45 +259,46 @@
 										<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 										<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 									</box>
-									<textElement textAlignment="Right" verticalAlignment="Middle"/>
-									<textFieldExpression><![CDATA[ABS($P{billingSum})]]></textFieldExpression>
-								</textField>
-							</jr:columnFooter>
-							<jr:detailCell height="20">
-								<property name="com.jaspersoft.studio.unit.width" value="px"/>
-								<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
-								<textField pattern="#,##0.00 ¤;-#,##0.00 ¤" isBlankWhenNull="true">
-									<reportElement x="0" y="0" width="65" height="20" uuid="1f795e99-3c64-43ed-bd8a-f30ae2757e2e"/>
+								</element>
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								<box>
+									<topPen lineWidth="1.0"/>
+								</box>
+							</columnFooter>
+							<detailCell height="20">
+								<element kind="textField" uuid="1f795e99-3c64-43ed-bd8a-f30ae2757e2e" x="0" y="0" width="65" height="20" pattern="#,##0.00 ¤;-#,##0.00 ¤" blankWhenNull="true" hTextAlign="Right" vTextAlign="Middle">
+									<expression><![CDATA[$F{partPrice}]]></expression>
 									<box padding="3">
 										<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 										<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 										<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 										<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 									</box>
-									<textElement textAlignment="Right" verticalAlignment="Middle"/>
-									<textFieldExpression><![CDATA[$F{partPrice}]]></textFieldExpression>
-								</textField>
-							</jr:detailCell>
-						</jr:column>
-					</jr:columnGroup>
-					<jr:tableFooter>
-						<printWhenExpression><![CDATA[true]]></printWhenExpression>
-					</jr:tableFooter>
-				</jr:table>
-			</componentElement>
-		</band>
-		<band height="20">
-			<property name="com.jaspersoft.studio.unit.height" value="px"/>
-			<printWhenExpression><![CDATA[!$F{generated}]]></printWhenExpression>
-		</band>
-		<band height="20">
+								</element>
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+							</detailCell>
+							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column6"/>
+						</column>
+					</column>
+				</component>
+				<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+				<property name="com.jaspersoft.studio.components.autoresize.next" value="true"/>
+			</element>
 			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.HorizontalRowLayout"/>
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+		<band height="20">
 			<printWhenExpression><![CDATA[!$F{generated}]]></printWhenExpression>
-			<textField>
-				<reportElement x="0" y="0" width="453" height="20" uuid="700f1ae8-c2aa-48a7-9e54-6378fca2efac"/>
-				<textFieldExpression><![CDATA[$R{template.greeting}]]></textFieldExpression>
-			</textField>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+		<band height="20">
+			<printWhenExpression><![CDATA[!$F{generated}]]></printWhenExpression>
+			<element kind="textField" uuid="700f1ae8-c2aa-48a7-9e54-6378fca2efac" x="0" y="0" width="453" height="20">
+				<expression><![CDATA[$R{template.greeting}]]></expression>
+			</element>
+			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.HorizontalRowLayout"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 		</band>
 	</detail>
 </jasperReport>
