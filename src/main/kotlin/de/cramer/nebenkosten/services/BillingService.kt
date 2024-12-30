@@ -68,10 +68,15 @@ class BillingService(
     private fun Map.Entry<Contract, List<InvoiceSplit>>.toBilling(period: LocalDatePeriod): ContractBilling = ContractBilling(
         key,
         period,
-        value.map { it.toBillingEntry() },
+        value.mapNotNull { it.toBillingEntry() },
     )
 
-    private fun InvoiceSplit.toBillingEntry(): BillingEntry = BillingEntry(invoice, totalValue, splittedValue, splittedAmount)
+    private fun InvoiceSplit.toBillingEntry(): BillingEntry? =
+        if (splittedValue != null && splittedValue.compareTo(BigDecimal.ZERO) == 0 && splittedAmount.amount.compareTo(BigDecimal.ZERO) == 0) {
+            null
+        } else {
+            BillingEntry(invoice, totalValue, splittedValue, splittedAmount)
+        }
 
     private fun Sequence<LocalDatePeriod>.merge(): LocalDatePeriod {
         var start: LocalDate? = null
