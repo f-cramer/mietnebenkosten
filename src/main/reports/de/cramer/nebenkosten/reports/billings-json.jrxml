@@ -334,7 +334,7 @@
 			<printWhenExpression><![CDATA[!$F{generated}]]></printWhenExpression>
 			<textField>
 				<reportElement x="0" y="0" width="453" height="20" uuid="700f1ae8-c2aa-48a7-9e54-6378fca2efac"/>
-				<textFieldExpression><![CDATA["Freundliche Grüße" /*str("greeting")*/]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$R{template.greeting}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
