@@ -8,6 +8,8 @@ data class BillingReport(
     val note: ReportNote,
     val billings: List<ReportBilling>,
     val billingSum: ReportBillingSum,
+    val generated: Boolean,
+    val year: Int,
 )
 
 data class ReportAddress(

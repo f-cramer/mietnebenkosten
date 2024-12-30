@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.20.5.final using JasperReports Library version 6.20.5-3efcf2e67f959db3888d79f73dde2dbd7acb4f8e  -->
+<!-- Created with Jaspersoft Studio version 6.21.3.final using JasperReports Library version 6.21.3-4a3078d20785ebe464f18037d738d12fc98c13cf  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="billings" pageWidth="595" pageHeight="842" columnWidth="475" leftMargin="60" rightMargin="60" topMargin="60" bottomMargin="40" uuid="acee341f-4535-4daa-a581-2235e897ba77">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="billings-adapter-json.xml"/>
 	<subDataset name="billingsDataset" uuid="f13eb444-6c56-40fc-84b8-e2c7f40b81ea">
@@ -69,6 +69,12 @@
 	<field name="billingSum" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[billingSum.totalPrice]]></fieldDescription>
 	</field>
+	<field name="generated" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[generated]]></fieldDescription>
+	</field>
+	<field name="year" class="java.lang.Integer">
+		<fieldDescription><![CDATA[year]]></fieldDescription>
+	</field>
 	<title>
 		<band height="79" splitType="Stretch">
 			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.grid.JSSGridBagLayout"/>
@@ -83,7 +89,7 @@
 					<property name="com.jaspersoft.layout.grid.weight.fixed" value="false"/>
 				</reportElement>
 				<textElement markup="html"/>
-				<textFieldExpression><![CDATA[$F{senderName} + "<br>" + $F{senderStreet1} + "<br>" + $F{senderStreet2} + "<br>" + $F{senderCity} + "<br>" + $F{senderCountry} + "<br><br><br><br><br><br>" + $F{receiverName} + "<br>" + $F{receiverStreet1} + "<br>" + $F{receiverStreet2} + "<br>" + $F{receiverCity} + "<br>" + $F{receiverCountry}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{generated} ? $F{receiverName} + " " + $F{year} : $F{senderName} + "<br>" + $F{senderStreet1} + "<br>" + $F{senderStreet2} + "<br>" + $F{senderCity} + "<br>" + $F{senderCountry} + "<br><br><br><br><br><br>" + $F{receiverName} + "<br>" + $F{receiverStreet1} + "<br>" + $F{receiverStreet2} + "<br>" + $F{receiverCity} + "<br>" + $F{receiverCountry}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd.MM.yyyy">
 				<reportElement x="317" y="0" width="158" height="79" uuid="fe778c8b-1a97-49b7-bf39-844bb0984584"/>
@@ -100,6 +106,7 @@
 		<band height="20" splitType="Stretch">
 			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.HorizontalRowLayout"/>
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<printWhenExpression><![CDATA[!$F{generated}]]></printWhenExpression>
 			<textField textAdjust="StretchHeight">
 				<reportElement x="0" y="0" width="453" height="20" uuid="912e9785-e919-4b78-8b51-63312574ef6c"/>
 				<textElement markup="html"/>
@@ -108,6 +115,7 @@
 		</band>
 		<band height="20">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<printWhenExpression><![CDATA[!$F{generated}]]></printWhenExpression>
 		</band>
 		<band height="50">
 			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.HorizontalRowLayout"/>
@@ -318,10 +326,12 @@
 		</band>
 		<band height="20">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<printWhenExpression><![CDATA[!$F{generated}]]></printWhenExpression>
 		</band>
 		<band height="20">
 			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.HorizontalRowLayout"/>
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<printWhenExpression><![CDATA[!$F{generated}]]></printWhenExpression>
 			<textField>
 				<reportElement x="0" y="0" width="453" height="20" uuid="700f1ae8-c2aa-48a7-9e54-6378fca2efac"/>
 				<textFieldExpression><![CDATA["Freundliche Grüße" /*str("greeting")*/]]></textFieldExpression>

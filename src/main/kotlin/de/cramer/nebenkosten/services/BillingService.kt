@@ -1,10 +1,14 @@
 package de.cramer.nebenkosten.services
 
+import de.cramer.nebenkosten.entities.Address
 import de.cramer.nebenkosten.entities.Billing
 import de.cramer.nebenkosten.entities.BillingEntry
 import de.cramer.nebenkosten.entities.BillingPeriod
 import de.cramer.nebenkosten.entities.Contract
 import de.cramer.nebenkosten.entities.ContractInvoice
+import de.cramer.nebenkosten.entities.Flat
+import de.cramer.nebenkosten.entities.FormOfAddress
+import de.cramer.nebenkosten.entities.Gender
 import de.cramer.nebenkosten.entities.GeneralInvoice
 import de.cramer.nebenkosten.entities.Invoice
 import de.cramer.nebenkosten.entities.InvoiceSplit
@@ -12,11 +16,14 @@ import de.cramer.nebenkosten.entities.Landlord
 import de.cramer.nebenkosten.entities.LocalDatePeriod
 import de.cramer.nebenkosten.entities.Tenant
 import de.cramer.nebenkosten.exceptions.NoLandlordFoundException
+import org.springframework.context.MessageSource
 import org.springframework.stereotype.Service
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.time.LocalDate
 import java.time.Year
+import java.util.Locale
+import java.util.concurrent.atomic.AtomicLong
 
 @Service
 class BillingService(
@@ -24,15 +31,17 @@ class BillingService(
     private val contractService: ContractService,
     private val invoiceService: InvoiceService,
     private val landlordService: LandlordService,
+    private val messageSource: MessageSource,
 ) {
-    fun createBillings(year: Year, rounded: Boolean = false): List<Billing> = createBillings(LocalDatePeriod.ofYear(year), rounded)
+    fun createBillings(year: Year, locale: Locale, rounded: Boolean = false): List<Billing> = createBillings(LocalDatePeriod.ofYear(year), locale, rounded)
 
-    fun createBillings(period: LocalDatePeriod, rounded: Boolean = false): List<Billing> {
+    fun createBillings(period: LocalDatePeriod, locale: Locale, rounded: Boolean = false): List<Billing> {
         val landlords = landlordService.getLandlordsByTimePeriod(period)
 
         val landlord = landlords.minOrNull() ?: throw NoLandlordFoundException()
         val invoices = invoiceService.getInvoicesByTimePeriod(period)
         val billingPeriods = getBillingPeriods(period)
+            .addVacancies(period, locale)
 
         return invoices.asSequence()
             .flatMap { it.splitByContract(billingPeriods) }
@@ -42,6 +51,7 @@ class BillingService(
             .groupBy { it.contract.tenant }
             .map { it.value.toBilling(landlord, rounded) }
             .addMissingTennants(landlord, billingPeriods, rounded)
+            .sorted()
     }
 
     private fun getBillingPeriods(period: LocalDatePeriod): List<BillingPeriod> = flatService.getFlats().asSequence()
@@ -137,7 +147,46 @@ class BillingService(
                     .let { billing -> if (rounded) billing.round(2, RoundingMode.UP) else billing }
             }
 
-        return allBillings.sorted()
+        return allBillings
+    }
+
+    private fun List<BillingPeriod>.addVacancies(period: LocalDatePeriod, locale: Locale): List<BillingPeriod> {
+        val tenantId = AtomicLong()
+        val list = if (this is MutableList<BillingPeriod>) this else toMutableList()
+        list += groupBy({ it.contract.flat }) { it.period }
+            .mapValues { (_, v) -> v.toSet() }
+            .flatMap { (flat, periods) -> getVacancies(flat, periods, period, locale, tenantId) }
+        return list
+    }
+
+    private fun getVacancies(flat: Flat, billingPeriods: Set<LocalDatePeriod>, period: LocalDatePeriod, locale: Locale, tenantId: AtomicLong): List<BillingPeriod> {
+        val vacancyName = messageSource.getMessage("vacancy", null, locale)
+        val tenant by lazy {
+            // only create the tenant (and use an id) when necessary
+            Tenant(tenantId.decrementAndGet(), vacancyName, flat.name, Address.EMPTY, Gender.MALE, FormOfAddress.FORMAL, true, generated = true)
+        }
+
+        return buildList {
+            var previousPeriod = period.start.minusDays(1).let {
+                LocalDatePeriod(it, it)
+            }
+            for (p in billingPeriods.sorted()) {
+                val previousEnd = previousPeriod.end ?: break
+
+                val nextPeriodStart = previousEnd.plusDays(1)
+                if (nextPeriodStart < p.start) {
+                    this += LocalDatePeriod(nextPeriodStart, p.start.minusDays(1))
+                }
+                previousPeriod = LocalDatePeriod(p.start, if (p.end == null) null else maxOf(previousEnd, p.end))
+            }
+
+            val previousEnd = previousPeriod.end
+            if (previousEnd != null && (period.end == null || previousEnd < period.end)) {
+                this += LocalDatePeriod(previousEnd.plusDays(1), period.end)
+            }
+        }.map {
+            BillingPeriod(Contract(flat, tenant, 0, it), it)
+        }
     }
 
     private data class ContractBilling(

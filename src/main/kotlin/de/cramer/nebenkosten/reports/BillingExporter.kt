@@ -109,6 +109,8 @@ class BillingExporter(
         ),
         billings = entries
             .map { it.toReportBilling() },
+        generated = tenant.generated,
+        year = period.start.year,
     )
 
     private fun Billing.getNote(): String = when (tenant.formOfAddress) {
@@ -118,6 +120,7 @@ class BillingExporter(
                 hiermit erhältst du deine Mietnebenkostenabrechnung für den Rechnungszeitraum ${getPeriodFormatted()}.
                 Ich bitte um Überweisung einer etwaigen Nachzahlung an IBAN: ${landlord.iban}.
             """
+
         FormOfAddress.FORMAL ->
             """
                 Guten Tag ${tenant.gender.address} ${tenant.lastName},

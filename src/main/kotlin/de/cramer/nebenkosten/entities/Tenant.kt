@@ -36,8 +36,11 @@ data class Tenant(
 
     @Column(name = "hidden")
     val hidden: Boolean,
+
+    @Transient
+    val generated: Boolean = false,
 ) : Comparable<Tenant> {
-    constructor(firstName: String, lastName: String, address: Address, gender: Gender, formOfAddress: FormOfAddress, hidden: Boolean) : this(0, firstName, lastName, address, gender, formOfAddress, hidden)
+    constructor(firstName: String, lastName: String, address: Address, gender: Gender, formOfAddress: FormOfAddress, hidden: Boolean, generated: Boolean = false) : this(0, firstName, lastName, address, gender, formOfAddress, hidden, generated)
 
     override fun compareTo(other: Tenant): Int = COMPARATOR.compare(this, other)
 
@@ -48,7 +51,8 @@ data class Tenant(
 
     companion object {
 
-        private val COMPARATOR = compareBy<Tenant> { it.lastName }
+        private val COMPARATOR = compareBy<Tenant> { it.generated }
+            .thenBy { it.lastName }
             .thenBy { it.firstName }
             .thenBy { it.address }
     }

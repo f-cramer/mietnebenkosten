@@ -29,5 +29,7 @@ data class Address(
             .thenBy { it.city }
             .thenBy { it.street }
             .thenBy { it.houseNumber }
+
+        val EMPTY = Address("", 0, "", "")
     }
 }

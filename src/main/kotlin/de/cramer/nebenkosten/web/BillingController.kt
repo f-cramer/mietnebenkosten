@@ -32,6 +32,7 @@ class BillingController(
     @GetMapping
     fun getBilling(
         year: Year,
+        locale: Locale,
         model: Model,
     ): String {
         model["valueFormat"] = NumberFormat.getNumberInstance(LocaleContextHolder.getLocale()).apply {
@@ -39,7 +40,7 @@ class BillingController(
             maximumFractionDigits = 2
         }
         try {
-            val billings = billingService.createBillings(year, true)
+            val billings = billingService.createBillings(year, locale, true)
             model["billings"] = billings
         } catch (e: Exception) {
             log.error(e.message, e)
@@ -83,7 +84,7 @@ class BillingController(
     }
 
     private fun getResource(year: Year, tenantId: Long, locale: Locale): Pair<Billing, ByteArrayResource> {
-        val billing = billingService.createBillings(year, true)
+        val billing = billingService.createBillings(year, locale, true)
             .first { it.tenant.id == tenantId }
         val pdfData = billingExporter.export(billing, locale)
         val resource = ByteArrayResource(pdfData)
