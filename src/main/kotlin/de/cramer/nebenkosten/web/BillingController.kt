@@ -36,7 +36,7 @@ class BillingController(
     ): String {
         model["valueFormat"] = NumberFormat.getNumberInstance(LocaleContextHolder.getLocale()).apply {
             minimumFractionDigits = 0
-            maximumIntegerDigits = 2
+            maximumFractionDigits = 2
         }
         try {
             val billings = billingService.createBillings(year, true)
