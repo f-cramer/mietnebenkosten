@@ -81,32 +81,44 @@ class BillingService(
             BillingEntry(invoice, totalValue, splittedValue, splittedAmount)
         }
 
-    private fun Sequence<LocalDatePeriod>.merge(): LocalDatePeriod {
+    private fun Sequence<LocalDatePeriod>.merge(): List<LocalDatePeriod> {
+        val result = mutableListOf<LocalDatePeriod>()
+
         var start: LocalDate? = null
         var end: LocalDate? = null
-        for (period in this) {
-            end = if (start == null) {
-                period.end
-            } else if (end == null || period.end == null) {
-                null
+        for (period in sorted().toList()) {
+            if (start == null) {
+                start = period.start
+                end = period.end
+            } else if (end != null && start <= end.plusDays(1)) {
+                end = if (period.end == null) {
+                    null
+                } else {
+                    maxOf(end, period.end)
+                }
             } else {
-                maxOf(end, period.end)
+                result += LocalDatePeriod(start, end)
+                start = null
+                end = null
             }
-            start = if (start == null) {
-                period.start
-            } else {
-                minOf(start, period.start)
+
+            if (start != null && end == null) {
+                result += LocalDatePeriod(start, null)
+                break
             }
         }
 
-        require(start != null) { "merge() can only be called on non empty instances of Iterable" }
-        return LocalDatePeriod(start, end)
+        if (start != null) {
+            result += LocalDatePeriod(start, end)
+        }
+
+        return result
     }
 
     private fun List<ContractBilling>.toBilling(landlord: Landlord, rounded: Boolean): Billing = Billing(
         landlord = landlord,
         tenant = this[0].contract.tenant,
-        period = asSequence()
+        periods = asSequence()
             .map { it.period }
             .merge(),
         entries = asSequence()

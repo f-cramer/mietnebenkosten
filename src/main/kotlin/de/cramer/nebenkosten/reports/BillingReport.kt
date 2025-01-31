@@ -6,6 +6,7 @@ data class BillingReport(
     val sender: ReportAddress,
     val receiver: ReportAddress,
     val note: ReportNote,
+    val vacancyNote: String,
     val billings: List<ReportBilling>,
     val billingSum: ReportBillingSum,
     val generated: Boolean,

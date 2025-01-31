@@ -7,6 +7,7 @@ import de.cramer.nebenkosten.entities.ContractInvoice
 import de.cramer.nebenkosten.entities.FormOfAddress
 import de.cramer.nebenkosten.entities.Gender
 import de.cramer.nebenkosten.entities.GeneralInvoice
+import de.cramer.nebenkosten.entities.LocalDatePeriod
 import jakarta.annotation.PostConstruct
 import net.sf.jasperreports.engine.JRParameter.REPORT_LOCALE
 import net.sf.jasperreports.engine.JRParameter.REPORT_RESOURCE_BUNDLE
@@ -104,13 +105,14 @@ class BillingExporter(
             title = "Abrechnung Nebenkosten",
             text = getNote(),
         ),
+        vacancyNote = getVacancyNote(),
         billingSum = ReportBillingSum(
             totalPrice = total.amount,
         ),
         billings = entries
             .map { it.toReportBilling() },
         generated = tenant.generated,
-        year = period.start.year,
+        year = periods.first().start.year,
     )
 
     private fun Billing.getNote(): String = when (tenant.formOfAddress) {
@@ -129,15 +131,39 @@ class BillingExporter(
             """
     }.trimIndent()
 
-    private fun Billing.getPeriodFormatted(): String = if (period.end != null) {
+    private fun Billing.getVacancyNote(): String = """
+        Zeiträume:
+        ${
+        periods.joinToString("\n") {
+            val formatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)
+            val start = formatter.format(it.start)
+            val end = it.end?.let { end -> formatter.format(end) } ?: ""
+            "$start - $end"
+        }
+    }
+    """.trimIndent()
+
+    private fun Billing.getPeriodFormatted(): String = when (periods.size) {
+        0 -> error("cannot format empty billing periods")
+        1 -> periods.single().format()
+        else -> buildString {
+            val size = periods.size
+            for ((index, period) in periods.withIndex()) {
+                append(period.format())
+                append(if (index < size - 1) ", " else " und ")
+            }
+        }
+    }
+
+    private fun LocalDatePeriod.format() = if (end != null) {
         "vom ${getStartFormatted()} bis zum ${getEndFormatted()}"
     } else {
         "ab dem ${getStartFormatted()}"
     }
 
-    private fun Billing.getStartFormatted(): String = period.start.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM))
+    private fun LocalDatePeriod.getStartFormatted(): String = start.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM))
 
-    private fun Billing.getEndFormatted(): String = period.end?.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)) ?: ""
+    private fun LocalDatePeriod.getEndFormatted(): String = end?.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)) ?: ""
 
     private val Gender.address: String
         get() = when (this) {

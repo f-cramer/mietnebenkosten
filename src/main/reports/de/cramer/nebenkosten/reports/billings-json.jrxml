@@ -75,6 +75,9 @@
 	<field name="year" class="java.lang.Integer">
 		<fieldDescription><![CDATA[year]]></fieldDescription>
 	</field>
+	<field name="vacancyNote" class="java.lang.String">
+		<fieldDescription><![CDATA[vacancyNote]]></fieldDescription>
+	</field>
 	<title>
 		<band height="79" splitType="Stretch">
 			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.grid.JSSGridBagLayout"/>
@@ -89,7 +92,7 @@
 					<property name="com.jaspersoft.layout.grid.weight.fixed" value="false"/>
 				</reportElement>
 				<textElement markup="html"/>
-				<textFieldExpression><![CDATA[$F{generated} ? $F{receiverName} + " " + $F{year} : $F{senderName} + "<br>" + $F{senderStreet1} + "<br>" + $F{senderStreet2} + "<br>" + $F{senderCity} + "<br>" + $F{senderCountry} + "<br><br><br><br><br><br>" + $F{receiverName} + "<br>" + $F{receiverStreet1} + "<br>" + $F{receiverStreet2} + "<br>" + $F{receiverCity} + "<br>" + $F{receiverCountry}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{generated} ? $F{receiverName} + " " + $F{year} + "<br><br>" + SUBSTITUTE(SUBSTITUTE($F{vacancyNote},"\\n","<br>"), "\n", "<br>") : $F{senderName} + "<br>" + $F{senderStreet1} + "<br>" + $F{senderStreet2} + "<br>" + $F{senderCity} + "<br>" + $F{senderCountry} + "<br><br><br><br><br><br>" + $F{receiverName} + "<br>" + $F{receiverStreet1} + "<br>" + $F{receiverStreet2} + "<br>" + $F{receiverCity} + "<br>" + $F{receiverCountry}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd.MM.yyyy">
 				<reportElement x="317" y="0" width="158" height="79" uuid="fe778c8b-1a97-49b7-bf39-844bb0984584"/>
