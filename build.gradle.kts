@@ -104,7 +104,7 @@ tasks.withType<Wrapper> {
 tasks.named<DependencyUpdatesTask>("dependencyUpdates").configure {
     gradleReleaseChannel = "current"
 
-    val ignoredVersions = listOf("rc", "beta")
+    val ignoredVersions = listOf("rc", "beta", "-m")
     val managedVersions = dependencyManagement.managedVersions.keys.toSet() +
         setOf("io.github.oshai:kotlin-logging")
 
