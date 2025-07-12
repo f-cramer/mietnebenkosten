@@ -44,6 +44,7 @@
         </nav>
         <dialog id="settings-dialog" style="border-radius: 10px;border-color: darkgray;border-width: 1px;" th:if="${user}">
             <form class="my-2 my-lg-0">
+				<input type="hidden" th:each="parameter: ${parameters}" th:name="${parameter.key}" th:value="${parameter.value[0]}" th:unless="${parameter.key == 'year'}">
                 <table class="table table-striped align-middle">
                     <tr>
                         <td>Jahr</td>
