@@ -7,7 +7,8 @@
 <div class="container">
     <nav th:replace="~{template.html :: navbar ('invoices')}"></nav>
 
-    <form id="saveForm" method="post" th:action="${invoice != null} ? @{/invoices/edit/{invoiceId}(invoiceId=${invoice.id})} : @{/invoices/create}"></form>
+    <form id="saveForm" method="post" th:if="${askBeforeSave}" onsubmit="return confirm('Rechnungsdaten wirklich ändern?')" th:action="${invoice != null} ? @{/invoices/edit/{invoiceId}(invoiceId=${invoice.id})} : @{/invoices/create}"></form>
+    <form id="saveForm" method="post" th:unless="${askBeforeSave}" th:action="${invoice != null} ? @{/invoices/edit/{invoiceId}(invoiceId=${invoice.id})} : @{/invoices/create}"></form>
     <form id="deleteForm" method="post" onsubmit="return confirm('Rechnung wirklich löschen?')" th:action="${invoice != null} ? @{/invoices/delete/{invoiceId}(invoiceId=${invoice.id})} : ''"></form>
 
     <div class="alert alert-danger" role="alert" th:if="${saveError}">

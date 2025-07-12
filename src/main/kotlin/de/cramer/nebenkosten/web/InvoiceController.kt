@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.SessionAttribute
 import org.springframework.web.servlet.mvc.support.RedirectAttributes
 import java.time.LocalDate
 import java.time.Year
+import java.time.temporal.ChronoUnit
 import java.time.temporal.TemporalAdjusters
 
 @Controller
@@ -108,6 +109,7 @@ class InvoiceController(
         model["contracts"] = contractService.getContractsByPeriod(LocalDatePeriod.ofYear(year))
         model["selectedSplitAlgorithmType"] = (invoice as? GeneralInvoice)?.splitAlgorithm?.type ?: ""
         model["selectedContract"] = (invoice as? ContractInvoice)?.contract ?: ""
+        model["askBeforeSave"] = ChronoUnit.MONTHS.between(invoice.period.end, LocalDate.now()) >= 2
         return "invoice"
     }
 
