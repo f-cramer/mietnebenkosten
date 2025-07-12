@@ -67,6 +67,7 @@ abstract class Invoice(
         private val COMPARATOR = compareBy<Invoice> { it.order }
             .thenBy { it.description }
             .thenBy { it.period }
+            .thenBy(nullsFirst<Contract>()) { if (it is ContractInvoice) it.contract else null }
             .thenBy { it.price }
     }
 }
