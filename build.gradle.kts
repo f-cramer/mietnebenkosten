@@ -10,7 +10,7 @@ plugins {
     kotlin("plugin.spring") version "2.1.20"
     kotlin("plugin.jpa") version "2.1.20"
     kotlin("plugin.allopen") version "2.1.20"
-    kotlin("kapt") version "2.1.20"
+    kotlin("kapt") version "2.2.0"
 
     id("org.jlleitschuh.gradle.ktlint") version "13.0.0"
     id("io.gitlab.arturbosch.detekt") version "1.23.8"
