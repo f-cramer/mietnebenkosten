@@ -119,9 +119,9 @@ tasks.named<DependencyUpdatesTask>("dependencyUpdates").configure {
 }
 
 val checkGradleWrapperVersion: TaskProvider<Task> = tasks.register("checkGradleWrapperVersion") {
+    val propertiesVersion = GradleVersion.version(project.extra["WRAPPER_VERSION"] as String)
     doFirst {
         val currentVersion = GradleVersion.current()
-        val propertiesVersion = GradleVersion.version(project.extra["WRAPPER_VERSION"] as String)
         if (currentVersion != propertiesVersion) {
             throw GradleException("current gradle wrapper version (${currentVersion.version}) does not match property WRAPPER_VERSION (${propertiesVersion.version})")
         }
