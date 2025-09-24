@@ -14,7 +14,7 @@ plugins {
 
     id("org.jlleitschuh.gradle.ktlint") version "13.1.0"
     id("io.gitlab.arturbosch.detekt") version "1.23.8"
-    id("com.github.ben-manes.versions") version "0.52.0"
+    id("com.github.ben-manes.versions") version "0.53.0"
     id("io.github.f-cramer.jasperreports") version "0.0.4"
 }
 
