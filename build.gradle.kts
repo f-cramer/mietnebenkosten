@@ -57,13 +57,12 @@ dependencies {
 
     implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity6")
 
-    val jasperReportsVersion = "6.21.5"
-    implementation("net.sf.jasperreports:jasperreports:$jasperReportsVersion") {
-        exclude(group = "commons-logging")
-    }
-    implementation("net.sf.jasperreports:jasperreports-functions:$jasperReportsVersion") {
-        exclude(group = "commons-logging")
-    }
+    val jasperReportsVersion = "7.0.3"
+    implementation("net.sf.jasperreports:jasperreports:$jasperReportsVersion")
+    implementation("net.sf.jasperreports:jasperreports-functions:$jasperReportsVersion")
+    implementation("net.sf.jasperreports:jasperreports-json:$jasperReportsVersion")
+    implementation("net.sf.jasperreports:jasperreports-pdf:$jasperReportsVersion")
+    jasperreportsClasspath("net.sf.jasperreports:jasperreports-jdt:$jasperReportsVersion")
 
     // cve mitigation
     implementation("org.apache.commons:commons-collections4:4.5.0")
