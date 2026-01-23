@@ -147,6 +147,9 @@ ktlint {
     additionalEditorconfig.putAll(
         mapOf(
             "ktlint_code_style" to "intellij_idea",
+            "ktlint_standard_function-signature" to "disabled",
+            "ktlint_standard_function-expression" to "disabled",
+            "ktlint_standard_blank-line-between-when-conditions" to "disabled",
         ),
     )
     reporters {

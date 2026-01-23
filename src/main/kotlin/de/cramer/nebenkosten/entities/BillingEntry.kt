@@ -13,17 +13,11 @@ data class BillingEntry(
     override fun compareTo(other: BillingEntry): Int =
         COMPARATOR.compare(this, other)
 
-    override fun toString(): String {
-        return "(${invoice.description} ${proportionalPrice.amount})"
-    }
+    override fun toString(): String = "(${invoice.description} ${proportionalPrice.amount})"
 
-    fun formatTotalValue(format: NumberFormat): String? {
-        return totalValue?.let { format.format(it) }
-    }
+    fun formatTotalValue(format: NumberFormat): String? = totalValue?.let { format.format(it) }
 
-    fun formatProportionalValue(format: NumberFormat): String? {
-        return proportionalValue?.let { format.format(it) }
-    }
+    fun formatProportionalValue(format: NumberFormat): String? = proportionalValue?.let { format.format(it) }
 
     companion object {
 

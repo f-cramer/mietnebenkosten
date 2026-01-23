@@ -8,7 +8,5 @@ class WebController {
 
     @GetMapping("", "index.htm", "index.html")
     @Suppress("FunctionOnlyReturningConstant")
-    fun getIndex(): String {
-        return "redirect:/flats"
-    }
+    fun getIndex(): String = "redirect:/flats"
 }

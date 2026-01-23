@@ -14,7 +14,5 @@ class UserService(
         repository.save(user)
     }
 
-    fun getUser(username: String): User? {
-        return repository.findById(username).getOrNull()
-    }
+    fun getUser(username: String): User? = repository.findById(username).getOrNull()
 }

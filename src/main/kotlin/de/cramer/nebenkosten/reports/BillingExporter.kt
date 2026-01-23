@@ -171,20 +171,18 @@ class BillingExporter(
             Gender.MALE -> "Herr"
         }
 
-    private fun BillingEntry.toReportBilling(): ReportBilling {
-        return ReportBilling(
-            name = invoice.description,
-            splitUnit = when (invoice) {
-                is GeneralInvoice -> invoice.splitAlgorithm.unit
-                is ContractInvoice -> ""
-                else -> error("unsupported invoice type $invoice")
-            },
-            totalValue = totalValue,
-            totalPrice = totalValue.let { invoice.price.amount },
-            partValue = proportionalValue,
-            partPrice = proportionalPrice.amount,
-        )
-    }
+    private fun BillingEntry.toReportBilling(): ReportBilling = ReportBilling(
+        name = invoice.description,
+        splitUnit = when (invoice) {
+            is GeneralInvoice -> invoice.splitAlgorithm.unit
+            is ContractInvoice -> ""
+            else -> error("unsupported invoice type $invoice")
+        },
+        totalValue = totalValue,
+        totalPrice = totalValue.let { invoice.price.amount },
+        partValue = proportionalValue,
+        partPrice = proportionalPrice.amount,
+    )
 
     private inner class SpringResourceBundle(
         private val currentLocale: Locale,

@@ -29,9 +29,7 @@ class FlatController(
 
     @GetMapping("create")
     @Suppress("FunctionOnlyReturningConstant")
-    fun createFlat(): String {
-        return "flat"
-    }
+    fun createFlat(): String = "flat"
 
     @PostMapping("create")
     fun createFlat(

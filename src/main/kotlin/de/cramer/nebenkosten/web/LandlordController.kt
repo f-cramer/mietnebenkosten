@@ -32,9 +32,7 @@ class LandlordController(
 
     @GetMapping("create")
     @Suppress("FunctionOnlyReturningConstant")
-    fun createLandlord(): String {
-        return "landlord"
-    }
+    fun createLandlord(): String = "landlord"
 
     @PostMapping("create")
     fun createLandlord(

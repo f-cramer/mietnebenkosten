@@ -8,7 +8,5 @@ class RootController {
 
     @GetMapping("", "/")
     @Suppress("FunctionOnlyReturningConstant")
-    fun root(): String {
-        return "redirect:flats"
-    }
+    fun root(): String = "redirect:flats"
 }

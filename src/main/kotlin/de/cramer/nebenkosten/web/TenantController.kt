@@ -35,9 +35,7 @@ class TenantController(
 
     @GetMapping("create")
     @Suppress("FunctionOnlyReturningConstant")
-    fun createTenant(): String {
-        return "tenant"
-    }
+    fun createTenant(): String = "tenant"
 
     @PostMapping("create")
     fun createTenant(

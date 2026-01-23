@@ -36,19 +36,17 @@ fun <T : Comparable<T>> CriteriaBuilder.overlappingPeriodSpecification(
     end: T?,
     dbStart: Path<T>,
     dbEnd: Path<T>,
-): Predicate {
-    return if (end == null) {
-        or(
-            isNull(dbEnd),
-            greaterThanOrEqualTo(dbEnd, start),
-        )
-    } else {
-        or(
-            and(isNull(dbEnd), greaterThanOrEqualTo(end, dbStart)),
-            and(lessThanOrEqualTo(dbStart, start), lessThanOrEqualTo(start, dbEnd)),
-            and(lessThanOrEqualTo(start, dbStart), lessThanOrEqualTo(dbStart, end)),
-            and(lessThanOrEqualTo(dbStart, end), lessThanOrEqualTo(end, dbEnd)),
-            and(lessThanOrEqualTo(start, dbEnd), lessThanOrEqualTo(dbEnd, end)),
-        )
-    }
+): Predicate = if (end == null) {
+    or(
+        isNull(dbEnd),
+        greaterThanOrEqualTo(dbEnd, start),
+    )
+} else {
+    or(
+        and(isNull(dbEnd), greaterThanOrEqualTo(end, dbStart)),
+        and(lessThanOrEqualTo(dbStart, start), lessThanOrEqualTo(start, dbEnd)),
+        and(lessThanOrEqualTo(start, dbStart), lessThanOrEqualTo(dbStart, end)),
+        and(lessThanOrEqualTo(dbStart, end), lessThanOrEqualTo(end, dbEnd)),
+        and(lessThanOrEqualTo(start, dbEnd), lessThanOrEqualTo(dbEnd, end)),
+    )
 }
