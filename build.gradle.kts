@@ -84,9 +84,15 @@ tasks.withType<Test> {
     useJUnitPlatform()
 }
 
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(properties["JAVA_VERSION"] as String)
+    }
+}
+
 tasks.withType<KotlinCompile> {
     compilerOptions {
-        freeCompilerArgs.set(listOf("-Xjsr305=strict", "-Xsuppress-version-warnings"))
+        freeCompilerArgs.set(listOf("-Xjsr305=strict", "-Xsuppress-version-warnings", "-Xannotation-default-target=param-property"))
         jvmTarget.set(JvmTarget.valueOf("JVM_${properties["JAVA_VERSION"]}"))
         allWarningsAsErrors.set(true)
     }
