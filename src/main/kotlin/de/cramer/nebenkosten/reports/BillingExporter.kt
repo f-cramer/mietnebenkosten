@@ -1,6 +1,5 @@
 package de.cramer.nebenkosten.reports
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import de.cramer.nebenkosten.entities.Billing
 import de.cramer.nebenkosten.entities.BillingEntry
 import de.cramer.nebenkosten.entities.ContractInvoice
@@ -24,6 +23,7 @@ import org.springframework.context.MessageSource
 import org.springframework.core.io.Resource
 import org.springframework.core.io.ResourceLoader
 import org.springframework.stereotype.Service
+import tools.jackson.databind.ObjectMapper
 import java.io.ByteArrayOutputStream
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle

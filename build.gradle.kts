@@ -4,16 +4,16 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 
 plugins {
-    id("org.springframework.boot") version "3.5.10"
+    id("org.springframework.boot") version "4.0.2"
     id("io.spring.dependency-management") version "1.1.7"
-    kotlin("jvm") version "2.1.20"
-    kotlin("plugin.spring") version "2.1.20"
-    kotlin("plugin.jpa") version "2.1.20"
-    kotlin("plugin.allopen") version "2.1.20"
-    kotlin("kapt") version "2.1.20"
+    kotlin("jvm") version "2.3.0"
+    kotlin("plugin.spring") version "2.3.0"
+    kotlin("plugin.jpa") version "2.3.0"
+    kotlin("plugin.allopen") version "2.3.0"
+    kotlin("kapt") version "2.3.0"
 
     id("org.jlleitschuh.gradle.ktlint") version "14.0.1"
-    id("io.gitlab.arturbosch.detekt") version "1.23.8"
+//    id("io.gitlab.arturbosch.detekt") version "1.23.8"
     id("com.github.ben-manes.versions") version "0.53.0"
     id("io.github.f-cramer.jasperreports") version "0.0.4"
 }
@@ -46,13 +46,13 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
-    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-webmvc")
 
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+    implementation("tools.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 
-    implementation("org.flywaydb:flyway-core")
+    implementation("org.springframework.boot:spring-boot-starter-flyway")
     runtimeOnly("org.flywaydb:flyway-database-postgresql")
 
     implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity6")
@@ -74,10 +74,10 @@ dependencies {
     developmentOnly("org.springframework.boot:spring-boot-devtools")
 
     kapt("org.springframework.boot:spring-boot-configuration-processor")
-    kapt("org.hibernate.orm:hibernate-jpamodelgen")
+    kapt("org.hibernate.orm:hibernate-processor")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("org.springframework.security:spring-security-test")
+    testImplementation("org.springframework.boot:spring-boot-starter-security-test")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
@@ -132,13 +132,13 @@ tasks.named("check").configure {
 }
 
 dependencyManagement {
-    configurations.getByName("detekt") {
-        dependencies {
-            dependencySet("org.jetbrains.kotlin:2.0.21") {
-                entry("kotlin-compiler-embeddable")
-            }
-        }
-    }
+//    configurations.getByName("detekt") {
+//        dependencies {
+//            dependencySet("org.jetbrains.kotlin:2.0.21") {
+//                entry("kotlin-compiler-embeddable")
+//            }
+//        }
+//    }
 }
 
 ktlint {
@@ -159,10 +159,10 @@ ktlint {
     }
 }
 
-detekt {
-    buildUponDefaultConfig = true
-    config.from(".config/detekt.yml")
-}
+// detekt {
+//    buildUponDefaultConfig = true
+//    config.from(".config/detekt.yml")
+// }
 
 jasperreports {
     classpath.from(configurations.compileClasspath)

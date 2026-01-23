@@ -16,7 +16,9 @@ class SecurityUserService(
     override fun loadUserByUsername(username: String): UserDetails =
         userService.getUser(username)?.let { SecurityUser(it) } ?: throw UsernameNotFoundException(username)
 
-    override fun updatePassword(user: UserDetails, newPassword: String): UserDetails {
+    override fun updatePassword(user: UserDetails, newPassword: String?): UserDetails {
+        if (newPassword == null) return user
+
         if (user is SecurityUser) {
             user.user.also {
                 it.password = newPassword

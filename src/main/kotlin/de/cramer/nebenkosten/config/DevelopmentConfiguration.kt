@@ -46,7 +46,7 @@ class DevelopmentConfiguration {
         invoiceService: InvoiceService,
         passwordEncoder: PasswordEncoder,
     ) = CommandLineRunner {
-        userService.saveUser(User("test", passwordEncoder.encode("user123")))
+        userService.saveUser(User("test", passwordEncoder.encode("user123")!!))
 
         landlordService.createLandlord(LandlordForm("Torsten", "Schweitzer", "Hans-Grade-Allee", 86, "24875", "Havetoftloit", null, "DE81 5001 0517 8228 8538 63", Year.of(2014), Year.of(2016)))
         landlordService.createLandlord(LandlordForm("Monika", "Bader", "Landsberger Allee", 79, "80076", "München", null, "DE84 7402 0100 6161 4961 81", Year.of(2017)))

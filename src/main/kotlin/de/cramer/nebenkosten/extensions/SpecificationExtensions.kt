@@ -9,7 +9,7 @@ import jakarta.persistence.criteria.Path
 import jakarta.persistence.criteria.Predicate
 import org.springframework.data.jpa.domain.Specification
 
-inline fun <T> overlappingDatePeriodSpecification(
+inline fun <T : Any> overlappingDatePeriodSpecification(
     period: LocalDatePeriod,
     crossinline selector: (Path<T>) -> Path<LocalDatePeriod>,
 ): Specification<T> = Specification { root, _, criteriaBuilder ->
@@ -20,7 +20,7 @@ inline fun <T> overlappingDatePeriodSpecification(
     criteriaBuilder.overlappingPeriodSpecification(period.start, period.end, dbStart, dbEnd)
 }
 
-inline fun <T> overlappingYearPeriodSpecification(
+inline fun <T : Any> overlappingYearPeriodSpecification(
     period: YearPeriod,
     crossinline selector: (Path<T>) -> Path<YearPeriod>,
 ): Specification<T> = Specification { root, _, criteriaBuilder ->

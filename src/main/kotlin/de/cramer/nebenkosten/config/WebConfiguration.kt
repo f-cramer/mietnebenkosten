@@ -34,7 +34,7 @@ class WebConfiguration(
 
     @Bean
     fun openEntityManagerInViewFilter(): FilterRegistrationBean<OpenEntityManagerInViewFilter> = FilterRegistrationBean<OpenEntityManagerInViewFilter>().apply {
-        filter = OpenEntityManagerInViewFilter()
+        setFilter(OpenEntityManagerInViewFilter())
         order = Ordered.HIGHEST_PRECEDENCE + 2
     }
 }
