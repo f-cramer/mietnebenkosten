@@ -57,7 +57,7 @@ dependencies {
 
     implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity6")
 
-    val jasperReportsVersion = "7.0.3"
+    val jasperReportsVersion = "7.0.6"
     implementation("net.sf.jasperreports:jasperreports:$jasperReportsVersion")
     implementation("net.sf.jasperreports:jasperreports-functions:$jasperReportsVersion")
     implementation("net.sf.jasperreports:jasperreports-json:$jasperReportsVersion")
