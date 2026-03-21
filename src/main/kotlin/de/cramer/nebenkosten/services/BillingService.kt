@@ -87,14 +87,15 @@ class BillingService(
         var start: LocalDate? = null
         var end: LocalDate? = null
         for (period in sorted().toList()) {
+            val periodEnd = period.end
             if (start == null) {
                 start = period.start
-                end = period.end
+                end = periodEnd
             } else if (end != null && start <= end.plusDays(1)) {
-                end = if (period.end == null) {
+                end = if (periodEnd == null) {
                     null
                 } else {
-                    maxOf(end, period.end)
+                    maxOf(end, periodEnd)
                 }
             } else {
                 result += LocalDatePeriod(start, end)
@@ -197,7 +198,9 @@ class BillingService(
                 if (nextPeriodStart < p.start) {
                     this += LocalDatePeriod(nextPeriodStart, p.start.minusDays(1))
                 }
-                previousPeriod = LocalDatePeriod(p.start, if (p.end == null) null else maxOf(previousEnd, p.end))
+
+                val pEnd = p.end
+                previousPeriod = LocalDatePeriod(p.start, if (pEnd == null) null else maxOf(previousEnd, pEnd))
             }
 
             val previousEnd = previousPeriod.end

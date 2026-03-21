@@ -23,11 +23,13 @@ data class YearPeriod(
     }
 
     fun isOverlapping(other: YearPeriod): Boolean {
+        val end = end
         val oEnd = other.end
         if (end == null && oEnd == null) {
             return true
         }
 
+        val start = start
         val oStart = other.start
 
         return when {
@@ -45,14 +47,12 @@ data class YearPeriod(
         require(isOverlapping(other)) { "$this is not overlapping $other" }
 
         val start = maxOf(start, other.start)
-        val end = if (end != null && other.end != null) {
-            minOf(end, other.end)
-        } else if (end != null && other.end == null) {
-            end
-        } else if (end == null && other.end != null) {
-            other.end
+        val thisEnd = end
+        val otherEnd = other.end
+        val end = if (thisEnd != null && otherEnd != null) {
+            minOf(thisEnd, otherEnd)
         } else {
-            null
+            thisEnd ?: otherEnd
         }
         return YearPeriod(start, end)
     }
