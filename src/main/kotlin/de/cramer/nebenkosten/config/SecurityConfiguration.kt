@@ -16,28 +16,24 @@ class SecurityConfiguration(
 ) {
 
     @Bean
-    fun configure(http: HttpSecurity): SecurityFilterChain {
-        http.httpBasic {
+    fun configure(http: HttpSecurity): SecurityFilterChain = http
+        .httpBasic {
             it.disable()
         }
-
-        http.authorizeHttpRequests {
-            it.requestMatchers(PathPatternRequestMatcher.withDefaults().matcher("/css/**")).permitAll()
-            it.requestMatchers(EndpointRequest.toAnyEndpoint()).permitAll()
+        .authorizeHttpRequests {
+            it.requestMatchers(
+                PathPatternRequestMatcher.withDefaults().matcher("/css/**"),
+                EndpointRequest.toAnyEndpoint(),
+            ).permitAll()
             it.anyRequest().authenticated()
         }
-
-        http.formLogin {
+        .formLogin {
             it.loginPage("/login")
             it.permitAll()
         }
-
-        http.rememberMe {}
-
-        http.userDetailsService(userDetailsService)
-
-        return http.build()
-    }
+        .rememberMe {}
+        .userDetailsService(userDetailsService)
+        .build()
 
     @Bean
     fun passwordEncoder(): PasswordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder()
