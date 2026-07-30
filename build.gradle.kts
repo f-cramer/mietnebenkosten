@@ -19,8 +19,8 @@ plugins {
 }
 
 group = "de.cramer.nebenkosten"
-version = properties["VERSION"] as String
-java.sourceCompatibility = JavaVersion.toVersion(properties["JAVA_VERSION"] as String)
+version = providers.gradleProperty("VERSION").get()
+java.sourceCompatibility = JavaVersion.toVersion(providers.gradleProperty("JAVA_VERSION").get())
 
 ext["kotlin.version"] = kotlin.coreLibrariesVersion
 
@@ -86,14 +86,14 @@ tasks.withType<Test> {
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(properties["JAVA_VERSION"] as String)
+        languageVersion = JavaLanguageVersion.of(providers.gradleProperty("JAVA_VERSION").get())
     }
 }
 
 tasks.withType<KotlinCompile> {
     compilerOptions {
         freeCompilerArgs.set(listOf("-Xjsr305=strict", "-Xsuppress-version-warnings", "-Xannotation-default-target=param-property"))
-        jvmTarget.set(JvmTarget.valueOf("JVM_${properties["JAVA_VERSION"]}"))
+        jvmTarget.set(JvmTarget.valueOf("JVM_${providers.gradleProperty("JAVA_VERSION").get()}"))
         allWarningsAsErrors.set(true)
     }
 }
