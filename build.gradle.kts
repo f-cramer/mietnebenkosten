@@ -2,6 +2,7 @@ import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
 plugins {
     id("org.springframework.boot") version "4.1.0"
@@ -13,7 +14,7 @@ plugins {
     id("org.jetbrains.kotlin.kapt") version "2.4.10"
 
     id("org.jlleitschuh.gradle.ktlint") version "14.2.0"
-//    id("io.gitlab.arturbosch.detekt") version "1.23.8"
+    id("dev.detekt") version "2.0.0-alpha.6"
     id("io.github.ben-manes.versions") version "0.58.0"
     id("io.github.f-cramer.jasperreports") version "0.0.4"
 }
@@ -21,8 +22,6 @@ plugins {
 group = "de.cramer.nebenkosten"
 version = providers.gradleProperty("VERSION").get()
 java.sourceCompatibility = JavaVersion.toVersion(providers.gradleProperty("JAVA_VERSION").get())
-
-ext["kotlin.version"] = kotlin.coreLibrariesVersion
 
 allOpen {
     annotations("jakarta.persistence.Entity", "jakarta.persistence.MappedSuperclass")
@@ -42,6 +41,13 @@ repositories {
 }
 
 dependencies {
+    implementation(enforcedPlatform("org.jetbrains.kotlin:kotlin-bom:${kotlin.coreLibrariesVersion}"))
+    kapt(enforcedPlatform("org.jetbrains.kotlin:kotlin-bom:${kotlin.coreLibrariesVersion}"))
+    developmentOnly(enforcedPlatform("org.jetbrains.kotlin:kotlin-bom:${kotlin.coreLibrariesVersion}"))
+    implementation(enforcedPlatform(SpringBootPlugin.BOM_COORDINATES))
+    kapt(enforcedPlatform(SpringBootPlugin.BOM_COORDINATES))
+    developmentOnly(enforcedPlatform(SpringBootPlugin.BOM_COORDINATES))
+
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-security")
@@ -110,7 +116,9 @@ tasks.named<DependencyUpdatesTask>("dependencyUpdates").configure {
     gradleReleaseChannel = "current"
 
     val ignoredVersions = listOf("rc", "beta", "-m")
-    val managedVersions = dependencyManagement.managedVersions.keys.toSet() +
+    val managedVersions = configurations["compileClasspath"].allDependencyConstraints
+        .map { "${it.group}:${it.name}" }
+        .toSet() +
         setOf("io.github.oshai:kotlin-logging")
 
     rejectVersionIf {
@@ -136,16 +144,6 @@ tasks.named("check").configure {
     dependsOn(checkGradleWrapperVersion)
 }
 
-dependencyManagement {
-//    configurations.getByName("detekt") {
-//        dependencies {
-//            dependencySet("org.jetbrains.kotlin:2.0.21") {
-//                entry("kotlin-compiler-embeddable")
-//            }
-//        }
-//    }
-}
-
 ktlint {
     version.set(project.extra["KTLINT_VERSION"] as String)
     enableExperimentalRules.set(true)
@@ -164,10 +162,10 @@ ktlint {
     }
 }
 
-// detekt {
-//    buildUponDefaultConfig = true
-//    config.from(".config/detekt.yml")
-// }
+detekt {
+    buildUponDefaultConfig = true
+    config.from(".config/detekt.yml")
+}
 
 jasperreports {
     classpath.from(configurations.compileClasspath)
