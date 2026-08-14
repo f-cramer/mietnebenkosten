@@ -71,7 +71,7 @@ dependencies {
     jasperreportsClasspath("net.sf.jasperreports:jasperreports-jdt:$jasperReportsVersion")
 
     // cve mitigation
-    implementation("org.apache.commons:commons-collections4:4.5.0")
+    implementation("org.apache.commons:commons-collections4:4.6.0")
 
     runtimeOnly("com.h2database:h2")
     runtimeOnly("org.postgresql:postgresql")
